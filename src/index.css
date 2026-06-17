@@ -381,7 +381,9 @@
   inset: 0;
   pointer-events: none;
   overflow: hidden;
-  z-index: 1;
+  /* Sit BEHIND all content so petals drift in the background and never
+     cover numbers, headings or buttons. (Same layer as the glow blobs.) */
+  z-index: -1;
 }
 
 .petal-fall {
