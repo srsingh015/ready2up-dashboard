@@ -1,0 +1,16 @@
+node_modules
+dist
+.password.json
+content-source/
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+.vite
+ready2up-deploy.zip
+
+# NOTE: src/data/__payload.js IS committed on purpose.
+# It is the AES-encrypted content (safe — useless without the password),
+# and Vercel needs it to build. The plaintext (content-source/) and the
+# password (.password.json) are never committed.

@@ -1,0 +1,68 @@
+# ============================================================
+# Ready2UP — shared hosting (Apache) configuration
+# Place this file in the SAME folder as index.html on your hosting.
+# ============================================================
+
+# --- Disable directory listing (no one sees the file list) ---
+Options -Indexes
+
+# --- Block access to all dotfiles (just in case anything dotted ends up here) ---
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# --- Block direct access to this .htaccess file itself ---
+<Files ".htaccess">
+    Require all denied
+</Files>
+
+# --- Privacy & security headers ---
+<IfModule mod_headers.c>
+    # Tell every search engine / AI crawler to stay out — even if they ignore robots.txt
+    Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex"
+
+    # Anti-clickjacking
+    Header set X-Frame-Options "DENY"
+    Header always set Content-Security-Policy "frame-ancestors 'none';"
+
+    # MIME-sniffing protection
+    Header set X-Content-Type-Options "nosniff"
+
+    # Don't leak referrer when user clicks an outbound link
+    Header set Referrer-Policy "no-referrer"
+
+    # No browser caching — so any update you redeploy shows up immediately
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+
+    # Force HTTPS on every page once SSL is set up on the host
+    # (Comment this out if your host doesn't have HTTPS yet.)
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# --- Force correct MIME types ---
+<IfModule mod_mime.c>
+    AddType text/html .html
+    AddType text/css .css
+    AddType text/plain .txt
+    AddCharset UTF-8 .html
+    AddCharset UTF-8 .css
+    AddCharset UTF-8 .txt
+</IfModule>
+
+# --- Prevent caching of the main HTML file specifically ---
+<FilesMatch "\.(html|htm)$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </IfModule>
+</FilesMatch>
+
+# --- (Optional) Force HTTPS — uncomment after SSL is active ---
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{HTTPS} off
+#     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
