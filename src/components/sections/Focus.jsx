@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import * as Icons from 'lucide-react';
 import {
-  Play, Pause, RotateCcw, Brain, Coffee, Target, Plus, Trash2, Check, Flame, Volume2, VolumeX,
+  Play, Pause, RotateCcw, Brain, Coffee, Target, Plus, Trash2, Check, Flame, Volume2, VolumeX, Clock,
 } from 'lucide-react';
 import { PageHeader, Card, Pill } from '../ui/Section.jsx';
 import { useCloudState } from '../../lib/cloudSync.js';
@@ -14,68 +14,123 @@ const MODES = {
 };
 
 const COLOR = {
-  amber: { ring: '#f59e0b', text: 'text-amber-300', soft: 'bg-amber-500/10 border-amber-500/25 text-amber-200' },
-  emerald: { ring: '#10b981', text: 'text-emerald-300', soft: 'bg-emerald-500/10 border-emerald-500/25 text-emerald-200' },
-  sky: { ring: '#0ea5e9', text: 'text-sky-300', soft: 'bg-sky-500/10 border-sky-500/25 text-sky-200' },
-  violet: { ring: '#8b5cf6', text: 'text-violet-300', soft: 'bg-violet-500/10 border-violet-500/25 text-violet-200' },
+  amber: { ring: '#f59e0b', text: 'text-amber-300', soft: 'bg-amber-500/10 border-amber-500/25 text-amber-200', bar: 'bg-amber-400' },
+  emerald: { ring: '#10b981', text: 'text-emerald-300', soft: 'bg-emerald-500/10 border-emerald-500/25 text-emerald-200', bar: 'bg-emerald-400' },
+  sky: { ring: '#0ea5e9', text: 'text-sky-300', soft: 'bg-sky-500/10 border-sky-500/25 text-sky-200', bar: 'bg-sky-400' },
 };
 
 const todayKey = () => new Date().toISOString().slice(0, 10);
+const TIMER_KEY = 'r2up_focus_timer_v1';
+
+const DEFAULT_TIMER = {
+  mode: 'focus',
+  running: false,
+  endAt: null,
+  remaining: {
+    focus: MODES.focus.minutes * 60,
+    short: MODES.short.minutes * 60,
+    long: MODES.long.minutes * 60,
+  },
+};
+
+function loadTimer() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(TIMER_KEY));
+    if (!saved) return DEFAULT_TIMER;
+    return { ...DEFAULT_TIMER, ...saved, remaining: { ...DEFAULT_TIMER.remaining, ...(saved.remaining || {}) } };
+  } catch {
+    return DEFAULT_TIMER;
+  }
+}
+function saveTimer(t) {
+  try { localStorage.setItem(TIMER_KEY, JSON.stringify(t)); } catch {}
+}
+function remainingOf(t, now = Date.now()) {
+  if (t.running && t.endAt) return Math.max(0, Math.round((t.endAt - now) / 1000));
+  return t.remaining[t.mode];
+}
+function fmtMins(m) {
+  if (!m) return '0m';
+  return m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m}m`;
+}
 
 export default function Focus({ data }) {
   const dailyRoutine = data?.dailyRoutine;
+  const today = todayKey();
 
-  // ---- Persistent (cloud-synced) state ----
+  // ---- Persistent (cloud-synced) data ----
   const [tasks, setTasks] = useCloudState('focus_top3', []);
   const [focusNow, setFocusNow] = useCloudState('focus_now', '');
-  const [sessions, setSessions] = useCloudState('focus_sessions', {}); // { 'YYYY-MM-DD': count }
+  const [log, setLog] = useCloudState('focus_log', {}); // { 'YYYY-MM-DD': { sessions, minutes } }
   const [soundOn, setSoundOn] = useCloudState('focus_sound', true);
 
-  // ---- Timer state (ephemeral) ----
-  const [mode, setMode] = useState('focus');
-  const [secondsLeft, setSecondsLeft] = useState(MODES.focus.minutes * 60);
-  const [running, setRunning] = useState(false);
-  const tickRef = useRef(null);
+  // ---- Timer (device-local, survives navigation + refresh) ----
+  const [timer, setTimer] = useState(loadTimer);
+  const [, setTick] = useState(0);
 
-  const today = todayKey();
-  const todaySessions = sessions[today] || 0;
+  useEffect(() => { saveTimer(timer); }, [timer]);
 
-  // Countdown loop
+  // Re-render every 250ms while running, so the countdown stays live.
   useEffect(() => {
-    if (!running) return;
-    tickRef.current = setInterval(() => {
-      setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
-    }, 1000);
-    return () => clearInterval(tickRef.current);
-  }, [running]);
+    if (!timer.running) return;
+    const id = setInterval(() => setTick((n) => n + 1), 250);
+    return () => clearInterval(id);
+  }, [timer.running]);
 
-  // Handle reaching zero
+  const secondsLeft = remainingOf(timer);
+
+  // When the running timer reaches zero, finalize (log it, chime, auto-switch).
   useEffect(() => {
-    if (secondsLeft !== 0 || !running) return;
-    setRunning(false);
+    if (!timer.running || secondsLeft > 0) return;
+    const finished = timer.mode;
     if (soundOn) beep();
-    if (mode === 'focus') {
-      setSessions((prev) => ({ ...prev, [today]: (prev[today] || 0) + 1 }));
-      // After a focus block, suggest a break (every 4th = long break).
-      const completed = (sessions[today] || 0) + 1;
-      switchMode(completed % 4 === 0 ? 'long' : 'short', false);
-    } else {
-      switchMode('focus', false);
+    if (finished === 'focus') {
+      setLog((prev) => {
+        const d = prev[today] || { sessions: 0, minutes: 0 };
+        return { ...prev, [today]: { sessions: d.sessions + 1, minutes: d.minutes + MODES.focus.minutes } };
+      });
     }
+    const doneSoFar = (log[today]?.sessions || 0) + (finished === 'focus' ? 1 : 0);
+    const next = finished === 'focus' ? (doneSoFar % 4 === 0 ? 'long' : 'short') : 'focus';
+    setTimer((t) => ({
+      ...t,
+      running: false,
+      endAt: null,
+      mode: next,
+      remaining: { ...t.remaining, [finished]: MODES[finished].minutes * 60 },
+    }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [secondsLeft]);
+  }, [secondsLeft, timer.running]);
 
-  function switchMode(m, alsoStop = true) {
-    setMode(m);
-    setSecondsLeft(MODES[m].minutes * 60);
-    if (alsoStop) setRunning(false);
+  function toggleRun() {
+    setTimer((t) => {
+      const rem = remainingOf(t);
+      if (t.running) {
+        return { ...t, running: false, endAt: null, remaining: { ...t.remaining, [t.mode]: rem } };
+      }
+      const r = rem > 0 ? rem : MODES[t.mode].minutes * 60;
+      return { ...t, running: true, endAt: Date.now() + r * 1000, remaining: { ...t.remaining, [t.mode]: r } };
+    });
+  }
+
+  // Switching modes PRESERVES each mode's remaining time (this fixes the reset bug).
+  function switchMode(m) {
+    setTimer((t) => {
+      const rem = remainingOf(t);
+      return { ...t, mode: m, running: false, endAt: null, remaining: { ...t.remaining, [t.mode]: rem } };
+    });
   }
 
   function reset() {
-    setRunning(false);
-    setSecondsLeft(MODES[mode].minutes * 60);
+    setTimer((t) => ({
+      ...t,
+      running: false,
+      endAt: null,
+      remaining: { ...t.remaining, [t.mode]: MODES[t.mode].minutes * 60 },
+    }));
   }
 
+  const mode = timer.mode;
   const total = MODES[mode].minutes * 60;
   const progress = total > 0 ? 1 - secondsLeft / total : 0;
   const mm = String(Math.floor(secondsLeft / 60)).padStart(2, '0');
@@ -94,6 +149,23 @@ export default function Focus({ data }) {
   }
   const doneTasks = tasks.filter((t) => t.done).length;
 
+  // ---- Today + last 7 days ----
+  const todayStat = log[today] || { sessions: 0, minutes: 0 };
+  const last7 = useMemo(() => {
+    const arr = [];
+    const base = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(base);
+      d.setDate(base.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      const stat = log[key] || { sessions: 0, minutes: 0 };
+      arr.push({ key, label: d.toLocaleDateString(undefined, { weekday: 'short' }).slice(0, 2), ...stat, isToday: key === today });
+    }
+    return arr;
+  }, [log, today]);
+  const maxSessions = Math.max(1, ...last7.map((d) => d.sessions));
+  const weekSessions = last7.reduce((s, d) => s + d.sessions, 0);
+
   // ---- Current recommended block by time of day ----
   const currentBlock = useMemo(() => {
     if (!dailyRoutine?.blocks) return null;
@@ -104,11 +176,10 @@ export default function Focus({ data }) {
     else if (h >= 18 && h < 21) id = 'evening-build';
     return dailyRoutine.blocks.find((b) => b.id === id) || dailyRoutine.blocks[0];
   }, [dailyRoutine]);
-
   const BlockIcon = currentBlock ? (Icons[currentBlock.icon] || Icons.Sun) : Icons.Sun;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         eyebrow="Focus Mode"
         title="One block. One timer. Nothing else."
@@ -116,89 +187,120 @@ export default function Focus({ data }) {
         accent="amber"
       />
 
-      {/* TIMER */}
-      <Card className="!p-0 overflow-hidden">
-        {/* Mode tabs */}
-        <div className="flex border-b border-white/[0.06]">
-          {Object.entries(MODES).map(([key, m]) => {
-            const Ico = m.icon;
-            const isActive = mode === key;
-            return (
-              <button
-                key={key}
-                onClick={() => switchMode(key)}
-                className={`flex-1 inline-flex items-center justify-center gap-2 py-3 text-xs sm:text-sm font-semibold transition-colors ${
-                  isActive ? `${COLOR[m.color].text} bg-white/[0.03]` : 'text-slate-500 hover:text-slate-300'
-                }`}
-              >
-                <Ico className="w-4 h-4" />
-                <span className="hidden sm:inline">{m.label}</span>
-                <span className="sm:hidden">{m.minutes}m</span>
-              </button>
-            );
-          })}
-        </div>
+      {/* TIMER + TODAY — two columns on desktop, stacked on phone */}
+      <div className="grid lg:grid-cols-5 gap-5">
+        {/* TIMER */}
+        <Card className="!p-0 overflow-hidden lg:col-span-3">
+          {/* Mode tabs */}
+          <div className="flex border-b border-white/[0.06]">
+            {Object.entries(MODES).map(([key, m]) => {
+              const Ico = m.icon;
+              const isActive = mode === key;
+              const rem = timer.remaining[key];
+              const partial = rem > 0 && rem < m.minutes * 60;
+              return (
+                <button
+                  key={key}
+                  onClick={() => switchMode(key)}
+                  className={`flex-1 inline-flex items-center justify-center gap-1.5 sm:gap-2 py-3 px-1 text-xs sm:text-sm font-semibold transition-colors relative ${
+                    isActive ? `${COLOR[m.color].text} bg-white/[0.03]` : 'text-slate-500 hover:text-slate-300'
+                  }`}
+                >
+                  <Ico className="w-4 h-4 shrink-0" />
+                  <span className="hidden sm:inline">{m.label}</span>
+                  <span className="sm:hidden">{m.minutes}m</span>
+                  {partial && <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-current opacity-70" title="In progress" />}
+                </button>
+              );
+            })}
+          </div>
 
-        <div className="p-6 sm:p-8 flex flex-col items-center">
-          {/* Circular progress */}
-          <div className="relative w-56 h-56 sm:w-64 sm:h-64">
-            <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
-              <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="8" />
-              <circle
-                cx="60" cy="60" r="54" fill="none"
-                stroke={c.ring}
-                strokeWidth="8"
-                strokeLinecap="round"
-                strokeDasharray={2 * Math.PI * 54}
-                strokeDashoffset={2 * Math.PI * 54 * (1 - progress)}
-                style={{ transition: 'stroke-dashoffset 1s linear' }}
-              />
-            </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <div className="font-display text-5xl sm:text-6xl font-extrabold tabular-nums tracking-tight">
-                {mm}:{ss}
-              </div>
-              <div className={`text-xs font-bold uppercase tracking-widest mt-2 ${c.text}`}>
-                {MODES[mode].label}
+          <div className="p-6 sm:p-8 flex flex-col items-center">
+            {/* Circular progress — scales with screen */}
+            <div className="relative w-52 h-52 sm:w-60 sm:h-60">
+              <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
+                <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="7" />
+                <circle
+                  cx="60" cy="60" r="54" fill="none"
+                  stroke={c.ring}
+                  strokeWidth="7"
+                  strokeLinecap="round"
+                  strokeDasharray={2 * Math.PI * 54}
+                  strokeDashoffset={2 * Math.PI * 54 * (1 - progress)}
+                  style={{ transition: 'stroke-dashoffset 0.4s linear' }}
+                />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <div className="font-display text-5xl sm:text-6xl font-extrabold tabular-nums tracking-tight">
+                  {mm}:{ss}
+                </div>
+                <div className={`text-[11px] font-bold uppercase tracking-widest mt-2 ${c.text}`}>
+                  {timer.running ? MODES[mode].label : `${MODES[mode].label} · paused`}
+                </div>
               </div>
             </div>
+
+            {/* Controls */}
+            <div className="flex items-center gap-3 mt-7">
+              <button
+                onClick={reset}
+                className="p-3 rounded-xl border border-white/[0.08] text-slate-300 hover:text-white hover:bg-white/[0.04] transition-colors active:scale-95"
+                aria-label="Reset timer"
+              >
+                <RotateCcw className="w-5 h-5" />
+              </button>
+              <button
+                onClick={toggleRun}
+                className={`inline-flex items-center gap-2 px-8 sm:px-10 py-3.5 rounded-2xl font-bold text-ink-950 shadow-lg transition-transform active:scale-95 ${
+                  timer.running ? 'bg-slate-200 hover:bg-white' : 'bg-gradient-to-br from-amber-400 to-amber-600 hover:from-amber-300'
+                }`}
+              >
+                {timer.running ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                {timer.running ? 'Pause' : 'Start'}
+              </button>
+              <button
+                onClick={() => setSoundOn((s) => !s)}
+                className="p-3 rounded-xl border border-white/[0.08] text-slate-300 hover:text-white hover:bg-white/[0.04] transition-colors active:scale-95"
+                aria-label={soundOn ? 'Mute chime' : 'Unmute chime'}
+              >
+                {soundOn ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+              </button>
+            </div>
+          </div>
+        </Card>
+
+        {/* TODAY + 7-DAY HISTORY */}
+        <Card className="lg:col-span-2">
+          <div className="flex items-center gap-2 mb-4">
+            <Flame className="w-5 h-5 text-amber-300" />
+            <h3 className="font-display text-lg font-extrabold">Today</h3>
+          </div>
+          <div className="grid grid-cols-3 gap-3 mb-5">
+            <MiniStat value={todayStat.sessions} label="sessions" color="amber" />
+            <MiniStat value={fmtMins(todayStat.minutes)} label="focused" color="emerald" />
+            <MiniStat value={`${doneTasks}/${tasks.length || 0}`} label="tasks done" color="sky" />
           </div>
 
-          {/* Controls */}
-          <div className="flex items-center gap-3 mt-7">
-            <button
-              onClick={reset}
-              className="p-3 rounded-xl border border-white/[0.08] text-slate-300 hover:text-white hover:bg-white/[0.04] transition-colors"
-              aria-label="Reset timer"
-            >
-              <RotateCcw className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => setRunning((r) => !r)}
-              className={`inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl font-bold text-ink-950 shadow-lg transition-transform active:scale-95 ${
-                running ? 'bg-slate-200 hover:bg-white' : 'bg-gradient-to-br from-amber-400 to-amber-600 hover:from-amber-300'
-              }`}
-            >
-              {running ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-              {running ? 'Pause' : 'Start'}
-            </button>
-            <button
-              onClick={() => setSoundOn((s) => !s)}
-              className="p-3 rounded-xl border border-white/[0.08] text-slate-300 hover:text-white hover:bg-white/[0.04] transition-colors"
-              aria-label={soundOn ? 'Mute chime' : 'Unmute chime'}
-            >
-              {soundOn ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-            </button>
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Last 7 days</div>
+            <div className="text-[10px] text-slate-500">{weekSessions} sessions</div>
           </div>
-
-          {/* Today's sessions */}
-          <div className="mt-6 inline-flex items-center gap-2 bg-amber-500/[0.08] border border-amber-500/20 rounded-full px-4 py-2">
-            <Flame className="w-4 h-4 text-amber-300" />
-            <span className="text-sm font-bold text-amber-200">{todaySessions}</span>
-            <span className="text-xs text-slate-400">focus {todaySessions === 1 ? 'session' : 'sessions'} today</span>
+          <div className="flex items-end justify-between gap-2 h-24">
+            {last7.map((d) => (
+              <div key={d.key} className="flex-1 flex flex-col items-center gap-1.5">
+                <div className="w-full flex-1 flex items-end">
+                  <div
+                    className={`w-full rounded-md transition-all ${d.isToday ? c.bar : 'bg-white/[0.12]'}`}
+                    style={{ height: `${Math.max(6, (d.sessions / maxSessions) * 100)}%` }}
+                    title={`${d.sessions} sessions · ${fmtMins(d.minutes)}`}
+                  />
+                </div>
+                <span className={`text-[10px] ${d.isToday ? 'text-amber-300 font-bold' : 'text-slate-500'}`}>{d.label}</span>
+              </div>
+            ))}
           </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
 
       {/* WHAT AM I FOCUSING ON RIGHT NOW */}
       <Card>
@@ -212,7 +314,7 @@ export default function Focus({ data }) {
           placeholder="e.g. 5 Upwork proposals — no tabs, no phone"
           className="w-full bg-ink-900 border border-white/[0.08] hover:border-white/[0.14] focus:border-amber-500/40 rounded-xl px-4 py-3 text-sm focus:outline-none placeholder-slate-600 transition-colors"
         />
-        <p className="text-xs text-slate-500 mt-2">One sentence. The single thing this block is for.</p>
+        <p className="text-xs text-slate-500 mt-2">One sentence. The single thing this block is for. (Saved automatically.)</p>
       </Card>
 
       {/* TOP TASKS FOR TODAY */}
@@ -255,13 +357,13 @@ export default function Focus({ data }) {
                   value={t.text}
                   onChange={(e) => updateTask(t.id, { text: e.target.value })}
                   placeholder="What needs to get done?"
-                  className={`flex-1 bg-transparent border-b border-transparent hover:border-white/[0.08] focus:border-amber-500/40 px-1 py-1.5 text-sm focus:outline-none transition-colors ${
+                  className={`flex-1 min-w-0 bg-transparent border-b border-transparent hover:border-white/[0.08] focus:border-amber-500/40 px-1 py-1.5 text-sm focus:outline-none transition-colors ${
                     t.done ? 'text-slate-500 line-through' : 'text-slate-100'
                   }`}
                 />
                 <button
                   onClick={() => removeTask(t.id)}
-                  className="shrink-0 text-slate-600 hover:text-rose-400 p-1.5 rounded-lg hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="shrink-0 text-slate-600 hover:text-rose-400 p-1.5 rounded-lg hover:bg-white/5 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
                   aria-label="Remove task"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
@@ -280,8 +382,8 @@ export default function Focus({ data }) {
               <BlockIcon className="w-5 h-5" />
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">
-                Right now, your plan says
+              <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1 flex items-center gap-1.5">
+                <Clock className="w-3 h-3" /> Right now, your plan says
               </div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="font-bold text-base sm:text-lg">{currentBlock.title}</h3>
@@ -304,14 +406,23 @@ export default function Focus({ data }) {
   );
 }
 
+function MiniStat({ value, label, color = 'amber' }) {
+  const map = { amber: 'text-amber-300', emerald: 'text-emerald-300', sky: 'text-sky-300' };
+  return (
+    <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3 text-center">
+      <div className={`font-display text-xl font-extrabold ${map[color]}`}>{value}</div>
+      <div className="text-[10px] text-slate-500 mt-0.5 uppercase tracking-wider">{label}</div>
+    </div>
+  );
+}
+
 // A short, gentle chime using the Web Audio API — no audio file needed.
 function beep() {
   try {
     const Ctx = window.AudioContext || window.webkitAudioContext;
     if (!Ctx) return;
     const ctx = new Ctx();
-    const notes = [880, 1175]; // two soft tones
-    notes.forEach((freq, i) => {
+    [880, 1175].forEach((freq, i) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
