@@ -45,8 +45,8 @@ const NAV = [
   { id: 'trackers', label: 'Trackers', icon: LineChart, group: 'tools' },
   { id: 'partnerships', label: 'Partnership Companies', icon: Building2, group: 'portfolio' },
   { id: 'us', label: 'Us 💞', icon: HeartHandshake, group: 'kaira' },
-  { id: 'me', label: 'For Me 💕', icon: User, group: 'kaira' },
   { id: 'kaira', label: 'For Kaira 🌸', icon: Heart, group: 'kaira' },
+  { id: 'me', label: 'For Me 💕', icon: Heart, group: 'kaira' },
 ];
 
 const GROUP_LABELS = {
@@ -58,13 +58,20 @@ const GROUP_LABELS = {
   kaira: 'Together',
 };
 
-// "For Kaira" is pinned by default — she sees her space first every time.
-const DEFAULT_PINNED = ['kaira'];
+// Nothing is pinned by default now — the Together group has its own special spot.
+const DEFAULT_PINNED = [];
 
 export default function Layout({ data, onLock, theme, toggleTheme }) {
   const [active, setActive] = useState('overview');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [pinned, setPinned] = useLocalStorage('pinned_nav', DEFAULT_PINNED);
+
+  // One-time migration: older versions pinned "For Kaira" by default. Now the
+  // Together group has its own special spot, so clear that old default pin.
+  useEffect(() => {
+    if (pinned.length === 1 && pinned[0] === 'kaira') setPinned([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Reset scroll to top whenever the user navigates to a different section.
   // Without this, scrolling deep into one section then switching meant the
@@ -179,23 +186,38 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
           )}
 
           {/* Regular groups */}
-          {Object.keys(unpinnedGroups).map((g) => (
-            <div key={g} className="mb-3">
-              <div className="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
-                {GROUP_LABELS[g]}
+          {Object.keys(unpinnedGroups).map((g) => {
+            const isTogether = g === 'kaira';
+            return (
+              <div
+                key={g}
+                className={`mb-3 ${
+                  isTogether
+                    ? 'rounded-2xl p-2 mt-1 bg-gradient-to-br from-rose-500/[0.10] via-pink-500/[0.06] to-amber-500/[0.06] border border-rose-500/20 shadow-[0_0_34px_-18px_rgba(244,63,94,0.7)]'
+                    : ''
+                }`}
+              >
+                <div className={`px-3 pt-2 pb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] flex items-center gap-1.5 ${isTogether ? '' : 'text-slate-500'}`}>
+                  {isTogether && <Heart className="w-3 h-3 fill-current text-rose-400" />}
+                  {isTogether ? (
+                    <span className="bg-gradient-to-r from-rose-300 to-amber-200 bg-clip-text text-transparent">{GROUP_LABELS[g]}</span>
+                  ) : (
+                    GROUP_LABELS[g]
+                  )}
+                </div>
+                {unpinnedGroups[g].map((item) => (
+                  <NavItem
+                    key={item.id}
+                    item={item}
+                    active={active}
+                    isPinned={false}
+                    onSelect={() => { setActive(item.id); setMobileOpen(false); }}
+                    onTogglePin={(e) => togglePin(item.id, e)}
+                  />
+                ))}
               </div>
-              {unpinnedGroups[g].map((item) => (
-                <NavItem
-                  key={item.id}
-                  item={item}
-                  active={active}
-                  isPinned={false}
-                  onSelect={() => { setActive(item.id); setMobileOpen(false); }}
-                  onTogglePin={(e) => togglePin(item.id, e)}
-                />
-              ))}
-            </div>
-          ))}
+            );
+          })}
         </nav>
 
         {/* Footer — pinned at bottom, never scrolls away */}
