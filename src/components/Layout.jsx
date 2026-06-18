@@ -65,13 +65,7 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
   const [active, setActive] = useState('overview');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [pinned, setPinned] = useLocalStorage('pinned_nav', DEFAULT_PINNED);
-
-  // One-time migration: older versions pinned "For Kaira" by default. Now the
-  // Together group has its own special spot, so clear that old default pin.
-  useEffect(() => {
-    if (pinned.length === 1 && pinned[0] === 'kaira') setPinned([]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [togetherTop, setTogetherTop] = useLocalStorage('together_pinned', true);
 
   // Reset scroll to top whenever the user navigates to a different section.
   // Without this, scrolling deep into one section then switching meant the
@@ -87,10 +81,13 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
   }
 
   // Build pinned section list (preserves NAV order) and unpinned groups.
+  // The Together group ('kaira') is handled separately as one special block.
+  const togetherItems = NAV.filter((n) => n.group === 'kaira');
   const { pinnedItems, unpinnedGroups } = useMemo(() => {
-    const pinnedItems = NAV.filter((n) => pinned.includes(n.id));
+    const pinnedItems = NAV.filter((n) => n.group !== 'kaira' && pinned.includes(n.id));
     const m = {};
     NAV.forEach((n) => {
+      if (n.group === 'kaira') return;
       if (pinned.includes(n.id)) return;
       m[n.group] ??= [];
       m[n.group].push(n);
@@ -98,8 +95,48 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
     return { pinnedItems, unpinnedGroups: m };
   }, [pinned]);
 
-  const renderSection = () => {
-    const props = { data };
+  // The special "Together" block — Us / For Kaira / For Me, with one pin toggle.
+  const renderTogether = () => (
+    <div className="mb-3 rounded-2xl p-2.5 relative overflow-hidden bg-gradient-to-br from-rose-500/[0.22] via-pink-500/[0.12] to-amber-500/[0.12] border border-rose-400/30 shadow-[0_12px_36px_-14px_rgba(244,63,94,0.55)]">
+      <div className="pointer-events-none absolute -top-8 -right-8 w-24 h-24 rounded-full bg-rose-500/20 blur-2xl" />
+      <div className="relative flex items-center justify-between px-1.5 pt-0.5 pb-2">
+        <div className="flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em]">
+          <Heart className="w-3.5 h-3.5 fill-rose-400 text-rose-400" />
+          <span className="bg-gradient-to-r from-rose-200 via-pink-200 to-amber-200 bg-clip-text text-transparent">Together</span>
+        </div>
+        <button
+          onClick={() => setTogetherTop((v) => !v)}
+          title={togetherTop ? 'Unpin Together from top' : 'Pin Together to top'}
+          aria-label={togetherTop ? 'Unpin Together from top' : 'Pin Together to top'}
+          className={`p-1.5 rounded-lg transition-colors ${togetherTop ? 'text-rose-300 hover:bg-white/10' : 'text-slate-400 hover:text-rose-300 hover:bg-white/10'}`}
+        >
+          {togetherTop ? <Pin className="w-3.5 h-3.5 fill-current" /> : <PinOff className="w-3.5 h-3.5" />}
+        </button>
+      </div>
+      <div className="relative space-y-1">
+        {togetherItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = active === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => { setActive(item.id); setMobileOpen(false); }}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all border ${
+                isActive
+                  ? 'bg-rose-500/25 border-rose-300/45 text-white shadow-[0_0_22px_-8px_rgba(244,63,94,0.9)]'
+                  : 'border-transparent text-slate-100 hover:bg-white/[0.08] hover:border-white/[0.08]'
+              }`}
+            >
+              <Icon className={`w-[18px] h-[18px] shrink-0 ${isActive ? 'text-rose-200' : 'text-rose-300/80'}`} strokeWidth={2} />
+              <span className="truncate">{item.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  const renderSection = () => {    const props = { data };
     switch (active) {
       case 'overview': return <Overview {...props} onNavigate={setActive} />;
       case 'vision': return <Vision {...props} />;
@@ -165,7 +202,10 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
           className="flex-1 min-h-0 px-2 py-2 overflow-y-auto"
           style={{ overscrollBehavior: 'contain' }}
         >
-          {/* Pinned group at the very top */}
+          {/* Together — special block, pinned to top by default */}
+          {togetherTop && renderTogether()}
+
+          {/* Pinned group */}
           {pinnedItems.length > 0 && (
             <div className="mb-3">
               <div className="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-amber-300/90 flex items-center gap-1.5">
@@ -186,38 +226,26 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
           )}
 
           {/* Regular groups */}
-          {Object.keys(unpinnedGroups).map((g) => {
-            const isTogether = g === 'kaira';
-            return (
-              <div
-                key={g}
-                className={`mb-3 ${
-                  isTogether
-                    ? 'rounded-2xl p-2 mt-1 bg-gradient-to-br from-rose-500/[0.10] via-pink-500/[0.06] to-amber-500/[0.06] border border-rose-500/20 shadow-[0_0_34px_-18px_rgba(244,63,94,0.7)]'
-                    : ''
-                }`}
-              >
-                <div className={`px-3 pt-2 pb-1.5 text-[10px] font-bold uppercase tracking-[0.18em] flex items-center gap-1.5 ${isTogether ? '' : 'text-slate-500'}`}>
-                  {isTogether && <Heart className="w-3 h-3 fill-current text-rose-400" />}
-                  {isTogether ? (
-                    <span className="bg-gradient-to-r from-rose-300 to-amber-200 bg-clip-text text-transparent">{GROUP_LABELS[g]}</span>
-                  ) : (
-                    GROUP_LABELS[g]
-                  )}
-                </div>
-                {unpinnedGroups[g].map((item) => (
-                  <NavItem
-                    key={item.id}
-                    item={item}
-                    active={active}
-                    isPinned={false}
-                    onSelect={() => { setActive(item.id); setMobileOpen(false); }}
-                    onTogglePin={(e) => togglePin(item.id, e)}
-                  />
-                ))}
+          {Object.keys(unpinnedGroups).map((g) => (
+            <div key={g} className="mb-3">
+              <div className="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                {GROUP_LABELS[g]}
               </div>
-            );
-          })}
+              {unpinnedGroups[g].map((item) => (
+                <NavItem
+                  key={item.id}
+                  item={item}
+                  active={active}
+                  isPinned={false}
+                  onSelect={() => { setActive(item.id); setMobileOpen(false); }}
+                  onTogglePin={(e) => togglePin(item.id, e)}
+                />
+              ))}
+            </div>
+          ))}
+
+          {/* Together at its natural spot when not pinned to top */}
+          {!togetherTop && renderTogether()}
         </nav>
 
         {/* Footer — pinned at bottom, never scrolls away */}
