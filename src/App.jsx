@@ -32,10 +32,13 @@ export default function App() {
     return () => sub?.subscription?.unsubscribe?.();
   }, []);
 
-  // Try a silent unlock if the same browser tab still has the session token.
+  // Try a silent unlock if this device remembered the password (localStorage)
+  // or the same tab still has it (sessionStorage).
   useEffect(() => {
-    const token = sessionStorage.getItem('r2up_session_pw');
-    if (token) handleUnlock(token, true);
+    const remembered = localStorage.getItem('r2up_session_pw');
+    const session = sessionStorage.getItem('r2up_session_pw');
+    const token = remembered || session;
+    if (token) handleUnlock(token, true, !!remembered);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -60,7 +63,7 @@ export default function App() {
     }
   }
 
-  async function handleUnlock(password, silent = false) {
+  async function handleUnlock(password, silent = false, remember = false) {
     if (!password) return;
     setBusy(true);
     setError('');
@@ -68,12 +71,21 @@ export default function App() {
       const decrypted = await decryptPayload(payload, password);
       setData(decrypted);
       setUnlocked(true);
-      sessionStorage.setItem('r2up_session_pw', password);
+      // "Remember me" → persist on this device (localStorage). Otherwise keep it
+      // only for this tab/session (sessionStorage), cleared when the tab closes.
+      if (remember) {
+        localStorage.setItem('r2up_session_pw', password);
+        sessionStorage.removeItem('r2up_session_pw');
+      } else {
+        sessionStorage.setItem('r2up_session_pw', password);
+        localStorage.removeItem('r2up_session_pw');
+      }
       // Kick off cloud sign-in with the same password (non-blocking).
       signIntoCloud(password);
       if (!silent) setShowWelcome(true);
     } catch (err) {
       if (!silent) setError('Incorrect password.');
+      localStorage.removeItem('r2up_session_pw');
       sessionStorage.removeItem('r2up_session_pw');
     } finally {
       setBusy(false);
@@ -84,6 +96,7 @@ export default function App() {
     setUnlocked(false);
     setData(null);
     setShowWelcome(false);
+    localStorage.removeItem('r2up_session_pw');
     sessionStorage.removeItem('r2up_session_pw');
     if (isCloudEnabled && supabase) supabase.auth.signOut().catch(() => {});
   }

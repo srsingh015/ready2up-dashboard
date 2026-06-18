@@ -13,6 +13,7 @@ import ThemeToggle from './ui/ThemeToggle.jsx';
 export default function PasswordGate({ onSubmit, error, busy, theme, toggleTheme }) {
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
+  const [remember, setRemember] = useState(true);
   const inputRef = useRef(null);
   const [shake, setShake] = useState(0);
   const isBlossom = theme === 'blossom';
@@ -27,7 +28,7 @@ export default function PasswordGate({ onSubmit, error, busy, theme, toggleTheme
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!busy) onSubmit(password);
+    if (!busy) onSubmit(password, remember);
   }
 
   return (
@@ -116,6 +117,27 @@ export default function PasswordGate({ onSubmit, error, busy, theme, toggleTheme
                 {error}
               </motion.div>
             )}
+
+            {/* Remember me — stay logged in on this device */}
+            <label className="flex items-center gap-2.5 cursor-pointer select-none group">
+              <button
+                type="button"
+                onClick={() => setRemember((r) => !r)}
+                className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all shrink-0 ${
+                  remember
+                    ? 'bg-amber-500/80 border-amber-500'
+                    : 'border-white/20 group-hover:border-white/40'
+                }`}
+                style={remember && isBlossom ? { background: '#ec4899', borderColor: '#ec4899' } : undefined}
+                aria-pressed={remember}
+                aria-label="Remember me on this device"
+              >
+                {remember && <ShieldCheck className="w-3.5 h-3.5 text-white" strokeWidth={3} />}
+              </button>
+              <span className="text-xs sm:text-sm text-slate-300" onClick={() => setRemember((r) => !r)}>
+                Keep me signed in on this device
+              </span>
+            </label>
 
             <button
               type="submit"
