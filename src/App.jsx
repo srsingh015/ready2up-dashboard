@@ -9,6 +9,7 @@ import CherryPetals from './components/ui/CherryPetals.jsx';
 import { useTheme } from './hooks/useTheme.js';
 import { supabase, isCloudEnabled } from './lib/supabase.js';
 import { setAuthState } from './lib/cloudSync.js';
+import { startUpdateWatcher } from './lib/version.js';
 
 const SUPABASE_LOGIN_EMAIL = import.meta.env.VITE_SUPABASE_LOGIN_EMAIL || '';
 
@@ -19,6 +20,11 @@ export default function App() {
   const [busy, setBusy] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const { theme, toggleTheme } = useTheme();
+
+  // Auto-refresh if a newer version is deployed (kills stale-cache problems).
+  useEffect(() => {
+    startUpdateWatcher();
+  }, []);
 
   // Restore an existing Supabase session on load (so sync works after refresh).
   useEffect(() => {

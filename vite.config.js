@@ -1,6 +1,26 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { viteSingleFile } from 'vite-plugin-singlefile';
+import { writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+// A unique id for THIS build. The running app compares this against the
+// server's version.json and auto-refreshes if it's behind — so nobody ever
+// gets stuck on an old cached design.
+const BUILD_ID = Date.now().toString();
+
+// Writes version.json into the build output so the live app can detect updates.
+function emitVersion() {
+  return {
+    name: 'emit-version',
+    writeBundle(options) {
+      const dir = options.dir || 'dist';
+      try {
+        writeFileSync(join(dir, 'version.json'), JSON.stringify({ build: BUILD_ID }));
+      } catch {}
+    },
+  };
+}
 
 // Block any attempt to fetch raw plaintext content / config files via the dev
 // server. Only the encrypted __payload.js, runtime code, and assets are allowed.
@@ -30,7 +50,10 @@ function blockSensitivePaths() {
 // Build everything into a single self-contained HTML file. All assets inline.
 // The plan content has been pre-encrypted; only the ciphertext is bundled.
 export default defineConfig({
-  plugins: [react(), blockSensitivePaths(), viteSingleFile()],
+  plugins: [react(), blockSensitivePaths(), viteSingleFile(), emitVersion()],
+  define: {
+    __BUILD_ID__: JSON.stringify(BUILD_ID),
+  },
   build: {
     target: 'es2020',
     cssCodeSplit: false,
