@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import {
   LayoutDashboard, Compass, Coins, Map, CalendarDays, Repeat, Sun,
   Megaphone, Tag as TagIcon, MessageSquareText, ShieldCheck, LineChart,
-  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake, User
+  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake, User, TrendingUp
 } from 'lucide-react';
 
 import Overview from './sections/Overview.jsx';
@@ -20,6 +20,7 @@ import Properties from './sections/Properties.jsx';
 import Principles from './sections/Principles.jsx';
 import BrandPlaybook from './sections/BrandPlaybook.jsx';
 import Trackers from './sections/Trackers.jsx';
+import PassiveIncome from './sections/PassiveIncome.jsx';
 import Partnerships from './sections/Partnerships.jsx';
 import ForKaira from './sections/ForKaira.jsx';
 import ForMe from './sections/ForMe.jsx';
@@ -43,6 +44,7 @@ const NAV = [
   { id: 'brand', label: 'Brand Playbook', icon: Sparkles, group: 'execution' },
   { id: 'principles', label: 'Operating Principles', icon: ShieldCheck, group: 'execution' },
   { id: 'trackers', label: 'Trackers', icon: LineChart, group: 'tools' },
+  { id: 'passive', label: 'Passive Income', icon: TrendingUp, group: 'build' },
   { id: 'partnerships', label: 'Partnership Companies', icon: Building2, group: 'portfolio' },
   { id: 'us', label: 'Us 💞', icon: HeartHandshake, group: 'kaira' },
   { id: 'kaira', label: 'For Kaira 🌸', icon: Heart, group: 'kaira' },
@@ -54,6 +56,7 @@ const GROUP_LABELS = {
   plan: 'The Plan',
   execution: 'Execution',
   tools: 'Tools',
+  build: 'Build & Earn',
   portfolio: 'Partnerships',
   kaira: 'Together',
 };
@@ -152,6 +155,7 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
       case 'brand': return <BrandPlaybook {...props} />;
       case 'principles': return <Principles {...props} />;
       case 'trackers': return <Trackers {...props} />;
+      case 'passive': return <PassiveIncome {...props} />;
       case 'partnerships': return <Partnerships {...props} />;
       case 'kaira': return <ForKaira {...props} />;
       case 'us': return <Us {...props} />;
