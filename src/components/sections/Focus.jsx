@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import * as Icons from 'lucide-react';
 import {
   Play, Pause, RotateCcw, Brain, Coffee, Target, Plus, Trash2, Check, Flame, Volume2, VolumeX, Clock,
+  Maximize2, Minimize2,
 } from 'lucide-react';
 import { PageHeader, Card, Pill } from '../ui/Section.jsx';
 import { useCloudState } from '../../lib/cloudSync.js';
@@ -14,9 +15,9 @@ const MODES = {
 };
 
 const COLOR = {
-  amber: { ring: '#f59e0b', text: 'text-amber-300', soft: 'bg-amber-500/10 border-amber-500/25 text-amber-200', bar: 'bg-amber-400' },
-  emerald: { ring: '#10b981', text: 'text-emerald-300', soft: 'bg-emerald-500/10 border-emerald-500/25 text-emerald-200', bar: 'bg-emerald-400' },
-  sky: { ring: '#0ea5e9', text: 'text-sky-300', soft: 'bg-sky-500/10 border-sky-500/25 text-sky-200', bar: 'bg-sky-400' },
+  amber: { ring: '#f59e0b', water: 'rgba(245,158,11,0.85)', text: 'text-amber-300', soft: 'bg-amber-500/10 border-amber-500/25 text-amber-200', bar: 'bg-amber-400' },
+  emerald: { ring: '#10b981', water: 'rgba(16,185,129,0.82)', text: 'text-emerald-300', soft: 'bg-emerald-500/10 border-emerald-500/25 text-emerald-200', bar: 'bg-emerald-400' },
+  sky: { ring: '#0ea5e9', water: 'rgba(14,165,233,0.82)', text: 'text-sky-300', soft: 'bg-sky-500/10 border-sky-500/25 text-sky-200', bar: 'bg-sky-400' },
 };
 
 const todayKey = () => new Date().toISOString().slice(0, 10);
@@ -53,6 +54,13 @@ function fmtMins(m) {
   if (!m) return '0m';
   return m >= 60 ? `${Math.floor(m / 60)}h ${m % 60}m` : `${m}m`;
 }
+// Build a tiling water-wave as an SVG background, coloured per mode.
+function waveDataUrl(color) {
+  const svg =
+    `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='15' viewBox='0 0 100 15' preserveAspectRatio='none'>` +
+    `<path d='M0 8 Q 25 0 50 8 T 100 8 V 15 H 0 Z' fill='${color}'/></svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+}
 
 export default function Focus({ data }) {
   const dailyRoutine = data?.dailyRoutine;
@@ -67,10 +75,10 @@ export default function Focus({ data }) {
   // ---- Timer (device-local, survives navigation + refresh) ----
   const [timer, setTimer] = useState(loadTimer);
   const [, setTick] = useState(0);
+  const [fullscreen, setFullscreen] = useState(false);
 
   useEffect(() => { saveTimer(timer); }, [timer]);
 
-  // Re-render every 250ms while running, so the countdown stays live.
   useEffect(() => {
     if (!timer.running) return;
     const id = setInterval(() => setTick((n) => n + 1), 250);
@@ -102,6 +110,15 @@ export default function Focus({ data }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [secondsLeft, timer.running]);
 
+  // Exit fullscreen on Escape.
+  useEffect(() => {
+    if (!fullscreen) return;
+    const onKey = (e) => { if (e.key === 'Escape') exitFull(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fullscreen]);
+
   function toggleRun() {
     setTimer((t) => {
       const rem = remainingOf(t);
@@ -113,7 +130,7 @@ export default function Focus({ data }) {
     });
   }
 
-  // Switching modes PRESERVES each mode's remaining time (this fixes the reset bug).
+  // Switching modes PRESERVES each mode's remaining time (fixes the reset bug).
   function switchMode(m) {
     setTimer((t) => {
       const rem = remainingOf(t);
@@ -130,9 +147,18 @@ export default function Focus({ data }) {
     }));
   }
 
+  function enterFull() {
+    setFullscreen(true);
+    try { document.documentElement.requestFullscreen?.(); } catch {}
+  }
+  function exitFull() {
+    setFullscreen(false);
+    try { if (document.fullscreenElement) document.exitFullscreen?.(); } catch {}
+  }
+
   const mode = timer.mode;
   const total = MODES[mode].minutes * 60;
-  const progress = total > 0 ? 1 - secondsLeft / total : 0;
+  const level = total > 0 ? 1 - secondsLeft / total : 0; // 0 = empty, 1 = full
   const mm = String(Math.floor(secondsLeft / 60)).padStart(2, '0');
   const ss = String(secondsLeft % 60).padStart(2, '0');
   const c = COLOR[MODES[mode].color];
@@ -178,6 +204,34 @@ export default function Focus({ data }) {
   }, [dailyRoutine]);
   const BlockIcon = currentBlock ? (Icons[currentBlock.icon] || Icons.Sun) : Icons.Sun;
 
+  const controls = (
+    <div className="flex items-center gap-3">
+      <button
+        onClick={reset}
+        className="p-3 rounded-xl border border-white/[0.08] text-slate-300 hover:text-white hover:bg-white/[0.04] transition-colors active:scale-95"
+        aria-label="Reset timer"
+      >
+        <RotateCcw className="w-5 h-5" />
+      </button>
+      <button
+        onClick={toggleRun}
+        className={`inline-flex items-center gap-2 px-8 sm:px-10 py-3.5 rounded-2xl font-bold text-ink-950 shadow-lg transition-transform active:scale-95 ${
+          timer.running ? 'bg-slate-200 hover:bg-white' : 'bg-gradient-to-br from-amber-400 to-amber-600 hover:from-amber-300'
+        }`}
+      >
+        {timer.running ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+        {timer.running ? 'Pause' : 'Start'}
+      </button>
+      <button
+        onClick={() => setSoundOn((s) => !s)}
+        className="p-3 rounded-xl border border-white/[0.08] text-slate-300 hover:text-white hover:bg-white/[0.04] transition-colors active:scale-95"
+        aria-label={soundOn ? 'Mute chime' : 'Unmute chime'}
+      >
+        {soundOn ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+      </button>
+    </div>
+  );
+
   return (
     <div className="space-y-6 sm:space-y-8">
       <PageHeader
@@ -187,9 +241,8 @@ export default function Focus({ data }) {
         accent="amber"
       />
 
-      {/* TIMER + TODAY — two columns on desktop, stacked on phone */}
+      {/* TIMER + TODAY */}
       <div className="grid lg:grid-cols-5 gap-5">
-        {/* TIMER */}
         <Card className="!p-0 overflow-hidden lg:col-span-3">
           {/* Mode tabs */}
           <div className="flex border-b border-white/[0.06]">
@@ -215,57 +268,27 @@ export default function Focus({ data }) {
             })}
           </div>
 
-          <div className="p-6 sm:p-8 flex flex-col items-center">
-            {/* Circular progress — scales with screen */}
-            <div className="relative w-52 h-52 sm:w-60 sm:h-60">
-              <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
-                <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="7" />
-                <circle
-                  cx="60" cy="60" r="54" fill="none"
-                  stroke={c.ring}
-                  strokeWidth="7"
-                  strokeLinecap="round"
-                  strokeDasharray={2 * Math.PI * 54}
-                  strokeDashoffset={2 * Math.PI * 54 * (1 - progress)}
-                  style={{ transition: 'stroke-dashoffset 0.4s linear' }}
-                />
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <div className="font-display text-5xl sm:text-6xl font-extrabold tabular-nums tracking-tight">
-                  {mm}:{ss}
-                </div>
-                <div className={`text-[11px] font-bold uppercase tracking-widest mt-2 ${c.text}`}>
-                  {timer.running ? MODES[mode].label : `${MODES[mode].label} · paused`}
-                </div>
-              </div>
-            </div>
+          <div className="p-6 sm:p-8 flex flex-col items-center relative">
+            {/* Fullscreen button */}
+            <button
+              onClick={enterFull}
+              className="absolute top-4 right-4 p-2 rounded-lg border border-white/[0.08] text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors"
+              aria-label="Open fullscreen focus"
+              title="Fullscreen"
+            >
+              <Maximize2 className="w-4 h-4" />
+            </button>
 
-            {/* Controls */}
-            <div className="flex items-center gap-3 mt-7">
-              <button
-                onClick={reset}
-                className="p-3 rounded-xl border border-white/[0.08] text-slate-300 hover:text-white hover:bg-white/[0.04] transition-colors active:scale-95"
-                aria-label="Reset timer"
-              >
-                <RotateCcw className="w-5 h-5" />
-              </button>
-              <button
-                onClick={toggleRun}
-                className={`inline-flex items-center gap-2 px-8 sm:px-10 py-3.5 rounded-2xl font-bold text-ink-950 shadow-lg transition-transform active:scale-95 ${
-                  timer.running ? 'bg-slate-200 hover:bg-white' : 'bg-gradient-to-br from-amber-400 to-amber-600 hover:from-amber-300'
-                }`}
-              >
-                {timer.running ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-                {timer.running ? 'Pause' : 'Start'}
-              </button>
-              <button
-                onClick={() => setSoundOn((s) => !s)}
-                className="p-3 rounded-xl border border-white/[0.08] text-slate-300 hover:text-white hover:bg-white/[0.04] transition-colors active:scale-95"
-                aria-label={soundOn ? 'Mute chime' : 'Unmute chime'}
-              >
-                {soundOn ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-              </button>
-            </div>
+            <WaveTimer level={level} mode={mode} sizeClass="w-52 h-52 sm:w-60 sm:h-60">
+              <div className="font-display text-5xl sm:text-6xl font-extrabold tabular-nums tracking-tight" style={{ textShadow: '0 2px 16px rgba(0,0,0,0.18)' }}>
+                {mm}:{ss}
+              </div>
+              <div className={`text-[11px] font-bold uppercase tracking-widest mt-2 ${c.text}`}>
+                {timer.running ? MODES[mode].label : `${MODES[mode].label} · paused`}
+              </div>
+            </WaveTimer>
+
+            <div className="mt-7">{controls}</div>
           </div>
         </Card>
 
@@ -402,6 +425,57 @@ export default function Focus({ data }) {
           </ul>
         </Card>
       )}
+
+      {/* FULLSCREEN OVERLAY */}
+      {fullscreen && (
+        <div className="fixed inset-0 z-[60] bg-ink-950 flex flex-col items-center justify-center p-6 text-center">
+          <button
+            onClick={exitFull}
+            className="absolute top-5 right-5 p-2.5 rounded-xl border border-white/[0.1] text-slate-300 hover:text-white hover:bg-white/[0.05] transition-colors"
+            aria-label="Exit fullscreen"
+            title="Exit (Esc)"
+          >
+            <Minimize2 className="w-5 h-5" />
+          </button>
+
+          {focusNow && (
+            <div className="mb-8 max-w-md">
+              <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1.5">Focusing on</div>
+              <div className="text-lg text-slate-200">{focusNow}</div>
+            </div>
+          )}
+
+          <WaveTimer level={level} mode={mode} sizeClass="w-72 h-72 sm:w-80 sm:h-80">
+            <div className="font-display text-6xl sm:text-7xl font-extrabold tabular-nums tracking-tight" style={{ textShadow: '0 2px 18px rgba(0,0,0,0.22)' }}>
+              {mm}:{ss}
+            </div>
+            <div className={`text-xs font-bold uppercase tracking-widest mt-2 ${c.text}`}>
+              {timer.running ? MODES[mode].label : `${MODES[mode].label} · paused`}
+            </div>
+          </WaveTimer>
+
+          <div className="mt-10">{controls}</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function WaveTimer({ level, mode, sizeClass, children }) {
+  const c = COLOR[MODES[mode].color];
+  const wave = useMemo(() => waveDataUrl(c.ring), [c.ring]);
+  return (
+    <div className={`relative ${sizeClass} rounded-full overflow-hidden border border-white/[0.08] bg-white/[0.02]`}>
+      <div
+        className="focus-water"
+        style={{ height: `${Math.min(100, Math.max(0, level * 100))}%`, background: c.water, transition: 'height 0.6s linear' }}
+      >
+        <div className="focus-wave" style={{ backgroundImage: wave, animationDuration: '6.5s', opacity: 0.45 }} />
+        <div className="focus-wave" style={{ backgroundImage: wave, animationDuration: '3.8s', opacity: 0.9, animationDirection: 'reverse' }} />
+      </div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        {children}
+      </div>
     </div>
   );
 }

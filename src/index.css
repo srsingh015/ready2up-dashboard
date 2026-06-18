@@ -532,3 +532,35 @@ aside { -webkit-overflow-scrolling: touch; }
   /* Disable transform-on-hover lifts on cards (which can intercept the tap) */
   .card-hover:hover { transform: none !important; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🌊 FOCUS MODE — water-fill timer
+   The water level rises from bottom (empty) to top (full) as the
+   focus block completes. Two layered waves give a real-water feel.
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes focusWaveMove {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.focus-water {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.focus-wave {
+  position: absolute;
+  top: -13px;
+  left: 0;
+  width: 200%;
+  height: 15px;
+  background-repeat: repeat-x;
+  background-size: 50% 100%;
+  animation: focusWaveMove linear infinite;
+  will-change: transform;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .focus-wave { animation: none; }
+}
