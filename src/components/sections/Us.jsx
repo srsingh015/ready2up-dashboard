@@ -46,12 +46,13 @@ const WEIGHT = {
 };
 
 const RITUALS = [
-  { id: 'date', icon: '🍽️', label: 'One proper date — no phones' },
-  { id: 'trip', icon: '🗺️', label: 'Plan or dream one trip together' },
-  { id: 'cook', icon: '👨‍🍳', label: 'Cook a meal together' },
-  { id: 'walk', icon: '🌳', label: 'A long walk together' },
-  { id: 'review', icon: '🪞', label: 'Sunday: 15-min life check-in' },
-  { id: 'gratitude', icon: '🤍', label: 'Tell each other one good thing' },
+  { id: 'call', icon: '📞', label: 'One real video call — fully present, no multitasking' },
+  { id: 'morningnight', icon: '🌅', label: 'Good morning & good night message, every day' },
+  { id: 'watch', icon: '🎬', label: 'Watch a movie/show at the same time, together' },
+  { id: 'voice', icon: '🎙️', label: 'Send a voice note — warmer than texts' },
+  { id: 'plan', icon: '🗓️', label: 'Talk about / plan the next time we meet' },
+  { id: 'surprise', icon: '🎁', label: 'One small surprise — order something, send a photo' },
+  { id: 'gratitude', icon: '🤍', label: 'Tell each other one good thing today' },
 ];
 
 const COLORS = {
@@ -91,6 +92,7 @@ export default function Us() {
   const [weight, setWeight] = useCloudState('us_weight', { saurabh: [], kaira: [] });
   const [wins, setWins] = useCloudState('us_wins', []);
   const [rituals, setRituals] = useCloudState('us_rituals', {});
+  const [nextMeet, setNextMeet] = useCloudState('us_next_meet', '');
   const [person, setPerson] = useState('saurabh');
   const [winText, setWinText] = useState('');
   const [winBy, setWinBy] = useState('us');
@@ -98,6 +100,14 @@ export default function Us() {
 
   const p = PEOPLE[person];
   const c = COLORS[p.color];
+
+  // Days until we next see each other — a concrete thing to move toward.
+  const daysToMeet = useMemo(() => {
+    if (!nextMeet) return null;
+    const t = new Date(today + 'T00:00:00');
+    const m = new Date(nextMeet + 'T00:00:00');
+    return Math.round((m - t) / 86400000);
+  }, [nextMeet, today]);
 
   // ── Habits ──
   function toggleHabit(personId, habitId) {
@@ -161,9 +171,52 @@ export default function Us() {
       <PageHeader
         eyebrow="Us 💞"
         title="The life we're building — together, every day."
-        subtitle="Money is only half of it. This is the other half: our health, our habits, and the small daily things that quietly make a great life. No pressure — just us, showing up for each other."
+        subtitle="Right now there's distance between us — you in Maharashtra, me in Rajasthan, both with our families. The whole plan is to close that distance for good. Until then, the habits we keep apart are what build the life we'll share. Calm, consistent, together — even from far."
         accent="rose"
       />
+
+      {/* IDENTITY ANCHOR — the 'why', stated as who we are */}
+      <div className="rounded-2xl p-5 sm:p-6 border border-rose-500/15 bg-gradient-to-br from-rose-500/[0.06] to-amber-500/[0.04]">
+        <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-rose-300/90 mb-2">Who we are</div>
+        <p className="text-base sm:text-lg text-slate-100 leading-relaxed font-medium">
+          We are two people who <span className="text-rose-300 font-bold">show up</span> — even across the distance.
+          Discipline today is love for our future selves. The distance is temporary; the habits we build now are not.
+        </p>
+      </div>
+
+      {/* COUNTDOWN TO MEETING — something concrete to move toward */}
+      <Card className="border-amber-500/15 bg-gradient-to-br from-amber-500/[0.05] to-transparent">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/25 flex items-center justify-center text-3xl shrink-0">
+              ✈️
+            </div>
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-widest text-amber-300/90 mb-1">Next time we see each other</div>
+              {daysToMeet === null ? (
+                <div className="text-sm text-slate-400">Set a date — having one to count down to makes the distance easier.</div>
+              ) : daysToMeet > 0 ? (
+                <div className="font-display text-2xl sm:text-3xl font-extrabold gold-text">
+                  {daysToMeet} {daysToMeet === 1 ? 'day' : 'days'} to go
+                </div>
+              ) : daysToMeet === 0 ? (
+                <div className="font-display text-2xl sm:text-3xl font-extrabold gold-text">Today. 💞</div>
+              ) : (
+                <div className="text-sm text-slate-400">That day has passed — set the next one. 🌸</div>
+              )}
+            </div>
+          </div>
+          <label className="shrink-0">
+            <span className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold block mb-1">Meeting date</span>
+            <input
+              type="date"
+              value={nextMeet}
+              onChange={(e) => setNextMeet(e.target.value)}
+              className="bg-ink-900 border border-white/[0.08] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-500/40"
+            />
+          </label>
+        </div>
+      </Card>
 
       {/* TODAY TOGETHER */}
       <div className="grid sm:grid-cols-2 gap-4">
@@ -189,6 +242,9 @@ export default function Us() {
               <div className="w-full h-2 bg-white/[0.06] rounded-full overflow-hidden">
                 <div className={`h-full ${cc.dot} transition-all duration-500`} style={{ width: `${pct}%` }} />
               </div>
+              {streak > 0 && (
+                <div className="text-[11px] text-slate-500 mt-2">🔗 {streak} days strong — don't break the chain.</div>
+              )}
             </Card>
           );
         })}
@@ -297,11 +353,11 @@ export default function Us() {
         <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-violet-300" />
-            <h3 className="font-display text-lg font-extrabold">This week, together</h3>
+            <h3 className="font-display text-lg font-extrabold">This week, together — across the distance</h3>
           </div>
           <Pill color="violet">{ritualsDone} / {RITUALS.length} done</Pill>
         </div>
-        <p className="text-xs text-slate-500 mb-4">Small rituals that keep us close. Resets every week — no guilt for the ones we skip.</p>
+        <p className="text-xs text-slate-500 mb-4">Small rituals that keep us close even when we're apart. Resets every week — no guilt for the ones we skip.</p>
         <div className="grid sm:grid-cols-2 gap-2">
           {RITUALS.map((r) => {
             const done = !!weekRituals[r.id];
@@ -389,7 +445,7 @@ export default function Us() {
       <div className="rounded-2xl p-6 text-center border border-rose-500/15 bg-rose-500/[0.04]">
         <Heart className="w-6 h-6 text-rose-400 mx-auto mb-3" />
         <p className="text-sm text-slate-300 leading-relaxed max-w-xl mx-auto italic">
-          We don't have to be perfect here. Skip the days we need to, come back when we can. The point isn't a perfect score — it's that we keep showing up for ourselves, and for each other. 🌸
+          The miles between us are just for now. Every habit we keep, every call we make, every small win we log — it's us, quietly closing the distance. We don't have to be perfect. We just have to keep showing up, for ourselves and for each other. 🌸
         </p>
       </div>
     </div>
