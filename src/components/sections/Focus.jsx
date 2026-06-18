@@ -76,6 +76,7 @@ export default function Focus({ data }) {
   const [timer, setTimer] = useState(loadTimer);
   const [, setTick] = useState(0);
   const [fullscreen, setFullscreen] = useState(false);
+  const [flash, setFlash] = useState(null); // brief confirmation after a block ends
 
   useEffect(() => { saveTimer(timer); }, [timer]);
 
@@ -87,7 +88,9 @@ export default function Focus({ data }) {
 
   const secondsLeft = remainingOf(timer);
 
-  // When the running timer reaches zero, finalize (log it, chime, auto-switch).
+  // When the running timer reaches zero: stop, chime, log a focus session, and
+  // RESET that same mode to full. We do NOT auto-jump to another mode — the user
+  // chooses what's next by tapping a tab. (Auto-switching was confusing.)
   useEffect(() => {
     if (!timer.running || secondsLeft > 0) return;
     const finished = timer.mode;
@@ -97,14 +100,14 @@ export default function Focus({ data }) {
         const d = prev[today] || { sessions: 0, minutes: 0 };
         return { ...prev, [today]: { sessions: d.sessions + 1, minutes: d.minutes + MODES.focus.minutes } };
       });
+      setFlash('Focus session saved 🎉  Take a break when you’re ready.');
+    } else {
+      setFlash('Break done — tap Focus when you’re ready.');
     }
-    const doneSoFar = (log[today]?.sessions || 0) + (finished === 'focus' ? 1 : 0);
-    const next = finished === 'focus' ? (doneSoFar % 4 === 0 ? 'long' : 'short') : 'focus';
     setTimer((t) => ({
       ...t,
       running: false,
       endAt: null,
-      mode: next,
       remaining: { ...t.remaining, [finished]: MODES[finished].minutes * 60 },
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,6 +123,7 @@ export default function Focus({ data }) {
   }, [fullscreen]);
 
   function toggleRun() {
+    setFlash(null);
     setTimer((t) => {
       const rem = remainingOf(t);
       if (t.running) {
@@ -132,6 +136,7 @@ export default function Focus({ data }) {
 
   // Switching modes PRESERVES each mode's remaining time (fixes the reset bug).
   function switchMode(m) {
+    setFlash(null);
     setTimer((t) => {
       const rem = remainingOf(t);
       return { ...t, mode: m, running: false, endAt: null, remaining: { ...t.remaining, [t.mode]: rem } };
@@ -139,6 +144,7 @@ export default function Focus({ data }) {
   }
 
   function reset() {
+    setFlash(null);
     setTimer((t) => ({
       ...t,
       running: false,
@@ -289,6 +295,11 @@ export default function Focus({ data }) {
             </WaveTimer>
 
             <div className="mt-7">{controls}</div>
+            {flash && (
+              <div className="mt-4 text-xs sm:text-sm text-center text-amber-200 bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-2 max-w-xs">
+                {flash}
+              </div>
+            )}
           </div>
         </Card>
 
@@ -455,6 +466,11 @@ export default function Focus({ data }) {
           </WaveTimer>
 
           <div className="mt-10">{controls}</div>
+          {flash && (
+            <div className="mt-5 text-sm text-center text-amber-200 bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-2.5 max-w-sm">
+              {flash}
+            </div>
+          )}
         </div>
       )}
     </div>
