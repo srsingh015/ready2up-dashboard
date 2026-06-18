@@ -130,7 +130,7 @@ export default function ForKaira({ data }) {
         </div>
         <p className="text-sm text-slate-500 mb-5">{kaira.dailyRhythm.subtitle}</p>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
           <RhythmBox block={kaira.dailyRhythm.morning} icon={Sun} color="amber" />
           <RhythmBox block={kaira.dailyRhythm.midday} icon={Coffee} color="emerald" />
           <RhythmBox block={kaira.dailyRhythm.evening} icon={Moon} color="violet" />
@@ -278,13 +278,13 @@ export default function ForKaira({ data }) {
         )}
 
         <div className="grid lg:grid-cols-2 gap-4 items-start">
-          {kaira.ourVision.categories.map((cat, idx) => (
+          {kaira.ourVision.categories.map((cat) => (
             <VisionCategory
               key={cat.id}
               cat={cat}
               visited={visited}
               onToggle={toggleVisited}
-              defaultOpen={idx === 0}
+              defaultOpen={false}
             />
           ))}
         </div>
@@ -336,26 +336,48 @@ export default function ForKaira({ data }) {
 
 function RhythmBox({ block, icon: Icon, color }) {
   const colorMap = {
-    amber: 'bg-amber-500/10 text-amber-300 border-amber-500/20',
-    emerald: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
-    violet: 'bg-violet-500/10 text-violet-300 border-violet-500/20',
-    rose: 'bg-rose-500/10 text-rose-300 border-rose-500/20',
+    amber: { chip: 'bg-amber-500/15 text-amber-300', head: 'bg-amber-500/[0.05] border-amber-500/15', dur: 'text-amber-300 bg-amber-500/10 border-amber-500/20', dot: 'bg-amber-400/70' },
+    emerald: { chip: 'bg-emerald-500/15 text-emerald-300', head: 'bg-emerald-500/[0.05] border-emerald-500/15', dur: 'text-emerald-300 bg-emerald-500/10 border-emerald-500/20', dot: 'bg-emerald-400/70' },
+    violet: { chip: 'bg-violet-500/15 text-violet-300', head: 'bg-violet-500/[0.05] border-violet-500/15', dur: 'text-violet-300 bg-violet-500/10 border-violet-500/20', dot: 'bg-violet-400/70' },
+    rose: { chip: 'bg-rose-500/15 text-rose-300', head: 'bg-rose-500/[0.05] border-rose-500/15', dur: 'text-rose-300 bg-rose-500/10 border-rose-500/20', dot: 'bg-rose-400/70' },
   };
+  const c = colorMap[color] || colorMap.amber;
+
+  // Split "🌅 Morning (5 minutes)" → title "Morning" + duration "5 minutes".
+  const m = block.title.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+  const rawTitle = (m ? m[1] : block.title).trim();
+  const duration = m ? m[2].trim() : null;
+  const title = rawTitle.replace(/^[^A-Za-z0-9]+/, '').trim(); // drop the leading emoji
+
   return (
-    <Card>
-      <div className={`w-10 h-10 rounded-xl flex items-center justify-center border mb-3 ${colorMap[color]}`}>
-        <Icon className="w-5 h-5" />
+    <div className="rounded-2xl border border-white/[0.06] bg-ink-800/60 overflow-hidden flex flex-col h-full">
+      {/* Header */}
+      <div className={`flex items-center gap-3 p-4 border-b ${c.head}`}>
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${c.chip}`}>
+          <Icon className="w-5 h-5" />
+        </div>
+        <div className="min-w-0">
+          <h3 className="font-bold text-sm leading-tight truncate">{title}</h3>
+          {duration && (
+            <span className={`mt-1 inline-block text-[10px] font-bold uppercase tracking-wider border rounded-full px-2 py-0.5 ${c.dur}`}>
+              {duration}
+            </span>
+          )}
+        </div>
       </div>
-      <h3 className="font-bold text-sm mb-3">{block.title}</h3>
-      <ul className="space-y-2">
+
+      {/* Items */}
+      <ul className="flex-1 divide-y divide-white/[0.05]">
         {block.items.map((it, i) => (
-          <li key={i} className="flex gap-2 text-sm text-slate-300 leading-relaxed">
-            <span className="shrink-0">{it.icon}</span>
-            <span>{it.label}</span>
+          <li key={i} className="flex items-start gap-3 px-4 py-3">
+            <span className="shrink-0 w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-sm leading-none">
+              {it.icon}
+            </span>
+            <span className="text-[13px] text-slate-300 leading-relaxed pt-0.5">{it.label}</span>
           </li>
         ))}
       </ul>
-    </Card>
+    </div>
   );
 }
 
