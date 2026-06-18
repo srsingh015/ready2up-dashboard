@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, BookOpen, Sparkles, Sun, Moon, Coffee, Wind, ChevronDown, Check } from 'lucide-react';
 import { Card, Pill } from '../ui/Section.jsx';
+import DailyTodo from '../ui/DailyTodo.jsx';
 import { useLocalStorage } from '../../hooks/useLocalStorage.js';
 import { useCloudState } from '../../lib/cloudSync.js';
 
@@ -69,6 +70,9 @@ export default function ForKaira({ data }) {
           </div>
         </div>
       </motion.section>
+
+      {/* DAILY TO-DO */}
+      <DailyTodo cloudKey="kaira_todos" accent="rose" title="My to-do list" />
 
       {/* DAILY CHECK-IN — interactive */}
       <section>

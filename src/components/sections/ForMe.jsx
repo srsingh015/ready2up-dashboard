@@ -4,6 +4,7 @@ import {
   BookOpen, Brain, Scale, Sparkles,
 } from 'lucide-react';
 import { PageHeader, Card, Pill } from '../ui/Section.jsx';
+import DailyTodo from '../ui/DailyTodo.jsx';
 import { useCloudState } from '../../lib/cloudSync.js';
 
 const todayKey = () => new Date().toISOString().slice(0, 10);
@@ -174,6 +175,9 @@ export default function ForMe() {
         subtitle="This is my space. Health, discipline, focus, and growth — the engine behind everything else. Strong body, calm mind, steady habits. One day at a time."
         accent="amber"
       />
+
+      {/* DAILY TO-DO */}
+      <DailyTodo cloudKey="me_todos" accent="amber" title="My to-do list" />
 
       {/* IDENTITY ANCHOR */}
       <div className="rounded-2xl p-5 sm:p-6 border border-amber-500/15 bg-gradient-to-br from-amber-500/[0.06] to-transparent">
