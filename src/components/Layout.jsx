@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import {
   LayoutDashboard, Compass, Coins, Map, CalendarDays, Repeat, Sun,
   Megaphone, Tag as TagIcon, MessageSquareText, ShieldCheck, LineChart,
-  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake
+  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake, User
 } from 'lucide-react';
 
 import Overview from './sections/Overview.jsx';
@@ -22,6 +22,7 @@ import BrandPlaybook from './sections/BrandPlaybook.jsx';
 import Trackers from './sections/Trackers.jsx';
 import Partnerships from './sections/Partnerships.jsx';
 import ForKaira from './sections/ForKaira.jsx';
+import ForMe from './sections/ForMe.jsx';
 import Us from './sections/Us.jsx';
 import ThemeToggle from './ui/ThemeToggle.jsx';
 import { useLocalStorage } from '../hooks/useLocalStorage.js';
@@ -44,6 +45,7 @@ const NAV = [
   { id: 'trackers', label: 'Trackers', icon: LineChart, group: 'tools' },
   { id: 'partnerships', label: 'Partnership Companies', icon: Building2, group: 'portfolio' },
   { id: 'us', label: 'Us 💞', icon: HeartHandshake, group: 'kaira' },
+  { id: 'me', label: 'For Me 🦅', icon: User, group: 'kaira' },
   { id: 'kaira', label: 'For Kaira 🌸', icon: Heart, group: 'kaira' },
 ];
 
@@ -110,6 +112,7 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
       case 'partnerships': return <Partnerships {...props} />;
       case 'kaira': return <ForKaira {...props} />;
       case 'us': return <Us {...props} />;
+      case 'me': return <ForMe {...props} />;
       default: return <Overview {...props} onNavigate={setActive} />;
     }
   };
