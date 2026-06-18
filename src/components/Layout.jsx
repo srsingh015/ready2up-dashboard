@@ -95,25 +95,24 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
     return { pinnedItems, unpinnedGroups: m };
   }, [pinned]);
 
-  // The special "Together" block — Us / For Kaira / For Me, with one pin toggle.
+  // The "Together" block — subtly special (soft rose tint), with one pin toggle.
   const renderTogether = () => (
-    <div className="mb-3 rounded-2xl p-2.5 relative overflow-hidden bg-gradient-to-br from-rose-500/[0.22] via-pink-500/[0.12] to-amber-500/[0.12] border border-rose-400/30 shadow-[0_12px_36px_-14px_rgba(244,63,94,0.55)]">
-      <div className="pointer-events-none absolute -top-8 -right-8 w-24 h-24 rounded-full bg-rose-500/20 blur-2xl" />
-      <div className="relative flex items-center justify-between px-1.5 pt-0.5 pb-2">
-        <div className="flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.2em]">
-          <Heart className="w-3.5 h-3.5 fill-rose-400 text-rose-400" />
-          <span className="bg-gradient-to-r from-rose-200 via-pink-200 to-amber-200 bg-clip-text text-transparent">Together</span>
+    <div className="mb-3 rounded-2xl p-2 bg-rose-500/[0.05] border border-rose-500/15">
+      <div className="flex items-center justify-between px-2 pt-1 pb-1.5">
+        <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-rose-300/90">
+          <Heart className="w-3 h-3 fill-current" />
+          <span>Together</span>
         </div>
         <button
           onClick={() => setTogetherTop((v) => !v)}
           title={togetherTop ? 'Unpin Together from top' : 'Pin Together to top'}
           aria-label={togetherTop ? 'Unpin Together from top' : 'Pin Together to top'}
-          className={`p-1.5 rounded-lg transition-colors ${togetherTop ? 'text-rose-300 hover:bg-white/10' : 'text-slate-400 hover:text-rose-300 hover:bg-white/10'}`}
+          className={`p-1 rounded-md transition-colors ${togetherTop ? 'text-rose-300/90 hover:bg-white/[0.06]' : 'text-slate-500 hover:text-rose-300 hover:bg-white/[0.06]'}`}
         >
           {togetherTop ? <Pin className="w-3.5 h-3.5 fill-current" /> : <PinOff className="w-3.5 h-3.5" />}
         </button>
       </div>
-      <div className="relative space-y-1">
+      <div className="space-y-0.5">
         {togetherItems.map((item) => {
           const Icon = item.icon;
           const isActive = active === item.id;
@@ -121,13 +120,13 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
             <button
               key={item.id}
               onClick={() => { setActive(item.id); setMobileOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all border ${
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all border ${
                 isActive
-                  ? 'bg-rose-500/25 border-rose-300/45 text-white shadow-[0_0_22px_-8px_rgba(244,63,94,0.9)]'
-                  : 'border-transparent text-slate-100 hover:bg-white/[0.08] hover:border-white/[0.08]'
+                  ? 'bg-rose-500/12 border-rose-400/25 text-rose-50'
+                  : 'border-transparent text-slate-300 hover:text-slate-100 hover:bg-white/[0.04]'
               }`}
             >
-              <Icon className={`w-[18px] h-[18px] shrink-0 ${isActive ? 'text-rose-200' : 'text-rose-300/80'}`} strokeWidth={2} />
+              <Icon className="w-[18px] h-[18px] shrink-0" strokeWidth={2} />
               <span className="truncate">{item.label}</span>
             </button>
           );
