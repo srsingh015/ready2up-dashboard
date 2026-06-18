@@ -169,7 +169,7 @@ export default function ForMe() {
   return (
     <div className="space-y-8 pb-10">
       <PageHeader
-        eyebrow="For Me 🦅"
+        eyebrow="For Me 💕"
         title="Build the man who builds the dream."
         subtitle="This is my space. Health, discipline, focus, and growth — the engine behind everything else. Strong body, calm mind, steady habits. One day at a time."
         accent="amber"
@@ -377,7 +377,7 @@ export default function ForMe() {
       <div className="rounded-2xl p-6 text-center border border-amber-500/15 bg-amber-500/[0.04]">
         <Sparkles className="w-6 h-6 text-amber-300 mx-auto mb-3" />
         <p className="text-sm text-slate-300 leading-relaxed max-w-xl mx-auto italic">
-          Every glass of water, every meal, every workout, every focused hour — it’s me becoming the man who lives the life we’re building. Not someday. Starting today. 🦅
+          Every glass of water, every meal, every workout, every focused hour — it’s me becoming the man who lives the life we’re building. Not someday. Starting today. 💕
         </p>
       </div>
     </div>

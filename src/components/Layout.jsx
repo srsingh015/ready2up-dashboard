@@ -45,7 +45,7 @@ const NAV = [
   { id: 'trackers', label: 'Trackers', icon: LineChart, group: 'tools' },
   { id: 'partnerships', label: 'Partnership Companies', icon: Building2, group: 'portfolio' },
   { id: 'us', label: 'Us 💞', icon: HeartHandshake, group: 'kaira' },
-  { id: 'me', label: 'For Me 🦅', icon: User, group: 'kaira' },
+  { id: 'me', label: 'For Me 💕', icon: User, group: 'kaira' },
   { id: 'kaira', label: 'For Kaira 🌸', icon: Heart, group: 'kaira' },
 ];
 

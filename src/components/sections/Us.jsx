@@ -466,7 +466,7 @@ export default function Us() {
           <div className="inline-flex gap-1 p-1 bg-ink-900 rounded-lg border border-white/[0.06] shrink-0">
             {[
               { id: 'us', label: '💞 Us' },
-              { id: 'saurabh', label: '🦅 Me' },
+              { id: 'saurabh', label: '💕 Me' },
               { id: 'kaira', label: '🌸 Her' },
             ].map((opt) => (
               <button
@@ -497,7 +497,7 @@ export default function Us() {
         ) : (
           <ul className="space-y-2">
             {wins.map((w) => {
-              const tag = w.by === 'saurabh' ? '🦅' : w.by === 'kaira' ? '🌸' : '💞';
+              const tag = w.by === 'saurabh' ? '💕' : w.by === 'kaira' ? '🌸' : '💞';
               return (
                 <li key={w.id} className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.05] group">
                   <span className="text-lg shrink-0">{tag}</span>
