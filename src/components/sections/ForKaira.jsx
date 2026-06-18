@@ -277,13 +277,14 @@ export default function ForKaira({ data }) {
           <p className="text-xs text-amber-300/90 italic mb-6 max-w-2xl">{kaira.ourVision.note}</p>
         )}
 
-        <div className="grid lg:grid-cols-2 gap-4">
-          {kaira.ourVision.categories.map((cat) => (
+        <div className="grid lg:grid-cols-2 gap-4 items-start">
+          {kaira.ourVision.categories.map((cat, idx) => (
             <VisionCategory
               key={cat.id}
               cat={cat}
               visited={visited}
               onToggle={toggleVisited}
+              defaultOpen={idx === 0}
             />
           ))}
         </div>
@@ -395,7 +396,8 @@ function ResourceCard({ title, icon, items, fields }) {
   );
 }
 
-function VisionCategory({ cat, visited = {}, onToggle }) {
+function VisionCategory({ cat, visited = {}, onToggle, defaultOpen = false }) {
+  const [open, setOpen] = useState(defaultOpen);
   const colorMap = {
     sky: { wrap: 'border-sky-500/20', icon: 'bg-sky-500/15 text-sky-300', accent: 'text-sky-300' },
     violet: { wrap: 'border-violet-500/20', icon: 'bg-violet-500/15 text-violet-300', accent: 'text-violet-300' },
@@ -407,8 +409,14 @@ function VisionCategory({ cat, visited = {}, onToggle }) {
   const doneCount = cat.items.filter((it) => visited[it.id]).length;
 
   return (
-    <div className={`relative rounded-2xl p-5 sm:p-6 border ${c.wrap} bg-ink-800/60 overflow-hidden`}>
-      <div className="flex items-start gap-3 mb-3">
+    <div className={`relative rounded-2xl border ${c.wrap} bg-ink-800/60 overflow-hidden`}>
+      {/* Header — tap anywhere here to open / close */}
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="w-full text-left flex items-start gap-3 p-5 sm:p-6 hover:bg-white/[0.02] transition-colors"
+      >
         <div className={`w-12 h-12 rounded-xl ${c.icon} flex items-center justify-center text-2xl shrink-0`}>
           {cat.icon}
         </div>
@@ -416,45 +424,63 @@ function VisionCategory({ cat, visited = {}, onToggle }) {
           <h3 className="font-display text-lg font-extrabold leading-tight">{cat.title}</h3>
           <p className={`text-xs mt-1 font-semibold ${c.accent}`}>{cat.subtitle}</p>
         </div>
-        {onToggle && (
-          <div className={`text-[10px] font-bold uppercase tracking-widest ${c.accent} bg-white/[0.04] border border-white/[0.06] rounded-full px-2.5 py-1 whitespace-nowrap`}>
+        <div className="flex items-center gap-2 shrink-0">
+          <span className={`text-[10px] font-bold uppercase tracking-widest ${c.accent} bg-white/[0.04] border border-white/[0.06] rounded-full px-2.5 py-1 whitespace-nowrap`}>
             {doneCount} / {cat.items.length}
-          </div>
+          </span>
+          <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
+        </div>
+      </button>
+
+      {/* Collapsible body */}
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="overflow-hidden"
+          >
+            <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-0">
+              {cat.intro && (
+                <p className="text-sm text-slate-400 italic mb-4 leading-relaxed">{cat.intro}</p>
+              )}
+              <ul className="space-y-2">
+                {cat.items.map((it) => {
+                  const done = !!visited[it.id];
+                  const isHighlight = it.highlight;
+                  return (
+                    <li key={it.id}>
+                      <button
+                        type="button"
+                        onClick={() => onToggle?.(it.id)}
+                        className={`w-full text-left flex items-start gap-3 p-2.5 rounded-lg border transition-all ${
+                          done
+                            ? 'bg-emerald-500/[0.08] border-emerald-500/25'
+                            : isHighlight
+                              ? 'bg-amber-500/[0.06] border-amber-500/25 hover:border-amber-500/40'
+                              : 'bg-white/[0.03] border-white/[0.04] hover:border-white/[0.10] hover:bg-white/[0.05]'
+                        } active:scale-[0.99]`}
+                      >
+                        <span className="text-lg leading-none mt-0.5 shrink-0">{it.icon}</span>
+                        <span className={`text-sm leading-relaxed flex-1 ${done ? 'text-slate-400 line-through' : 'text-slate-200'}`}>
+                          {it.label}
+                        </span>
+                        <span className={`shrink-0 mt-0.5 w-5 h-5 rounded-full border flex items-center justify-center transition-all ${
+                          done ? 'bg-emerald-500 border-emerald-500' : 'border-white/15'
+                        }`}>
+                          {done && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </motion.div>
         )}
-      </div>
-      {cat.intro && (
-        <p className="text-sm text-slate-400 italic mb-4 leading-relaxed">{cat.intro}</p>
-      )}
-      <ul className="space-y-2">
-        {cat.items.map((it) => {
-          const done = !!visited[it.id];
-          const isHighlight = it.highlight;
-          return (
-            <li key={it.id}>
-              <button
-                onClick={() => onToggle?.(it.id)}
-                className={`w-full text-left flex items-start gap-3 p-2.5 rounded-lg border transition-all ${
-                  done
-                    ? 'bg-emerald-500/[0.08] border-emerald-500/25'
-                    : isHighlight
-                      ? 'bg-amber-500/[0.06] border-amber-500/25 hover:border-amber-500/40'
-                      : 'bg-white/[0.03] border-white/[0.04] hover:border-white/[0.10] hover:bg-white/[0.05]'
-                } active:scale-[0.99]`}
-              >
-                <span className="text-lg leading-none mt-0.5 shrink-0">{it.icon}</span>
-                <span className={`text-sm leading-relaxed flex-1 ${done ? 'text-slate-400 line-through' : 'text-slate-200'}`}>
-                  {it.label}
-                </span>
-                <span className={`shrink-0 mt-0.5 w-5 h-5 rounded-full border flex items-center justify-center transition-all ${
-                  done ? 'bg-emerald-500 border-emerald-500' : 'border-white/15'
-                }`}>
-                  {done && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+      </AnimatePresence>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import {
   LayoutDashboard, Compass, Coins, Map, CalendarDays, Repeat, Sun,
   Megaphone, Tag as TagIcon, MessageSquareText, ShieldCheck, LineChart,
-  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles
+  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer
 } from 'lucide-react';
 
 import Overview from './sections/Overview.jsx';
@@ -11,6 +11,7 @@ import Streams from './sections/Streams.jsx';
 import Roadmap from './sections/Roadmap.jsx';
 import Months from './sections/Months.jsx';
 import Rhythm from './sections/Rhythm.jsx';
+import Focus from './sections/Focus.jsx';
 import Channels from './sections/Channels.jsx';
 import Pricing from './sections/Pricing.jsx';
 import Onboarding from './sections/Onboarding.jsx';
@@ -31,6 +32,7 @@ const NAV = [
   { id: 'roadmap', label: '24-Month Roadmap', icon: Map, group: 'plan' },
   { id: 'months', label: 'Monthly Plans', icon: CalendarDays, group: 'plan' },
   { id: 'rhythm', label: 'Daily / Weekly Rhythm', icon: Repeat, group: 'plan' },
+  { id: 'focus', label: 'Focus Mode', icon: Timer, group: 'plan' },
   { id: 'channels', label: 'Client Channels', icon: Megaphone, group: 'execution' },
   { id: 'pricing', label: 'Pricing & Packages', icon: TagIcon, group: 'execution' },
   { id: 'onboarding', label: 'Client Onboarding', icon: ClipboardList, group: 'execution' },
@@ -94,6 +96,7 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
       case 'roadmap': return <Roadmap {...props} onNavigate={setActive} />;
       case 'months': return <Months {...props} />;
       case 'rhythm': return <Rhythm {...props} />;
+      case 'focus': return <Focus {...props} />;
       case 'channels': return <Channels {...props} />;
       case 'pricing': return <Pricing {...props} />;
       case 'onboarding': return <Onboarding {...props} />;
