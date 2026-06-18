@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid, ReferenceLine } from 'recharts';
 import {
-  HeartHandshake, Check, Flame, Plus, Trash2, Scale, Sparkles, Heart, Trophy, Target,
+  HeartHandshake, Check, Flame, Plus, Trash2, Scale, Sparkles, Heart, Trophy, Target, ChevronDown, Dumbbell,
 } from 'lucide-react';
 import { PageHeader, Card, Pill } from '../ui/Section.jsx';
 import { useCloudState } from '../../lib/cloudSync.js';
@@ -46,14 +46,58 @@ const WEIGHT = {
 };
 
 const RITUALS = [
-  { id: 'call', icon: '📞', label: 'One real video call — fully present, no multitasking' },
+  { id: 'call', icon: '📞', label: 'A proper call — voice is perfect, just be fully present' },
   { id: 'morningnight', icon: '🌅', label: 'Good morning & good night message, every day' },
   { id: 'watch', icon: '🎬', label: 'Watch a movie/show at the same time, together' },
   { id: 'voice', icon: '🎙️', label: 'Send a voice note — warmer than texts' },
-  { id: 'plan', icon: '🗓️', label: 'Talk about / plan the next time we meet' },
+  { id: 'plan', icon: '🗓️', label: 'Talk about our someday — the first time we meet' },
   { id: 'surprise', icon: '🎁', label: 'One small surprise — order something, send a photo' },
   { id: 'gratitude', icon: '🤍', label: 'Tell each other one good thing today' },
 ];
+
+// Simple, beginner-friendly, well-established guidance (not medical advice).
+const PLAN = {
+  saurabh: {
+    goal: 'Gain to a healthy 63–66 kg with real strength — slow and steady wins.',
+    gym: [
+      '3 days/week, full-body beginner strength: squats, push-ups or bench, rows, overhead press, light deadlift.',
+      'Progressive overload — add a little weight or 1 rep each week. That’s the whole secret.',
+      'Rest a day between sessions. Muscle is built during rest, not just in the gym.',
+      'Form first, ego last. A trainer for 1–2 sessions to fix form is worth it.',
+    ],
+    nutrition: [
+      'Eat in a surplus: +300–500 calories/day. 3 meals + 2 snacks, never skip.',
+      'Protein ~90–110g/day: eggs, paneer, dal, milk, curd, chicken, soya.',
+      'Easy calorie adds: banana + peanut butter, full-fat milk, ghee on rice, dry fruits.',
+      'Protein within an hour of waking — it sets up the whole day.',
+    ],
+    supps: [
+      'Whey protein — optional, just a convenient way to hit your protein. Food first; whey fills the gap (~24g/scoop).',
+      'Creatine monohydrate, 5g/day — one of the safest, most-researched supplements for strength & muscle. (You said "carotene" — I think you mean creatine. Carotene is a vitamin-A nutrient from carrots, not a muscle supplement.)',
+      'Drink more water when taking creatine.',
+      'Skip the fancy expensive stuff. Whey + creatine covers ~95% of what a beginner needs.',
+    ],
+    note: 'Do a blood test first (B12, Vitamin D, thyroid/TSH, CBC). Fixing a hidden deficiency can transform your energy on its own.',
+  },
+  kaira: {
+    goal: 'Maintain a healthy weight; build strength, energy, and good posture.',
+    gym: [
+      'Strength 2–3x/week (bodyweight or light weights) — great for tone and posture.',
+      'Add mobility / yoga + a daily walk.',
+      'Consistency over intensity — gentle and regular beats hard and rare.',
+    ],
+    nutrition: [
+      'Balanced, colourful meals with enough protein (~1g per kg of body weight).',
+      'Plenty of water; go easy on ultra-processed snacks.',
+      'Regular meals = steady energy for studies and modeling.',
+    ],
+    supps: [
+      'Usually none needed if eating well. Whey only if protein is hard to hit.',
+      'A doctor can check Vitamin D / iron (common for women) if she ever feels low on energy.',
+    ],
+    note: 'Her focus is feeling strong and energetic — she’s already in a healthy range, so it’s about maintaining, not changing.',
+  },
+};
 
 const COLORS = {
   amber: { text: 'text-amber-300', ring: '#f59e0b', soft: 'bg-amber-500/10 border-amber-500/25', dot: 'bg-amber-400' },
@@ -97,6 +141,7 @@ export default function Us() {
   const [winText, setWinText] = useState('');
   const [winBy, setWinBy] = useState('us');
   const [weightInput, setWeightInput] = useState('');
+  const [planOpen, setPlanOpen] = useState(false);
 
   const p = PEOPLE[person];
   const c = COLORS[p.color];
@@ -184,20 +229,20 @@ export default function Us() {
         </p>
       </div>
 
-      {/* COUNTDOWN TO MEETING — something concrete to move toward */}
+      {/* COUNTDOWN TO MEETING — something gentle to move toward */}
       <Card className="border-amber-500/15 bg-gradient-to-br from-amber-500/[0.05] to-transparent">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/25 flex items-center justify-center text-3xl shrink-0">
-              ✈️
+              💞
             </div>
             <div>
-              <div className="text-[10px] font-bold uppercase tracking-widest text-amber-300/90 mb-1">Next time we see each other</div>
+              <div className="text-[10px] font-bold uppercase tracking-widest text-amber-300/90 mb-1">The day we meet in person</div>
               {daysToMeet === null ? (
-                <div className="text-sm text-slate-400">Set a date — having one to count down to makes the distance easier.</div>
+                <div className="text-sm text-slate-400 max-w-md">No date yet — and that's perfectly okay. When the time feels right, set the day. Something beautiful to work toward together.</div>
               ) : daysToMeet > 0 ? (
                 <div className="font-display text-2xl sm:text-3xl font-extrabold gold-text">
-                  {daysToMeet} {daysToMeet === 1 ? 'day' : 'days'} to go
+                  {daysToMeet} {daysToMeet === 1 ? 'day' : 'days'} to go 💞
                 </div>
               ) : daysToMeet === 0 ? (
                 <div className="font-display text-2xl sm:text-3xl font-extrabold gold-text">Today. 💞</div>
@@ -207,7 +252,7 @@ export default function Us() {
             </div>
           </div>
           <label className="shrink-0">
-            <span className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold block mb-1">Meeting date</span>
+            <span className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold block mb-1">Set the date</span>
             <input
               type="date"
               value={nextMeet}
@@ -346,6 +391,35 @@ export default function Us() {
             </div>
           )}
         </Card>
+
+        {/* FITNESS & NUTRITION PLAN (collapsible) */}
+        <div className="mt-4 rounded-2xl border border-white/[0.06] bg-ink-800/60 overflow-hidden">
+          <button
+            onClick={() => setPlanOpen((o) => !o)}
+            className="w-full flex items-center gap-3 p-5 text-left hover:bg-white/[0.02] transition-colors"
+            aria-expanded={planOpen}
+          >
+            <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border ${c.soft}`}>
+              <Dumbbell className={`w-5 h-5 ${c.text}`} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-display text-lg font-extrabold leading-tight">{p.name}'s fitness & nutrition plan</h3>
+              <p className="text-xs text-slate-400 mt-0.5">{PLAN[person].goal}</p>
+            </div>
+            <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${planOpen ? 'rotate-180' : ''}`} />
+          </button>
+          {planOpen && (
+            <div className="px-5 pb-5 pt-0 space-y-4">
+              <PlanBlock title="🏋️ Training" items={PLAN[person].gym} />
+              <PlanBlock title="🍽️ Nutrition" items={PLAN[person].nutrition} />
+              <PlanBlock title="💊 Supplements" items={PLAN[person].supps} />
+              <div className="rounded-xl bg-amber-500/[0.06] border border-amber-500/15 p-3 text-xs text-slate-300 leading-relaxed">
+                <span className="text-amber-300 font-bold">Note: </span>{PLAN[person].note}
+              </div>
+              <p className="text-[10px] text-slate-500 italic">General guidance, not medical advice. Check with a doctor before supplements, and a trainer for gym form.</p>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* WEEKLY RITUALS */}
@@ -448,6 +522,22 @@ export default function Us() {
           The miles between us are just for now. Every habit we keep, every call we make, every small win we log — it's us, quietly closing the distance. We don't have to be perfect. We just have to keep showing up, for ourselves and for each other. 🌸
         </p>
       </div>
+    </div>
+  );
+}
+
+function PlanBlock({ title, items }) {
+  return (
+    <div>
+      <div className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">{title}</div>
+      <ul className="space-y-1.5">
+        {items.map((it, i) => (
+          <li key={i} className="flex gap-2 text-sm text-slate-300 leading-relaxed">
+            <span className="text-amber-400 mt-1 text-xs">●</span>
+            <span>{it}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
