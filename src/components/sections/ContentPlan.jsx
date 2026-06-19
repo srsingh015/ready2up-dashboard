@@ -132,6 +132,16 @@ const EXISTING = [
   },
 ];
 
+// Affiliate partners → which cluster/article they belong in.
+// Confirm these and paste your real affiliate links (we'll bake them into each post).
+const AFFILIATES = [
+  { name: 'Hostinger', via: 'Affiliate', use: 'Top "beginner hosting" pick — your #1 recommendation' },
+  { name: 'Cloudways', via: 'Affiliate', use: 'Growing / WordPress hosting pick' },
+  { name: 'Bluehost', via: 'Impact', use: 'WordPress hosting comparisons' },
+  { name: 'Namecheap', via: 'Impact', use: 'Domains + budget hosting' },
+  { name: 'Hosting.com', via: 'Impact', use: 'Hosting recommendations' },
+];
+
 export default function ContentPlan() {
   const [status, setStatus] = useCloudState('content_status', {});
   const [openCat, setOpenCat] = useState(null);
@@ -296,6 +306,30 @@ export default function ContentPlan() {
             <li key={i} className="flex gap-2 text-sm text-slate-300 leading-relaxed"><span className="text-violet-400 mt-1 text-xs">●</span><span>{c}</span></li>
           ))}
         </ul>
+      </Card>
+
+      {/* AFFILIATE PARTNERS */}
+      <Card>
+        <div className="flex items-center gap-2 mb-3">
+          <Library className="w-5 h-5 text-amber-300" />
+          <h3 className="font-display text-lg font-extrabold">Affiliate partners — where the money links go</h3>
+        </div>
+        <p className="text-xs text-slate-500 mb-4">Every hosting article should include the right affiliate link naturally (honest recommendation, not spam). Confirm these and add your real links.</p>
+        <ul className="space-y-2">
+          {AFFILIATES.map((a, i) => (
+            <li key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+              <Pill color="amber">{a.via}</Pill>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm text-slate-100 font-semibold">{a.name}</div>
+                <div className="text-[11px] text-slate-500">{a.use}</div>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-3 rounded-xl bg-emerald-500/[0.05] border border-emerald-500/15 p-3 text-xs text-slate-300 leading-relaxed">
+          <span className="text-emerald-300 font-bold">Rule: </span>
+          recommend honestly, disclose the affiliate relationship once on the page, and only link partners that genuinely fit the article. Trust ranks; spam doesn't.
+        </div>
       </Card>
 
       {/* GOAL */}
