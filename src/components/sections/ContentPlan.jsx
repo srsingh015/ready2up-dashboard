@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { FileText, Server, Bot, Target, ListChecks, Wrench, Rocket } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { FileText, Server, Bot, Target, ListChecks, Wrench, Rocket, Library, ChevronDown } from 'lucide-react';
 import { PageHeader, Card, Pill } from '../ui/Section.jsx';
 import { useCloudState } from '../../lib/cloudSync.js';
 
@@ -44,8 +44,97 @@ const FIX_OLD = [
   'Internally link every post in a cluster back to its pillar.',
 ];
 
+// Everything already published on ready2up.com/blog, sorted into clean clusters.
+const EXISTING = [
+  {
+    cat: 'Hosting & Domains', count: 15, action: 'Your money cluster. Keep & improve the best, link them all to the new pillar.',
+    posts: [
+      'Top Hosting Company in 2025: Features & Innovation',
+      'Hostinger: Affordable Web Hosting for Small Businesses',
+      'Top DreamHost Features: Secure & Reliable Hosting',
+      'Boost Your Site with SiteGround’s Speed & Support',
+      'Optimize Your Contabo VPS: Tips & Strategies',
+      'Migrate to Cloudways: Easy Guide & Features',
+      'DigitalOcean: Top Cloud Solution for Startups',
+      'Vultr Hosting: Optimal Choice for Start-Ups',
+      'Eco-Friendly GreenGeeks Web Hosting Benefits',
+      'OVHcloud Hosting: Affordable, Secure & Scalable',
+      'InMotion Hosting: Discover Top 5 Features',
+      'Affordable Verpex Hosting: Secure, Scalable',
+      'Hetzner Hosting: Powerful, Affordable Solutions',
+      'Kamatera Hosting: High-Performance Cloud',
+      'Namecheap: Top Domain Registrar & Hosting',
+    ],
+  },
+  {
+    cat: 'AI Tools', count: 9, action: 'Strong secondary cluster. Keep & refresh; great for AI-search traffic.',
+    posts: [
+      'Innovative Sites Like Lovable AI: Discover Top Picks',
+      'Top Websites Like ChatGPT to Boost Productivity',
+      'Claude vs ChatGPT vs Gemini: Best AI Model 2025',
+      'AI Tools Transform Social Media Marketing in 2025',
+      'Best AI Video Editing Tools 2025 for Creators',
+      'Top AI Tools for Freelancers: Boost Productivity',
+      'Top AI Tools for Resume Writing 2025',
+      'Best AI Art Tool: MidJourney, DALL·E or Stable Diffusion?',
+      'Best AI Tools for WordPress Developers 2025',
+    ],
+  },
+  {
+    cat: 'Email Marketing', count: 9, action: 'Lots of overlap — merge the weakest “vs” posts, keep the best 3–4.',
+    posts: [
+      'Master Brevo Email Marketing: Key Strategies',
+      'Top 25 Email Marketing Platforms Worldwide',
+      'HubSpot vs Mailchimp: Best 2025 Marketing Tool?',
+      'Best Affordable Email Marketing Platforms for Startups',
+      'Drip vs Mailchimp: Choose the Best Tool',
+      'ActiveCampaign vs Brevo: Best for Small Biz',
+      'Top 2025 Alternatives for Constant Contact',
+      'Omnisend vs Klaviyo: Top for Ecommerce',
+      'ConvertKit vs Mailchimp 2025: Best for Creators?',
+    ],
+  },
+  {
+    cat: 'SEO Tools', count: 4, action: 'Keep the comparisons; brutal competition, so target long-tail angles.',
+    posts: [
+      'Ahrefs Detailed Review 2025: Key SEO Insights',
+      'Top Free SEO Tools for Small Businesses 2025',
+      'SEMrush vs SpyFu: Best for Competitor Analysis?',
+      'Ahrefs vs Moz: Top SEO Tools of 2025',
+    ],
+  },
+  {
+    cat: 'WordPress', count: 4, action: 'Keep & link into the hosting cluster — they pair naturally.',
+    posts: [
+      'Top WordPress Speed Services 2025',
+      'Custom vs Ready-Made WordPress Themes 2025',
+      'How to Build a Website with WordPress (Beginner Guide)',
+      'Best Lightweight Plugins to Speed Up WordPress',
+    ],
+  },
+  {
+    cat: 'Web Design & Development', count: 4, action: 'Gold for agency leads — keep “near me” + builder comparisons.',
+    posts: [
+      'Top Website Designer Near Me: Boost Your Business',
+      'Webflow vs Framer vs WordPress: Top Builder 2025',
+      'Freelance Web Designers vs Agencies: How to Choose?',
+      'WCAG Compliance Guide: Website Accessibility',
+    ],
+  },
+  {
+    cat: 'Other / older', count: 4, action: 'Off-cluster or older — update if useful, otherwise prune.',
+    posts: [
+      'Voice Search Optimization for Local Businesses',
+      'QuillBot vs Grammarly (2024)',
+      'ProWritingAid vs Grammarly (2024)',
+      'Best Luma AI Alternatives for 3D Content (2024)',
+    ],
+  },
+];
+
 export default function ContentPlan() {
   const [status, setStatus] = useCloudState('content_status', {});
+  const [openCat, setOpenCat] = useState(null);
 
   function cycle(id) {
     setStatus((s) => {
@@ -101,6 +190,52 @@ export default function ContentPlan() {
           <li className="flex gap-2"><span className="text-amber-400 mt-1 text-xs">●</span><span><b>Be patient:</b> SEO takes 2–4 months to show. Consistency wins — don’t stop.</span></li>
         </ul>
       </Card>
+
+      {/* EXISTING CONTENT — categorized */}
+      <section>
+        <div className="flex items-center gap-2 mb-1">
+          <Library className="w-5 h-5 text-sky-300" />
+          <h3 className="font-display text-lg font-extrabold">Your published content, categorized</h3>
+        </div>
+        <p className="text-xs text-slate-500 mb-4">Everything already on the blog, grouped into clean clusters. Tap a category to see the posts and what to do with them.</p>
+        <div className="space-y-2">
+          {EXISTING.map((c) => {
+            const isOpen = openCat === c.cat;
+            return (
+              <div key={c.cat} className="rounded-2xl border border-white/[0.06] bg-ink-800/60 overflow-hidden">
+                <button
+                  onClick={() => setOpenCat(isOpen ? null : c.cat)}
+                  className="w-full flex items-center gap-3 p-4 text-left hover:bg-white/[0.02] transition-colors"
+                  aria-expanded={isOpen}
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-bold text-sm">{c.cat}</h4>
+                      <Pill color="slate">{c.count}</Pill>
+                    </div>
+                    <p className="text-[11px] text-slate-500 mt-0.5 truncate">{c.action}</p>
+                  </div>
+                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {isOpen && (
+                  <div className="px-4 pb-4 pt-0">
+                    <div className="rounded-lg bg-amber-500/[0.06] border border-amber-500/15 p-2.5 mb-3 text-xs text-slate-300">
+                      <span className="text-amber-300 font-bold">Plan: </span>{c.action}
+                    </div>
+                    <ul className="space-y-1">
+                      {c.posts.map((p, i) => (
+                        <li key={i} className="flex gap-2 text-sm text-slate-300 leading-relaxed">
+                          <span className="text-slate-600 mt-1 text-xs">●</span><span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       {/* ROADMAP */}
       <section className="space-y-4">
