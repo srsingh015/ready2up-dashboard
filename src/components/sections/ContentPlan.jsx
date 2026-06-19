@@ -132,14 +132,12 @@ const EXISTING = [
   },
 ];
 
-// Affiliate partners → which cluster/article they belong in.
-// Confirm these and paste your real affiliate links (we'll bake them into each post).
+// Active affiliate partners (approved). Hosting article recommendations are
+// built around these. Add Hostinger/Cloudways later once approved/worthwhile.
 const AFFILIATES = [
-  { name: 'Hostinger', via: 'Affiliate', use: 'Top "beginner hosting" pick — your #1 recommendation' },
-  { name: 'Cloudways', via: 'Affiliate', use: 'Growing / WordPress hosting pick' },
-  { name: 'Bluehost', via: 'Impact', use: 'WordPress hosting comparisons' },
-  { name: 'Namecheap', via: 'Impact', use: 'Domains + budget hosting' },
-  { name: 'Hosting.com', via: 'Impact', use: 'Hosting recommendations' },
+  { name: 'Bluehost', via: 'Impact', use: 'Main WordPress-hosting pick — officially recommended by WordPress.org' },
+  { name: 'Namecheap', via: 'Impact', use: 'Cheapest domains + budget hosting (EasyWP for WordPress)' },
+  { name: 'Hosting.com', via: 'Impact', use: 'Reliable all-rounder hosting recommendation' },
 ];
 
 export default function ContentPlan() {
