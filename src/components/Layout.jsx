@@ -125,10 +125,10 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
             <button
               key={item.id}
               onClick={() => { setActive(item.id); setMobileOpen(false); }}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all border ${
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all border ${
                 isActive
-                  ? 'bg-rose-500/12 border-rose-400/25 text-rose-50'
-                  : 'border-transparent text-slate-300 hover:text-slate-100 hover:bg-white/[0.04]'
+                  ? 'bg-white text-rose-600 border-white font-bold shadow-[0_3px_14px_-3px_rgba(0,0,0,0.22)]'
+                  : 'border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.06]'
               }`}
             >
               <Icon className="w-[18px] h-[18px] shrink-0" strokeWidth={2} />
@@ -293,10 +293,10 @@ function NavItem({ item, active, isPinned, onSelect, onTogglePin }) {
     <div className="relative group">
       <button
         onClick={onSelect}
-        className={`w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm font-medium transition-all border ${
+        className={`w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border ${
           isActive
-            ? 'bg-amber-500/10 border-amber-500/25 text-amber-100 shadow-[0_0_24px_-12px_rgba(245,158,11,0.6)]'
-            : 'border-transparent text-slate-300 hover:text-slate-100 hover:bg-white/[0.04]'
+            ? 'bg-white text-rose-600 border-white font-bold shadow-[0_3px_14px_-3px_rgba(0,0,0,0.22)]'
+            : 'border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]'
         }`}
       >
         <Icon className="w-[18px] h-[18px] shrink-0" strokeWidth={2} />
