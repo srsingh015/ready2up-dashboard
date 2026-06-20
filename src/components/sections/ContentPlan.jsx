@@ -135,9 +135,9 @@ const EXISTING = [
 // Active affiliate partners (approved). Hosting article recommendations are
 // built around these. Add Hostinger/Cloudways later once approved/worthwhile.
 const AFFILIATES = [
-  { name: 'Bluehost', via: 'Impact', use: 'Main WordPress-hosting pick — officially recommended by WordPress.org' },
-  { name: 'Namecheap', via: 'Impact', use: 'Cheapest domains + budget hosting (EasyWP for WordPress)' },
-  { name: 'Hosting.com', via: 'Impact', use: 'Reliable all-rounder hosting recommendation' },
+  { name: 'Bluehost', via: 'Impact', url: 'https://bluehost.sjv.io/c/6508877/840619/11352', use: 'Main WordPress-hosting pick — officially recommended by WordPress.org' },
+  { name: 'Namecheap', via: 'Impact', url: 'https://namecheap.pxf.io/c/6508877/408793/5618', use: 'Cheapest domains + budget hosting (EasyWP for WordPress)' },
+  { name: 'Hosting.com', via: 'Impact', url: '', use: 'Reliable all-rounder hosting recommendation (add link)' },
 ];
 
 export default function ContentPlan() {
@@ -320,6 +320,9 @@ export default function ContentPlan() {
               <div className="flex-1 min-w-0">
                 <div className="text-sm text-slate-100 font-semibold">{a.name}</div>
                 <div className="text-[11px] text-slate-500">{a.use}</div>
+                {a.url && (
+                  <a href={a.url} target="_blank" rel="noopener noreferrer" className="text-[11px] text-amber-300 hover:underline break-all">{a.url}</a>
+                )}
               </div>
             </li>
           ))}
