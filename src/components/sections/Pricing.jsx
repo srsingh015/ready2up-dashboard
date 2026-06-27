@@ -146,7 +146,7 @@ export default function Pricing({ data }) {
       <section>
         <h3 className="font-display text-xl font-extrabold mb-1">Care plans (recurring)</h3>
         <p className="text-sm text-slate-500 mb-5">Every project upsells to one of these. Recurring is the base.</p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+        <div className="grid-auto-cards-sm gap-3">
           {market.carePlans.map((p) => (
             <Card key={p.id}>
               <h4 className="font-bold text-sm">{p.name}</h4>
@@ -176,7 +176,7 @@ export default function Pricing({ data }) {
           <h3 className="font-display text-xl font-extrabold">Add-ons (a la carte)</h3>
         </div>
         <p className="text-sm text-slate-500 mb-5">Mix and match with any package. Expand the deal size, raise the average.</p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
+        <div className="grid-auto-cards-sm gap-2">
           {pricing.addOns.map((a, i) => (
             <div key={i} className="flex items-center justify-between p-3 bg-ink-800/60 border border-white/[0.06] rounded-xl">
               <span className="text-sm text-slate-200">{a.name}</span>

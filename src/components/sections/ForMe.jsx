@@ -267,7 +267,7 @@ export default function ForMe() {
           <h2 className="font-display text-xl font-extrabold">My daily rhythm</h2>
         </div>
         <p className="text-sm text-slate-500 mb-4">Built around a 5–6 AM wake-up. Same shape every day so willpower is never required.</p>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
+        <div className="grid-auto-cards-sm gap-4 items-stretch">
           {RHYTHM.map((b, i) => {
             const Icon = b.icon;
             return (
@@ -366,7 +366,7 @@ export default function ForMe() {
           <Brain className="w-5 h-5 text-violet-300" />
           <h2 className="font-display text-xl font-extrabold">Mindset anchors</h2>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid-auto-cards gap-3">
           {ANCHORS.map((a, i) => (
             <Card key={i}>
               <div className="text-3xl mb-3">{a.icon}</div>

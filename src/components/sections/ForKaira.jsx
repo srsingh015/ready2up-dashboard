@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, BookOpen, Sparkles, Sun, Moon, Coffee, Wind, ChevronDown, Check } from 'lucide-react';
+import { Heart, BookOpen, Sparkles, Sun, Moon, Coffee, Wind, ChevronDown, Check, Activity, Camera, GraduationCap } from 'lucide-react';
 import { Card, Pill } from '../ui/Section.jsx';
 import DailyTodo from '../ui/DailyTodo.jsx';
 import { useLocalStorage } from '../../hooks/useLocalStorage.js';
@@ -134,7 +134,7 @@ export default function ForKaira({ data }) {
         </div>
         <p className="text-sm text-slate-500 mb-5">{kaira.dailyRhythm.subtitle}</p>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
+        <div className="grid-auto-cards-sm gap-4 items-stretch">
           <RhythmBox block={kaira.dailyRhythm.morning} icon={Sun} color="amber" />
           <RhythmBox block={kaira.dailyRhythm.midday} icon={Coffee} color="emerald" />
           <RhythmBox block={kaira.dailyRhythm.evening} icon={Moon} color="violet" />
@@ -142,13 +142,214 @@ export default function ForKaira({ data }) {
         </div>
       </section>
 
+      {/* HEALTH & WELLNESS */}
+      {kaira.wellness && (
+        <section>
+          <div className="flex items-center gap-2 mb-3">
+            <Activity className="w-5 h-5 text-emerald-300" />
+            <h2 className="font-display text-xl font-extrabold">{kaira.wellness.title}</h2>
+          </div>
+          <p className="text-sm text-slate-400 leading-relaxed mb-5 max-w-2xl">{kaira.wellness.subtitle}</p>
+
+          {/* Goal card */}
+          <Card className="mb-4">
+            <div className="flex items-center gap-5 flex-wrap">
+              <div className="flex items-center gap-3">
+                <div className="text-center">
+                  <div className="font-display text-3xl font-extrabold text-slate-200">{kaira.wellness.goal.current}<span className="text-sm text-slate-500">kg</span></div>
+                  <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-1">Now</div>
+                </div>
+                <div className="text-2xl text-emerald-300">→</div>
+                <div className="text-center">
+                  <div className="font-display text-3xl font-extrabold gold-text">{kaira.wellness.goal.target}<span className="text-sm text-slate-500">kg</span></div>
+                  <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-1">Goal</div>
+                </div>
+              </div>
+              <div className="flex-1 min-w-[220px]">
+                <Pill color="emerald">−{kaira.wellness.goal.delta} kg, gently</Pill>
+                <p className="text-sm text-slate-300 leading-relaxed mt-2">{kaira.wellness.goal.timeline}</p>
+              </div>
+            </div>
+            <div className="mt-4 rounded-xl bg-emerald-500/[0.05] border border-emerald-500/15 p-3 text-sm text-slate-300 leading-relaxed">
+              <span className="text-emerald-300 font-bold">The rule: </span>{kaira.wellness.goal.principle}
+            </div>
+          </Card>
+
+          {/* Lab summary — the calm version */}
+          <Card className="mb-4">
+            <h3 className="font-bold text-base mb-1">{kaira.wellness.labSummary.title}</h3>
+            <p className="text-sm text-slate-500 mb-4">{kaira.wellness.labSummary.intro}</p>
+            <div className="space-y-2">
+              {kaira.wellness.labSummary.items.map((it, i) => (
+                <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+                  <Pill color={it.tone === 'good' ? 'emerald' : 'amber'}>{it.status}</Pill>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm text-slate-100 font-semibold">{it.label}</div>
+                    <div className="text-xs text-slate-400 mt-0.5 leading-relaxed">{it.note}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 rounded-xl bg-amber-500/[0.05] border border-amber-500/15 p-3 text-sm text-slate-300 leading-relaxed">
+              <span className="text-amber-300 font-bold">Ask the doctor: </span>{kaira.wellness.labSummary.doctorNote}
+            </div>
+          </Card>
+
+          {/* The 5 pillars */}
+          <div className="grid-auto-cards gap-3 mb-4">
+            {kaira.wellness.pillars.map((p, i) => (
+              <Card key={i}>
+                <div className="text-3xl mb-3">{p.icon}</div>
+                <h3 className="font-bold text-sm mb-2">{p.title}</h3>
+                <p className="text-sm text-slate-400 leading-relaxed">{p.body}</p>
+              </Card>
+            ))}
+          </div>
+
+          {/* Foods */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Card>
+              <h3 className="font-bold text-sm mb-3 text-emerald-300">✅ Favour these</h3>
+              <ul className="space-y-2">
+                {kaira.wellness.foods.favour.map((f, i) => (
+                  <li key={i} className="flex gap-2 text-sm text-slate-300 leading-relaxed"><span className="text-emerald-400 mt-0.5">•</span><span>{f}</span></li>
+                ))}
+              </ul>
+            </Card>
+            <Card>
+              <h3 className="font-bold text-sm mb-3 text-amber-300">🍃 Go easy on</h3>
+              <ul className="space-y-2">
+                {kaira.wellness.foods.easyOn.map((f, i) => (
+                  <li key={i} className="flex gap-2 text-sm text-slate-300 leading-relaxed"><span className="text-amber-400 mt-0.5">•</span><span>{f}</span></li>
+                ))}
+              </ul>
+            </Card>
+          </div>
+
+          {/* Closing + medical disclaimer */}
+          <div className="mt-4 rounded-2xl p-5 border border-rose-500/15 bg-rose-500/[0.04]">
+            <p className="text-[15px] text-slate-300 leading-relaxed italic">{kaira.wellness.closing}</p>
+          </div>
+          <p className="text-xs text-slate-500 italic mt-3 max-w-2xl">{kaira.wellness.medicalNote}</p>
+        </section>
+      )}
+
+      {/* CREATOR GROWTH */}
+      {kaira.creator && (
+        <section>
+          <div className="flex items-center gap-2 mb-3">
+            <Camera className="w-5 h-5 text-rose-400" />
+            <h2 className="font-display text-xl font-extrabold">{kaira.creator.title}</h2>
+          </div>
+          <p className="text-sm text-slate-400 leading-relaxed mb-4 max-w-2xl">{kaira.creator.subtitle}</p>
+
+          <div className="rounded-xl bg-rose-500/[0.05] border border-rose-500/15 p-4 mb-5 max-w-2xl">
+            <span className="text-rose-300 font-bold text-sm">Find your lane: </span>
+            <span className="text-sm text-slate-200 leading-relaxed">{kaira.creator.positioning}</span>
+          </div>
+
+          {/* Platforms */}
+          <div className="grid sm:grid-cols-2 gap-4 mb-4">
+            {kaira.creator.platforms.map((p, i) => (
+              <Card key={i}>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-2xl">{p.icon}</span>
+                  <h3 className="font-bold text-base">{p.name}</h3>
+                </div>
+                <p className="text-xs text-slate-400 mb-3 italic">{p.role}</p>
+                <ul className="space-y-1.5">
+                  {p.tactics.map((t, j) => (
+                    <li key={j} className="flex gap-2 text-[13px] text-slate-300 leading-relaxed"><span className="text-rose-400 mt-0.5">▸</span><span>{t}</span></li>
+                  ))}
+                </ul>
+              </Card>
+            ))}
+          </div>
+
+          {/* Content pillars */}
+          <div className="mb-4">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-violet-300 mb-2">Your 4 content pillars</div>
+            <div className="flex flex-wrap gap-2">
+              {kaira.creator.pillars.map((p, i) => (
+                <span key={i} className="bg-white/[0.04] border border-white/[0.08] rounded-full px-3 py-1.5 text-xs text-slate-200">{p}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* System + Money */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Card>
+              <h3 className="font-bold text-sm mb-3 text-sky-300">⚙️ The weekly system</h3>
+              <ul className="space-y-2">
+                {kaira.creator.system.map((s, i) => (
+                  <li key={i} className="flex gap-2 text-[13px] text-slate-300 leading-relaxed"><span className="text-sky-400 mt-0.5">•</span><span>{s}</span></li>
+                ))}
+              </ul>
+            </Card>
+            <Card>
+              <h3 className="font-bold text-sm mb-3 text-emerald-300">💰 Ways it earns</h3>
+              <ul className="space-y-2">
+                {kaira.creator.money.map((m, i) => (
+                  <li key={i} className="flex gap-2 text-[13px] text-slate-300 leading-relaxed"><span className="text-emerald-400 mt-0.5">•</span><span>{m}</span></li>
+                ))}
+              </ul>
+            </Card>
+          </div>
+
+          <div className="mt-4 rounded-2xl p-5 border border-rose-500/15 bg-rose-500/[0.04]">
+            <p className="text-[15px] text-slate-300 leading-relaxed italic">{kaira.creator.note}</p>
+          </div>
+        </section>
+      )}
+
+      {/* LEARNING PATH */}
+      {kaira.learning && (
+        <section>
+          <div className="flex items-center gap-2 mb-3">
+            <GraduationCap className="w-5 h-5 text-amber-300" />
+            <h2 className="font-display text-xl font-extrabold">{kaira.learning.title}</h2>
+          </div>
+          <p className="text-sm text-slate-400 leading-relaxed mb-4 max-w-2xl">{kaira.learning.subtitle}</p>
+
+          <div className="rounded-xl bg-amber-500/[0.06] border border-amber-500/20 p-4 mb-5 max-w-2xl">
+            <span className="text-amber-300 font-bold text-sm">My honest pick: </span>
+            <span className="text-sm text-slate-200 leading-relaxed">{kaira.learning.recommendation}</span>
+          </div>
+
+          {/* Options compared */}
+          <div className="space-y-2 mb-4">
+            {kaira.learning.options.map((o, i) => (
+              <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+                <Pill color={o.tone === 'good' ? 'emerald' : 'amber'}>{o.fit}</Pill>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm text-slate-100 font-semibold">{o.name}</div>
+                  <div className="text-xs text-slate-400 mt-0.5 leading-relaxed">{o.why}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Format guidance */}
+          <Card>
+            <h3 className="font-bold text-sm mb-3 text-violet-300">How to choose where to study</h3>
+            <ul className="space-y-2">
+              {kaira.learning.format.map((f, i) => (
+                <li key={i} className="flex gap-2 text-[13px] text-slate-300 leading-relaxed"><span className="text-violet-400 mt-0.5">▸</span><span>{f}</span></li>
+              ))}
+            </ul>
+          </Card>
+
+          <p className="text-sm text-amber-300/90 italic mt-3 max-w-2xl">{kaira.learning.note}</p>
+        </section>
+      )}
+
       {/* MINDSET ANCHORS */}
       <section>
         <div className="flex items-center gap-2 mb-3">
           <Sparkles className="w-5 h-5 text-violet-300" />
           <h2 className="font-display text-xl font-extrabold">Little reminders, when you need them</h2>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid-auto-cards gap-3">
           {kaira.mindsetAnchors.map((a, i) => (
             <Card key={i}>
               <div className="text-3xl mb-3">{a.icon}</div>

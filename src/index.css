@@ -564,3 +564,26 @@ aside { -webkit-overflow-scrolling: touch; }
 @media (prefers-reduced-motion: reduce) {
   .focus-wave { animation: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   📐 INTRINSIC RESPONSIVE GRIDS
+   These adapt to the ACTUAL available width (content area), not the
+   raw viewport — so they stay correct regardless of the sidebar.
+   `auto-fit` + `minmax(min(100%, X), 1fr)` means: as many columns as
+   fit, each at least X wide, collapsing cleanly to 1 column on phones.
+   Keep your existing `gap-*` class on the element alongside these.
+   ═══════════════════════════════════════════════════════════════ */
+@layer components {
+  .grid-auto-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  }
+  .grid-auto-cards-sm {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  }
+  .grid-auto-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+  }
+}

@@ -88,7 +88,7 @@ export default function Overview({ data, onNavigate }) {
             See full roadmap <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="grid-auto-cards-sm gap-3">
           {roadmap.map((p) => (
             <PhaseCardMini key={p.id} p={p} />
           ))}
@@ -123,7 +123,7 @@ export default function Overview({ data, onNavigate }) {
           <h2 className="font-display text-xl font-extrabold">The numbers we track</h2>
         </div>
         <p className="text-sm text-slate-500 mb-5">If a metric is not on this list, it is a vanity metric. These are the only ones that matter.</p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid-auto-cards gap-3">
           {meta.kpis.map((k) => (
             <Card key={k.id}>
               <div className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">{k.label}</div>

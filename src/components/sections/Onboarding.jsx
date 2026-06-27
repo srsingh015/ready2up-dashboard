@@ -25,7 +25,7 @@ export default function Onboarding({ data }) {
         accent="emerald"
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid-auto-stats gap-3">
         {onboarding.intro.metrics.map((m, i) => (
           <StatCard key={i} label={m.label} value={m.value} color={i % 2 ? 'emerald' : 'amber'} />
         ))}
@@ -168,7 +168,7 @@ export default function Onboarding({ data }) {
           <h2 className="font-display text-xl font-extrabold">The Document Pack — 11 templates ready to send</h2>
         </div>
         <p className="text-sm text-slate-500 mb-5">Build these once, use them forever. Templates make onboarding identical for every client — that is what makes scaling possible.</p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid-auto-cards gap-3">
           {onboarding.documentPack.map((d) => (
             <Card key={d.id}>
               <div className="flex items-center gap-2 mb-2">

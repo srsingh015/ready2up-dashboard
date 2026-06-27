@@ -56,7 +56,7 @@ export default function Partnerships({ data }) {
         accent="amber"
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid-auto-stats gap-3">
         <StatCard label="Active partnerships" value={stats.active} color="emerald" sub={`${stats.count} total tracked`} />
         <StatCard label="Total invested" value={formatInr(stats.invested)} color="amber" sub="Across all partnerships" />
         <StatCard label="Monthly profit share" value={formatInr(stats.monthlyProfit)} color="emerald" sub="From all active deals" />
@@ -147,7 +147,7 @@ export default function Partnerships({ data }) {
           <h3 className="font-display text-xl font-extrabold">Five types of partnership</h3>
         </div>
         <p className="text-sm text-slate-500 mb-5">Pick the structure that matches the situation. Mix is fine.</p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid-auto-cards gap-3">
           {partnerships.partnershipTypes.map((t) => {
             const Icon = Icons[t.icon] || Icons.Box;
             return (
@@ -217,7 +217,7 @@ export default function Partnerships({ data }) {
           <h3 className="font-display text-xl font-extrabold">Documents to have ready</h3>
         </div>
         <p className="text-sm text-slate-500 mb-5">No partnership goes ahead without these. Build templates once, use forever.</p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid-auto-cards gap-3">
           {partnerships.documentsNeeded.map((d, i) => (
             <Card key={i}>
               <div className="flex items-center gap-2 mb-2">

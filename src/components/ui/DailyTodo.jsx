@@ -18,8 +18,8 @@ function prettyDate(dateStr) {
 }
 
 const ACCENTS = {
-  amber: { text: 'text-amber-300', chip: 'bg-amber-500/10 text-amber-300 border-amber-500/20', btn: 'bg-amber-500/15 hover:bg-amber-500/25 text-amber-200', ring: 'focus:border-amber-500/40', check: 'bg-amber-500 border-amber-500', pill: 'amber' },
-  rose: { text: 'text-rose-300', chip: 'bg-rose-500/10 text-rose-300 border-rose-500/20', btn: 'bg-rose-500/15 hover:bg-rose-500/25 text-rose-200', ring: 'focus:border-rose-500/40', check: 'bg-rose-500 border-rose-500', pill: 'rose' },
+  amber: { text: 'text-amber-300', chip: 'bg-amber-500/10 text-amber-300 border-amber-500/20', btn: 'bg-amber-500/15 hover:bg-amber-500/25 text-amber-200', active: 'bg-amber-500 text-ink-950 hover:bg-amber-400 shadow-[0_0_22px_-4px_rgba(245,158,11,0.75)]', ring: 'focus:border-amber-500/40', inputActive: 'border-amber-500/40', check: 'bg-amber-500 border-amber-500', pill: 'amber' },
+  rose: { text: 'text-rose-300', chip: 'bg-rose-500/10 text-rose-300 border-rose-500/20', btn: 'bg-rose-500/15 hover:bg-rose-500/25 text-rose-200', active: 'bg-rose-500 text-white hover:bg-rose-400 shadow-[0_0_22px_-4px_rgba(244,63,94,0.75)]', ring: 'focus:border-rose-500/40', inputActive: 'border-rose-500/40', check: 'bg-rose-500 border-rose-500', pill: 'rose' },
 };
 
 /**
@@ -84,9 +84,17 @@ export default function DailyTodo({ cloudKey, accent = 'amber', title = 'To-do l
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') add(); }}
           placeholder={isToday ? 'Add a task for today…' : `Add a task for ${prettyDate(viewDate)}…`}
-          className={`flex-1 min-w-0 bg-ink-900 border border-white/[0.08] rounded-lg px-3 py-2 text-sm focus:outline-none ${a.ring} placeholder-slate-600`}
+          className={`flex-1 min-w-0 bg-ink-900 border rounded-lg px-3 py-2 text-sm focus:outline-none placeholder-slate-600 transition-colors ${text.trim() ? a.inputActive : 'border-white/[0.08]'} ${a.ring}`}
         />
-        <button onClick={add} className={`inline-flex items-center justify-center gap-1.5 ${a.btn} text-sm font-bold px-4 py-2 rounded-lg transition-colors shrink-0`}>
+        <button
+          onClick={add}
+          disabled={!text.trim()}
+          className={`inline-flex items-center justify-center gap-1.5 text-sm font-bold px-4 py-2 rounded-lg transition-all shrink-0 ${
+            text.trim()
+              ? `${a.active} cursor-pointer`
+              : 'bg-white/[0.05] text-slate-600 cursor-not-allowed'
+          }`}
+        >
           <Plus className="w-4 h-4" /> <span className="hidden sm:inline">Add</span>
         </button>
       </div>

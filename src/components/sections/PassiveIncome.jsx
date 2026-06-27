@@ -150,7 +150,7 @@ export default function PassiveIncome() {
           <Rocket className="w-5 h-5 text-amber-300" />
           <h3 className="font-display text-lg font-extrabold">The build order — one at a time</h3>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-2">
+        <div className="grid-auto-cards-sm gap-2">
           {PILLARS.map((p) => {
             const Icon = p.icon;
             return (

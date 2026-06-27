@@ -23,7 +23,7 @@ export default function BrandPlaybook({ data }) {
         subtitle={bp.intro.subtitle}
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid-auto-stats gap-3">
         {bp.intro.metrics.map((m, i) => (
           <StatCard key={i} label={m.label} value={m.value} color={i % 2 ? 'emerald' : 'amber'} />
         ))}
@@ -110,7 +110,7 @@ export default function BrandPlaybook({ data }) {
           <h2 className="font-display text-xl font-extrabold">Directories & partner programs to join</h2>
         </div>
         <p className="text-sm text-slate-500 mb-5">Each one = credibility + a potential lead source. Most are free. This is how you get "found" and look established.</p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid-auto-cards gap-3">
           {bp.directories.map((d, i) => (
             <Card key={i}>
               <div className="flex items-start justify-between gap-2 mb-2">

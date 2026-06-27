@@ -25,7 +25,7 @@ export default function Properties({ data }) {
         accent="emerald"
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid-auto-stats gap-3">
         {properties.intro.metrics.map((m, i) => (
           <StatCard key={i} label={m.label} value={m.value} color={i % 2 ? 'emerald' : 'amber'} />
         ))}
@@ -67,7 +67,7 @@ function TabBtn({ active, onClick, icon: Icon, children }) {
 function AffiliateView({ properties }) {
   return (
     <div className="space-y-6">
-      <div className="grid lg:grid-cols-3 gap-4">
+      <div className="grid-auto-cards gap-4">
         {properties.affiliatePrograms.map((p) => (
           <Card key={p.id} className="!p-0 overflow-hidden">
             <div className="p-5 bg-gradient-to-br from-white/[0.03] to-transparent border-b border-white/[0.06]">
@@ -191,7 +191,7 @@ function RecommendedPrograms({ programs, networks }) {
         ))}
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div className="grid-auto-cards-sm gap-3">
         {filtered.map((p) => (
           <div key={p.id} className="rounded-2xl bg-ink-800/60 border border-white/[0.06] p-4 card-hover flex flex-col">
             <div className="flex items-start gap-2 mb-2">
@@ -327,7 +327,7 @@ function CalculatorView({ properties }) {
       </Card>
 
       {/* Headline projections */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid-auto-stats gap-3">
         <CalcStat label="Month 1" value={formatInr(month1.total)} color="amber" sub="affiliate income" />
         <CalcStat label="Month 12" value={formatInr(month12.total)} color="emerald" sub={`${month12.clients} clients/mo`} />
         <CalcStat label="Month 24" value={formatInr(month24.total)} color="emerald" sub={`recurring: ${formatInr(month24.recurring)}/mo`} />
