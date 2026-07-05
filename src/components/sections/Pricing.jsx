@@ -14,7 +14,7 @@ const FLAG_CODE = {
 
 export default function Pricing({ data }) {
   const { pricing } = data;
-  const [marketId, setMarketId] = useState(pricing.markets[0].id);
+  const [marketId, setMarketId] = useState('uae');
   const [showInINR, setShowInINR] = useState(false);
   const market = useMemo(() => pricing.markets.find((m) => m.id === marketId), [marketId, pricing]);
   const cur = pricing.currencies[market.currency];
@@ -34,7 +34,7 @@ export default function Pricing({ data }) {
       <PageHeader
         eyebrow="Money & Margins"
         title="Pricing — built for every market you'll work in"
-        subtitle="Tier-3 India to Singapore SaaS founders. Each market priced on real 2026 data, with terms & conditions. Switch markets to see local pricing."
+        subtitle="Priced for every market you'll work in — starting with the UAE (your target market), plus India, Singapore, the US and Europe. Real 2026 data, quoted in local currency. Switch markets to see pricing."
         accent="amber"
       />
 

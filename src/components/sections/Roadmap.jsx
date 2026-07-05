@@ -20,7 +20,7 @@ export default function Roadmap({ data, onNavigate }) {
       <PageHeader
         eyebrow="The 24-Month Roadmap"
         title="Five phases. Five gates. No skipping."
-        subtitle="Each phase has clear graduation criteria. We do not advance until the gate is met. This is the discipline that keeps the base strong while the engine grows."
+        subtitle="Aug 2026 → mid-2028. Each phase has clear graduation criteria — we do not advance until the gate is met. This is the discipline that keeps the base strong while the engine grows."
         accent="violet"
       />
 
@@ -42,6 +42,7 @@ export default function Roadmap({ data, onNavigate }) {
                       <div className="flex items-center gap-2 flex-wrap">
                         <h3 className="font-bold text-base sm:text-lg leading-tight">{p.title}</h3>
                         <Pill color={p.color}>{p.period}</Pill>
+                        {p.dates && <span className="text-[11px] font-semibold text-slate-500">· {p.dates}</span>}
                       </div>
                       <div className="text-xs text-slate-400 mt-1 leading-relaxed">{p.focus}</div>
                     </div>
