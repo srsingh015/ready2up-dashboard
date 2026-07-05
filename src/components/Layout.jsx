@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import {
   LayoutDashboard, Compass, Coins, Map, CalendarDays, Repeat, Sun,
   Megaphone, Tag as TagIcon, MessageSquareText, ShieldCheck, LineChart,
-  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake, User, TrendingUp, FileText, Globe2, Wallet
+  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake, User, TrendingUp, FileText, Globe2
 } from 'lucide-react';
 
 import Overview from './sections/Overview.jsx';
@@ -18,7 +18,6 @@ import Onboarding from './sections/Onboarding.jsx';
 import Scripts from './sections/Scripts.jsx';
 import Properties from './sections/Properties.jsx';
 import Dubai from './sections/Dubai.jsx';
-import MoneyRules from './sections/MoneyRules.jsx';
 import Principles from './sections/Principles.jsx';
 import BrandPlaybook from './sections/BrandPlaybook.jsx';
 import Trackers from './sections/Trackers.jsx';
@@ -35,7 +34,6 @@ const NAV = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard, group: 'core' },
   { id: 'vision', label: 'Goals & Why', icon: Compass, group: 'core' },
   { id: 'streams', label: 'Income Streams', icon: Coins, group: 'core' },
-  { id: 'money', label: 'Money Rules', icon: Wallet, group: 'core' },
   { id: 'roadmap', label: '24-Month Roadmap', icon: Map, group: 'plan' },
   { id: 'months', label: 'Monthly Plans', icon: CalendarDays, group: 'plan' },
   { id: 'rhythm', label: 'Daily / Weekly Rhythm', icon: Repeat, group: 'plan' },
@@ -149,7 +147,6 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
       case 'overview': return <Overview {...props} onNavigate={setActive} />;
       case 'vision': return <Vision {...props} />;
       case 'streams': return <Streams {...props} />;
-      case 'money': return <MoneyRules {...props} />;
       case 'roadmap': return <Roadmap {...props} onNavigate={setActive} />;
       case 'months': return <Months {...props} />;
       case 'rhythm': return <Rhythm {...props} />;
