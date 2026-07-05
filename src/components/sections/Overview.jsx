@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, Target, TrendingUp, Repeat, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Sparkles, Target, TrendingUp, Repeat, ShieldCheck, Wallet } from 'lucide-react';
 import { Card, PageHeader, Pill, StatCard, Divider } from '../ui/Section.jsx';
 import { formatInr } from '../../utils/format.js';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, AreaChart, Area } from 'recharts';
@@ -43,6 +43,30 @@ export default function Overview({ data, onNavigate }) {
           </div>
         </div>
       </motion.section>
+
+      {/* RIGHT NOW — current focus band */}
+      <div className="rounded-2xl p-5 sm:p-6 border border-amber-500/20 bg-gradient-to-br from-amber-500/[0.06] to-transparent">
+        <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-300/90 mb-4">
+          Right now · {new Date().toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}
+        </div>
+        <div className="grid sm:grid-cols-3 gap-3">
+          <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
+            <div className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1">Phase</div>
+            <div className="font-bold text-sm text-slate-100">Foundation → First clients</div>
+            <div className="text-xs text-slate-400 mt-1 leading-relaxed">Cash flow first. One engine at a time.</div>
+          </div>
+          <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
+            <div className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1">This month's focus</div>
+            <div className="font-bold text-sm text-emerald-300">Land paying web clients</div>
+            <div className="text-xs text-slate-400 mt-1 leading-relaxed">Upwork + past-client outreach, every day.</div>
+          </div>
+          <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
+            <div className="text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-1">Latest win</div>
+            <div className="font-bold text-sm text-amber-300">Navjeevan site — returning client</div>
+            <div className="text-xs text-slate-400 mt-1 leading-relaxed">Quote it right, ship it, showcase it.</div>
+          </div>
+        </div>
+      </div>
 
       <section className="grid sm:grid-cols-2 gap-4">
         <DreamBox label="Goal · Stage 1" amount="₹5 Crore" period="The first goal — not the last" body={meta.northStar.statement} accent="violet" />
@@ -115,6 +139,39 @@ export default function Overview({ data, onNavigate }) {
           ))}
         </div>
       </section>
+
+      {/* MONEY RULES — capital discipline */}
+      {meta.moneyRules && (
+        <section>
+          <div className="flex items-center gap-2 mb-3">
+            <Wallet className="w-5 h-5 text-emerald-300" />
+            <h2 className="font-display text-xl font-extrabold">{meta.moneyRules.title}</h2>
+          </div>
+          <div className="rounded-xl bg-amber-500/[0.05] border border-amber-500/15 p-4 mb-4 max-w-3xl">
+            <p className="text-sm text-slate-200 leading-relaxed italic">{meta.moneyRules.lesson}</p>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-3 mb-4">
+            {meta.moneyRules.buckets.map((b, i) => (
+              <div key={i} className={`rounded-2xl border p-4 ${b.color === 'emerald' ? 'border-emerald-500/20 bg-emerald-500/[0.04]' : 'border-amber-500/20 bg-amber-500/[0.04]'}`}>
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <span className="text-sm font-bold text-slate-100">{b.label}</span>
+                  <span className={`font-display text-xl font-extrabold ${b.color === 'emerald' ? 'text-emerald-300' : 'text-amber-300'}`}>{b.amount}</span>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed">{b.use}</p>
+              </div>
+            ))}
+          </div>
+          <Card>
+            <ul className="space-y-2">
+              {meta.moneyRules.rules.map((r, i) => (
+                <li key={i} className="flex gap-2 text-sm text-slate-300 leading-relaxed">
+                  <span className="text-emerald-400 mt-0.5 font-bold shrink-0">{i + 1}.</span><span>{r}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </section>
+      )}
 
       {/* Headline KPIs the dashboard tracks */}
       <section>

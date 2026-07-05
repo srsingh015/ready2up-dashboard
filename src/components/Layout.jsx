@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import {
   LayoutDashboard, Compass, Coins, Map, CalendarDays, Repeat, Sun,
   Megaphone, Tag as TagIcon, MessageSquareText, ShieldCheck, LineChart,
-  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake, User, TrendingUp, FileText
+  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake, User, TrendingUp, FileText, Globe2, Wallet
 } from 'lucide-react';
 
 import Overview from './sections/Overview.jsx';
@@ -17,6 +17,8 @@ import Pricing from './sections/Pricing.jsx';
 import Onboarding from './sections/Onboarding.jsx';
 import Scripts from './sections/Scripts.jsx';
 import Properties from './sections/Properties.jsx';
+import Dubai from './sections/Dubai.jsx';
+import MoneyRules from './sections/MoneyRules.jsx';
 import Principles from './sections/Principles.jsx';
 import BrandPlaybook from './sections/BrandPlaybook.jsx';
 import Trackers from './sections/Trackers.jsx';
@@ -33,6 +35,7 @@ const NAV = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard, group: 'core' },
   { id: 'vision', label: 'Goals & Why', icon: Compass, group: 'core' },
   { id: 'streams', label: 'Income Streams', icon: Coins, group: 'core' },
+  { id: 'money', label: 'Money Rules', icon: Wallet, group: 'core' },
   { id: 'roadmap', label: '24-Month Roadmap', icon: Map, group: 'plan' },
   { id: 'months', label: 'Monthly Plans', icon: CalendarDays, group: 'plan' },
   { id: 'rhythm', label: 'Daily / Weekly Rhythm', icon: Repeat, group: 'plan' },
@@ -47,6 +50,7 @@ const NAV = [
   { id: 'trackers', label: 'Trackers', icon: LineChart, group: 'tools' },
   { id: 'passive', label: 'Passive Income', icon: TrendingUp, group: 'build' },
   { id: 'content', label: 'Content Plan', icon: FileText, group: 'build' },
+  { id: 'dubai', label: 'Dubai Expansion', icon: Globe2, group: 'build' },
   { id: 'partnerships', label: 'Partnership Companies', icon: Building2, group: 'portfolio' },
   { id: 'us', label: 'Us 💞', icon: HeartHandshake, group: 'kaira' },
   { id: 'kaira', label: 'For Kaira 🌸', icon: Heart, group: 'kaira' },
@@ -145,6 +149,7 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
       case 'overview': return <Overview {...props} onNavigate={setActive} />;
       case 'vision': return <Vision {...props} />;
       case 'streams': return <Streams {...props} />;
+      case 'money': return <MoneyRules {...props} />;
       case 'roadmap': return <Roadmap {...props} onNavigate={setActive} />;
       case 'months': return <Months {...props} />;
       case 'rhythm': return <Rhythm {...props} />;
@@ -159,6 +164,7 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
       case 'trackers': return <Trackers {...props} />;
       case 'passive': return <PassiveIncome {...props} />;
       case 'content': return <ContentPlan {...props} />;
+      case 'dubai': return <Dubai {...props} />;
       case 'partnerships': return <Partnerships {...props} />;
       case 'kaira': return <ForKaira {...props} />;
       case 'us': return <Us {...props} />;

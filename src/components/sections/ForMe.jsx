@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import {
   Sun, Briefcase, Dumbbell, Moon, Check, Flame, Target, Utensils, Pill as PillIcon,
-  BookOpen, Brain, Scale, Sparkles,
+  BookOpen, Brain, Scale, Sparkles, Activity, Eye,
 } from 'lucide-react';
 import { PageHeader, Card, Pill } from '../ui/Section.jsx';
 import DailyTodo from '../ui/DailyTodo.jsx';
@@ -119,6 +119,65 @@ const COLOR = {
 
 const GOAL_FROM = 55;
 const GOAL_TO = 64;
+
+// ── Latest full-body blood report (Dr Lal PathLabs, 24 Jun 2026) ──
+// Plain-language reading only — NOT medical advice. Doctor follow-up flagged.
+const REPORT = {
+  date: '24 June 2026',
+  lab: 'Dr Lal PathLabs',
+  intro: 'A plain-English read of my recent full-body checkup. Most of it is genuinely good — three things to act on, one of them soon.',
+  priority: "AST (a liver/muscle enzyme) came back high at 194 (normal <34). It's likely from just starting the gym — hard new exercise leaks AST from muscle, and my GGT and bilirubin are normal, which points away from a serious liver problem. But high AST has other causes too, so this must be confirmed: see a doctor soon and take the report. They'll likely order a CK (muscle) test and repeat the LFT after 5–7 days with no gym and no alcohol.",
+  flags: [
+    { label: 'AST (SGOT) — liver/muscle enzyme', value: '194 (normal <34)', status: 'see-doctor', note: 'Markedly high and much higher than ALT (ratio 3.5). Likely new-gym muscle effect (GGT & bilirubin normal = reassuring), but confirm with a doctor — do not assume.' },
+    { label: 'ALT (SGPT) — liver enzyme', value: '54.5 (normal 10–49)', status: 'watch', note: 'Mildly high; fits the same picture as AST. Re-check on the doctor’s follow-up.' },
+    { label: 'Triglycerides', value: '219 (normal <150)', status: 'watch', note: 'High — driven by sugar, refined carbs, fried food, late meals and low cardio. Very improvable with diet + activity.' },
+    { label: 'HDL ("good" cholesterol)', value: '34 (normal >40)', status: 'watch', note: 'A little low. Cardio, healthy fats (nuts, olive oil, fish) and losing belly fat raise it. LDL (49) and total (127) are great.' },
+    { label: 'Platelet count', value: '135 (normal 150–410)', status: 'watch', note: 'Mildly low — but the lab saw "megaplatelets" (large platelets), which usually makes the counter under-read. Likely not a real low; just recheck.' },
+  ],
+  good: [
+    'Thyroid (TSH 2.40, T3, T4) — all normal',
+    'Blood sugar — HbA1c 4.9% & fasting glucose 82 — non-diabetic',
+    'Kidneys — creatinine 0.69, eGFR 132 (G1) — excellent',
+    'Hemoglobin 15.6 — no anemia',
+    'LDL 49 & total cholesterol 127 — great',
+    'Bilirubin, GGT, ALP, protein, albumin — all normal',
+    'Urine routine — essentially normal',
+  ],
+  actions: [
+    'See a doctor soon about the high AST — take this full report. Very likely the new gym, but confirm it.',
+    'Before the repeat blood test: avoid alcohol, skip a hard workout for a few days, and pause any new supplements so the retest is clean.',
+    'Lower triglycerides + raise HDL: cut sugary drinks, fried & refined-carb food; add a 30-min brisk walk most days; eat more nuts, fish/omega-3 and fibre. Recheck lipids in ~8–12 weeks.',
+    'Re-test the platelet count to confirm it’s just the megaplatelet artifact.',
+  ],
+  disclaimer: 'I’m not a doctor and this isn’t medical advice — it’s a plain-language read to help me understand the report. The doctor who can examine me is the right person, especially for the AST. If anything feels physically wrong, see a doctor promptly.',
+};
+
+// ── Eye prescription (Bhagwati Eye Hospital, Dr Ajit Khune, 29 Jun 2026) ──
+// Follow exactly. Lotex is a tapering steroid; Kaimoist is a lubricant.
+const EYE_CARE = {
+  started: '29 June 2026',
+  hospital: 'Bhagwati Eye Hospital · Dr Ajit Khune',
+  context: 'For diminution of vision with papillae in both eyes (fundus was normal). Two drops: a short tapering steroid (Lotex) and a long-term lubricant (Kaimoist). The taper matters — follow it exactly.',
+  schedule: [
+    { drop: 'Lotex (steroid)', phase: 'Week 1', dose: '1 drop · 4× a day', eyes: 'Both eyes', dates: 'Jun 29 – Jul 5', times: '7 AM · 12 PM · 5 PM · 10 PM', steroid: true },
+    { drop: 'Lotex (steroid)', phase: 'Week 2', dose: '1 drop · 3× a day', eyes: 'Both eyes', dates: 'Jul 6 – Jul 12', times: '7 AM · 2 PM · 10 PM', steroid: true },
+    { drop: 'Lotex (steroid)', phase: 'Week 3', dose: '1 drop · 2× a day', eyes: 'Both eyes', dates: 'Jul 13 – Jul 19', times: '7 AM · 10 PM', steroid: true },
+    { drop: 'Kaimoist (lubricant)', phase: '60 days', dose: '1 drop · 4× a day', eyes: 'Both eyes', dates: 'Jun 29 – ~Aug 27', times: 'Through the day (≈10 min after Lotex)', steroid: false },
+  ],
+  howto: [
+    'Wash your hands before every dose.',
+    'Tilt head back, pull the lower lid down, drop into the pocket — don’t touch the tip to your eye or lashes.',
+    'After the drop, close the eye gently and press the inner corner (near the nose) for ~1 minute — it works better and reduces side effects.',
+    'If two drops are due together, do Lotex first, then wait ~10 minutes before Kaimoist.',
+    'Keep both bottles capped and clean; gently shake Lotex before use if it’s a suspension.',
+  ],
+  rules: [
+    'Lotex is a steroid — finish the full 3-week taper exactly. Don’t stop early, and don’t keep using it longer on your own.',
+    'Steroid eye drops can raise eye pressure if misused, so stick to the schedule and attend any follow-up the doctor sets.',
+    'Kaimoist is just a lubricant — safe for the full 60 days; add an extra drop if your eyes feel dry.',
+    'If vision worsens, or eyes get red/painful, see the doctor sooner — don’t wait.',
+  ],
+};
 
 export default function ForMe() {
   const today = todayKey();
@@ -259,6 +318,109 @@ export default function ForMe() {
           <button onClick={logWeight} className="bg-amber-500/15 hover:bg-amber-500/25 text-amber-200 text-sm font-bold px-4 py-2 rounded-lg transition-colors">Save</button>
         </div>
       </Card>
+
+      {/* LATEST HEALTH REPORT */}
+      <section>
+        <div className="flex items-center gap-2 mb-3">
+          <Activity className="w-5 h-5 text-rose-300" />
+          <h2 className="font-display text-xl font-extrabold">Latest health report</h2>
+        </div>
+        <p className="text-sm text-slate-400 leading-relaxed mb-4 max-w-2xl">
+          {REPORT.intro} <span className="text-slate-500">({REPORT.lab}, {REPORT.date})</span>
+        </p>
+
+        {/* Priority — see a doctor */}
+        <div className="rounded-2xl p-5 border border-rose-500/25 bg-rose-500/[0.06] mb-4">
+          <div className="text-[10px] font-bold uppercase tracking-widest text-rose-300 mb-1.5">⚠️ Do this first — see a doctor</div>
+          <p className="text-sm text-slate-200 leading-relaxed">{REPORT.priority}</p>
+        </div>
+
+        {/* What to watch */}
+        <Card className="mb-4">
+          <h3 className="font-bold text-sm mb-3">What to keep an eye on</h3>
+          <div className="space-y-2">
+            {REPORT.flags.map((f, i) => (
+              <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+                <Pill color={f.status === 'see-doctor' ? 'rose' : 'amber'}>{f.status === 'see-doctor' ? 'See doctor' : 'Watch'}</Pill>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm text-slate-100 font-semibold">{f.label} — <span className="text-slate-400 font-normal">{f.value}</span></div>
+                  <div className="text-xs text-slate-400 mt-0.5 leading-relaxed">{f.note}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* The good news */}
+        <Card className="mb-4">
+          <h3 className="font-bold text-sm mb-3 text-emerald-300">The good news — all normal</h3>
+          <ul className="space-y-1.5">
+            {REPORT.good.map((g, i) => (
+              <li key={i} className="flex gap-2 text-sm text-slate-300 leading-relaxed"><span className="text-emerald-400 mt-0.5">✓</span><span>{g}</span></li>
+            ))}
+          </ul>
+        </Card>
+
+        {/* Action plan */}
+        <Card>
+          <h3 className="font-bold text-sm mb-3 text-amber-300">My action plan</h3>
+          <ul className="space-y-2">
+            {REPORT.actions.map((a, i) => (
+              <li key={i} className="flex gap-2 text-sm text-slate-300 leading-relaxed"><span className="text-amber-400 mt-0.5">▸</span><span>{a}</span></li>
+            ))}
+          </ul>
+        </Card>
+
+        <p className="text-xs text-slate-500 italic mt-3 max-w-2xl">{REPORT.disclaimer}</p>
+      </section>
+
+      {/* EYE DROPS — prescription tracker */}
+      <section>
+        <div className="flex items-center gap-2 mb-3">
+          <Eye className="w-5 h-5 text-sky-300" />
+          <h2 className="font-display text-xl font-extrabold">Eye drops — follow exactly</h2>
+        </div>
+        <p className="text-sm text-slate-400 leading-relaxed mb-4 max-w-2xl">
+          {EYE_CARE.context} <span className="text-slate-500">({EYE_CARE.hospital}, started {EYE_CARE.started})</span>
+        </p>
+
+        {/* Schedule */}
+        <div className="space-y-2 mb-4">
+          {EYE_CARE.schedule.map((s, i) => (
+            <Card key={i} className="!p-4">
+              <div className="flex items-start gap-3 flex-wrap">
+                <Pill color={s.steroid ? 'rose' : 'sky'}>{s.phase}</Pill>
+                <div className="flex-1 min-w-[180px]">
+                  <div className="text-sm font-bold text-slate-100">{s.drop}</div>
+                  <div className="text-xs text-slate-400 mt-0.5">{s.dose} · {s.eyes}</div>
+                  <div className="text-[11px] text-sky-300 mt-1">⏰ {s.times}</div>
+                </div>
+                <div className="text-[11px] text-slate-500 font-semibold whitespace-nowrap">{s.dates}</div>
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        {/* How to use + rules */}
+        <div className="grid lg:grid-cols-2 gap-4">
+          <Card>
+            <h3 className="font-bold text-sm mb-3 text-emerald-300">How to put the drops</h3>
+            <ul className="space-y-2">
+              {EYE_CARE.howto.map((h, i) => (
+                <li key={i} className="flex gap-2 text-[13px] text-slate-300 leading-relaxed"><span className="text-emerald-400 mt-0.5">✓</span><span>{h}</span></li>
+              ))}
+            </ul>
+          </Card>
+          <Card className="!border-rose-500/15 bg-gradient-to-br from-rose-500/[0.04] to-transparent">
+            <h3 className="font-bold text-sm mb-3 text-rose-300">Important rules</h3>
+            <ul className="space-y-2">
+              {EYE_CARE.rules.map((r, i) => (
+                <li key={i} className="flex gap-2 text-[13px] text-slate-300 leading-relaxed"><span className="text-rose-400 mt-0.5">●</span><span>{r}</span></li>
+              ))}
+            </ul>
+          </Card>
+        </div>
+      </section>
 
       {/* MY DAILY RHYTHM */}
       <section>
