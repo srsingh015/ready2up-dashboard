@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import {
   LayoutDashboard, Compass, Coins, Map, CalendarDays, Repeat, Sun,
   Megaphone, Tag as TagIcon, MessageSquareText, ShieldCheck, LineChart,
-  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake, User, TrendingUp, FileText, Globe2
+  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake, User, TrendingUp, FileText, Globe2, GraduationCap
 } from 'lucide-react';
 
 import Overview from './sections/Overview.jsx';
@@ -18,6 +18,7 @@ import Onboarding from './sections/Onboarding.jsx';
 import Scripts from './sections/Scripts.jsx';
 import Properties from './sections/Properties.jsx';
 import Dubai from './sections/Dubai.jsx';
+import Settle from './sections/Settle.jsx';
 import Principles from './sections/Principles.jsx';
 import BrandPlaybook from './sections/BrandPlaybook.jsx';
 import Trackers from './sections/Trackers.jsx';
@@ -27,8 +28,11 @@ import Partnerships from './sections/Partnerships.jsx';
 import ForKaira from './sections/ForKaira.jsx';
 import ForMe from './sections/ForMe.jsx';
 import Us from './sections/Us.jsx';
+import InstituteOutreach from './sections/InstituteOutreach.jsx';
 import ThemeToggle from './ui/ThemeToggle.jsx';
+import SectionBoundary from './SectionBoundary.jsx';
 import { useLocalStorage } from '../hooks/useLocalStorage.js';
+import { navIdsFromContent } from '../lib/content.js';
 
 const NAV = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard, group: 'core' },
@@ -42,6 +46,7 @@ const NAV = [
   { id: 'pricing', label: 'Pricing & Packages', icon: TagIcon, group: 'execution' },
   { id: 'onboarding', label: 'Client Onboarding', icon: ClipboardList, group: 'execution' },
   { id: 'scripts', label: 'Scripts & Templates', icon: MessageSquareText, group: 'execution' },
+  { id: 'institute-outreach', label: 'Institute Outreach', icon: GraduationCap, group: 'execution' },
   { id: 'properties', label: 'Affiliate & Properties', icon: Layers, group: 'execution' },
   { id: 'brand', label: 'Brand Playbook', icon: Sparkles, group: 'execution' },
   { id: 'principles', label: 'Operating Principles', icon: ShieldCheck, group: 'execution' },
@@ -49,6 +54,7 @@ const NAV = [
   { id: 'passive', label: 'Passive Income', icon: TrendingUp, group: 'build' },
   { id: 'content', label: 'Content Plan', icon: FileText, group: 'build' },
   { id: 'dubai', label: 'Dubai Expansion', icon: Globe2, group: 'build' },
+  { id: 'settle', label: 'Settle & Wealth Plan', icon: Compass, group: 'build' },
   { id: 'partnerships', label: 'Partnership Companies', icon: Building2, group: 'portfolio' },
   { id: 'us', label: 'Us 💞', icon: HeartHandshake, group: 'kaira' },
   { id: 'kaira', label: 'For Kaira 🌸', icon: Heart, group: 'kaira' },
@@ -68,11 +74,45 @@ const GROUP_LABELS = {
 // Nothing is pinned by default now — the Together group has its own special spot.
 const DEFAULT_PINNED = [];
 
-export default function Layout({ data, onLock, theme, toggleTheme }) {
-  const [active, setActive] = useState('overview');
+export default function Layout({ data, onLock, theme, toggleTheme, role }) {
+  // Nav visibility is a pure reflection of the content that ACTUALLY arrived
+  // from the server (Req 5.3, 6.3, 8.2). A nav entry shows only when all of its
+  // backing content keys are present in `data` — authorization is enforced
+  // server-side by RLS, so a section the role may not see never has its data
+  // and therefore never has a nav entry. Memoized on `data`.
+  const visibleIds = useMemo(() => navIdsFromContent(data), [data]);
+  const visibleSet = useMemo(() => new Set(visibleIds), [visibleIds]);
+
+  // The first visible nav id in NAV order — the initial/landing section and the
+  // fallback whenever a non-visible section is somehow requested.
+  const firstVisibleId = useMemo(
+    () => NAV.find((n) => visibleSet.has(n.id))?.id ?? null,
+    [visibleSet]
+  );
+
+  const [active, setActive] = useState(firstVisibleId);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [pinned, setPinned] = useLocalStorage('pinned_nav', DEFAULT_PINNED);
   const [togetherTop, setTogetherTop] = useLocalStorage('together_pinned', true);
+
+  // Navigate to a requested section, switching only to a visible section. If a
+  // non-visible id is somehow requested it falls back to the first visible
+  // section, so non-permitted content is never rendered (Req 6.3, 8.2).
+  function navigate(requestedId) {
+    setActive(visibleSet.has(requestedId) ? requestedId : firstVisibleId);
+    setMobileOpen(false);
+  }
+
+  // Re-clamp the active section into the visible set whenever the data (and
+  // hence the permitted content) or the role changes — e.g. after a role switch
+  // the previously-active owner section is no longer present, so fall back to
+  // the first visible section (Req 6.3, 8.2).
+  useEffect(() => {
+    if (!visibleSet.has(active)) {
+      setActive(firstVisibleId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visibleSet, firstVisibleId, role]);
 
   // Reset scroll to top whenever the user navigates to a different section.
   // Without this, scrolling deep into one section then switching meant the
@@ -87,20 +127,28 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
     setPinned((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
   }
 
+  // Only nav entries whose backing content arrived are ever presented
+  // (Req 5.3, 6.3, 8.2). All downstream list-building works off this filtered
+  // set so non-visible entries never render, not even as pinned items.
+  const visibleNav = useMemo(
+    () => NAV.filter((n) => visibleSet.has(n.id)),
+    [visibleSet]
+  );
+
   // Build pinned section list (preserves NAV order) and unpinned groups.
   // The Together group ('kaira') is handled separately as one special block.
-  const togetherItems = NAV.filter((n) => n.group === 'kaira');
+  const togetherItems = visibleNav.filter((n) => n.group === 'kaira');
   const { pinnedItems, unpinnedGroups } = useMemo(() => {
-    const pinnedItems = NAV.filter((n) => n.group !== 'kaira' && pinned.includes(n.id));
+    const pinnedItems = visibleNav.filter((n) => n.group !== 'kaira' && pinned.includes(n.id));
     const m = {};
-    NAV.forEach((n) => {
+    visibleNav.forEach((n) => {
       if (n.group === 'kaira') return;
       if (pinned.includes(n.id)) return;
       m[n.group] ??= [];
       m[n.group].push(n);
     });
     return { pinnedItems, unpinnedGroups: m };
-  }, [pinned]);
+  }, [pinned, visibleNav]);
 
   // The "Together" block — subtly special (soft rose tint), with one pin toggle.
   const renderTogether = () => (
@@ -126,7 +174,7 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
           return (
             <button
               key={item.id}
-              onClick={() => { setActive(item.id); setMobileOpen(false); }}
+              onClick={() => navigate(item.id)}
               className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all border ${
                 isActive
                   ? 'bg-white text-rose-600 border-white font-bold shadow-[0_3px_14px_-3px_rgba(0,0,0,0.22)]'
@@ -142,12 +190,17 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
     </div>
   );
 
-  const renderSection = () => {    const props = { data };
+  const renderSection = () => {
+    // Guard: never render a section whose backing content did not arrive
+    // (Req 6.3, 8.2). `navigate` and the clamp effect keep `active` visible,
+    // but this is a defensive backstop against any non-visible `active` value.
+    if (!visibleSet.has(active)) return null;
+    const props = { data, role };
     switch (active) {
-      case 'overview': return <Overview {...props} onNavigate={setActive} />;
+      case 'overview': return <Overview {...props} onNavigate={navigate} />;
       case 'vision': return <Vision {...props} />;
       case 'streams': return <Streams {...props} />;
-      case 'roadmap': return <Roadmap {...props} onNavigate={setActive} />;
+      case 'roadmap': return <Roadmap {...props} onNavigate={navigate} />;
       case 'months': return <Months {...props} />;
       case 'rhythm': return <Rhythm {...props} />;
       case 'focus': return <Focus {...props} />;
@@ -155,6 +208,7 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
       case 'pricing': return <Pricing {...props} />;
       case 'onboarding': return <Onboarding {...props} />;
       case 'scripts': return <Scripts {...props} />;
+      case 'institute-outreach': return <InstituteOutreach {...props} />;
       case 'properties': return <Properties {...props} />;
       case 'brand': return <BrandPlaybook {...props} />;
       case 'principles': return <Principles {...props} />;
@@ -162,11 +216,12 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
       case 'passive': return <PassiveIncome {...props} />;
       case 'content': return <ContentPlan {...props} />;
       case 'dubai': return <Dubai {...props} />;
+      case 'settle': return <Settle {...props} />;
       case 'partnerships': return <Partnerships {...props} />;
       case 'kaira': return <ForKaira {...props} />;
       case 'us': return <Us {...props} />;
       case 'me': return <ForMe {...props} />;
-      default: return <Overview {...props} onNavigate={setActive} />;
+      default: return <Overview {...props} onNavigate={navigate} />;
     }
   };
 
@@ -197,9 +252,11 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
               <div className="font-display text-lg font-extrabold gold-text leading-none">Ready2UP</div>
             </div>
             <div className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold">Private Growth Plan</div>
-            <div className="mt-2 inline-flex items-center gap-1.5 text-[10px] font-bold text-amber-300/90 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-full">
-              🎯 Building to ₹5CR
-            </div>
+            {role === 'owner' && (
+              <div className="mt-2 inline-flex items-center gap-1.5 text-[10px] font-bold text-amber-300/90 bg-amber-500/10 border border-amber-500/20 px-2 py-1 rounded-full">
+                🎯 Building to ₹5CR
+              </div>
+            )}
           </div>
           <button onClick={() => setMobileOpen(false)} className="lg:hidden p-1.5 rounded-lg hover:bg-white/5">
             <X className="w-4 h-4" />
@@ -211,8 +268,9 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
           className="flex-1 min-h-0 px-2 py-2 overflow-y-auto"
           style={{ overscrollBehavior: 'contain' }}
         >
-          {/* Together — special block, pinned to top by default */}
-          {togetherTop && renderTogether()}
+          {/* Together — special block, pinned to top by default.
+              Only rendered when the role can see at least one Together entry. */}
+          {togetherTop && togetherItems.length > 0 && renderTogether()}
 
           {/* Pinned group */}
           {pinnedItems.length > 0 && (
@@ -227,7 +285,7 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
                   item={item}
                   active={active}
                   isPinned
-                  onSelect={() => { setActive(item.id); setMobileOpen(false); }}
+                  onSelect={() => navigate(item.id)}
                   onTogglePin={(e) => togglePin(item.id, e)}
                 />
               ))}
@@ -246,7 +304,7 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
                   item={item}
                   active={active}
                   isPinned={false}
-                  onSelect={() => { setActive(item.id); setMobileOpen(false); }}
+                  onSelect={() => navigate(item.id)}
                   onTogglePin={(e) => togglePin(item.id, e)}
                 />
               ))}
@@ -254,7 +312,7 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
           ))}
 
           {/* Together at its natural spot when not pinned to top */}
-          {!togetherTop && renderTogether()}
+          {!togetherTop && togetherItems.length > 0 && renderTogether()}
         </nav>
 
         {/* Footer — pinned at bottom, never scrolls away */}
@@ -278,7 +336,11 @@ export default function Layout({ data, onLock, theme, toggleTheme }) {
       {/* Main */}
       <main className="flex-1 min-w-0 relative">
         <div className="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-10 py-8 sm:py-10 pb-24">
-          {renderSection()}
+          {/* Per-section failure isolation: a missing/malformed content key
+              surfaces as a visible "unavailable" state for this section only,
+              while the rest of the dashboard keeps working (Req 4.5, 8.8).
+              Keyed by `active` so navigating renders the next section fresh. */}
+          <SectionBoundary key={active}>{renderSection()}</SectionBoundary>
         </div>
       </main>
     </div>

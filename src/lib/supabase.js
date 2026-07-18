@@ -20,3 +20,15 @@ export const supabase = isCloudEnabled
       },
     })
   : null;
+
+// Account emails for password-only login resolution. The single password entered
+// at the gate is tried against these emails in fixed order (owner first, then
+// employee) to resolve which account — and therefore which role — is signing in.
+// These are NOT secrets: they are configured via Vite env vars and are safe to
+// expose in the browser. Authorization is enforced server-side by RLS.
+export const OWNER_EMAIL = import.meta.env.VITE_SUPABASE_LOGIN_EMAIL || '';
+export const EMPLOYEE_EMAIL = import.meta.env.VITE_SUPABASE_EMPLOYEE_EMAIL || '';
+
+// Fixed evaluation order: owner first, then employee. `.filter(Boolean)` drops
+// any unconfigured (empty-string) email so login only attempts real accounts.
+export const LOGIN_EMAILS = [OWNER_EMAIL, EMPLOYEE_EMAIL].filter(Boolean);

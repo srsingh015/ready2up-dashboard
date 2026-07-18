@@ -4,6 +4,26 @@ import { motion } from 'framer-motion';
 import ThemeToggle from './ui/ThemeToggle.jsx';
 
 /**
+ * Friendly copy for the known error codes. The parent (App.jsx) passes a CODE
+ * string via the `error` prop — one of 'empty' | 'invalid' | 'ratelimited' |
+ * 'timeout' | 'unavailable' (or '' / null). The local empty/whitespace guard
+ * also emits 'empty'. Any other (already-formatted) non-empty string passed via
+ * the `error` prop is displayed as-is.
+ */
+const ERROR_COPY = {
+  empty: 'Please enter your password.',
+  invalid: "That password wasn't recognized.",
+  ratelimited: 'Too many attempts. Please wait a few minutes and try again.',
+  timeout: "Login couldn't be completed. Check your connection and try again.",
+  unavailable: 'The dashboard is temporarily unavailable. Please try again.',
+};
+
+function formatError(err) {
+  if (!err) return null;
+  return ERROR_COPY[err] || err;
+}
+
+/**
  * Public-facing login screen.
  *
  * IMPORTANT: This screen has NO personal text on it. Anyone could see this URL,
@@ -16,19 +36,51 @@ export default function PasswordGate({ onSubmit, error, busy, theme, toggleTheme
   const [remember, setRemember] = useState(true);
   const inputRef = useRef(null);
   const [shake, setShake] = useState(0);
+  // Local client-side validation message code ('empty' | null).
+  const [validationError, setValidationError] = useState(null);
+  // Whether the input has been edited since the last submit. While true, the
+  // parent-provided `error` (e.g. 'invalid') is suppressed so the message
+  // clears the moment the user modifies the field (Req 3.2).
+  const [editedSinceSubmit, setEditedSinceSubmit] = useState(false);
   const isBlossom = theme === 'blossom';
+
+  // The message actually shown: local validation takes precedence; otherwise
+  // fall back to the parent error unless the input was edited since submit.
+  const displayError = validationError || (editedSinceSubmit ? null : error);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
+  // Shake whenever an error becomes visible (local validation or parent error).
   useEffect(() => {
-    if (error) setShake((s) => s + 1);
-  }, [error]);
+    if (displayError) setShake((s) => s + 1);
+  }, [displayError]);
+
+  function handleChange(e) {
+    setPassword(e.target.value);
+    // Any edit clears the local validation message and dismisses a stale
+    // parent error until the next submit (keeps errors visible until the input
+    // changes — Req 3.2).
+    setValidationError(null);
+    setEditedSinceSubmit(true);
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!busy) onSubmit(password, remember);
+    if (busy) return;
+    // Fresh submit: allow the parent error to surface again if resolution fails.
+    setEditedSinceSubmit(false);
+    // Minimal local guard: an empty or whitespace-only password never reaches
+    // the parent (avoids a pointless auth request). Show the 'empty' message
+    // and DO NOT call onSubmit. The password is NOT trimmed before submit —
+    // only inspected to decide whether to skip the call.
+    if (password.trim().length === 0) {
+      setValidationError('empty');
+      return;
+    }
+    setValidationError(null);
+    onSubmit(password, remember);
   }
 
   return (
@@ -89,8 +141,11 @@ export default function PasswordGate({ onSubmit, error, busy, theme, toggleTheme
                 ref={inputRef}
                 type={show ? 'text' : 'password'}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handleChange}
                 disabled={busy}
+                maxLength={72}
+                aria-invalid={displayError ? 'true' : undefined}
+                aria-describedby={displayError ? 'password-error' : undefined}
                 placeholder="Password"
                 autoComplete="off"
                 spellCheck={false}
@@ -108,13 +163,15 @@ export default function PasswordGate({ onSubmit, error, busy, theme, toggleTheme
               </button>
             </motion.div>
 
-            {error && (
+            {displayError && (
               <motion.div
+                id="password-error"
+                role="alert"
                 initial={{ opacity: 0, y: -4 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-sm text-rose-400 font-medium"
               >
-                {error}
+                {formatError(displayError)}
               </motion.div>
             )}
 
@@ -141,7 +198,7 @@ export default function PasswordGate({ onSubmit, error, busy, theme, toggleTheme
 
             <button
               type="submit"
-              disabled={busy || !password}
+              disabled={busy}
               className="w-full inline-flex items-center justify-center gap-2 disabled:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60 font-bold text-sm tracking-wide py-3 sm:py-3.5 rounded-xl transition-all focus-ring active:scale-[0.99]"
               style={{
                 background: busy || !password

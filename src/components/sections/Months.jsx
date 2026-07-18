@@ -5,12 +5,16 @@ import { formatInr } from '../../utils/format.js';
 
 const PHASE_COLOR = { p0: 'rose', p1: 'violet', p2: 'sky', p3: 'amber', p4: 'emerald' };
 
-export default function Months({ data }) {
+export default function Months({ data, role }) {
   const { months, roadmap } = data;
   const [active, setActive] = useState(1);
   const month = months[active - 1];
   const phase = roadmap.find((p) => p.id === month.phase);
   const phaseColor = PHASE_COLOR[month.phase];
+  const redactMoney = role && role !== 'owner';
+  const visibleKpis = redactMoney
+    ? (month.kpis || []).filter((k) => !(typeof k.target === 'number' && k.target > 1000))
+    : (month.kpis || []);
 
   return (
     <div className="space-y-8">
@@ -33,13 +37,15 @@ export default function Months({ data }) {
             <h2 className="font-display text-2xl sm:text-3xl font-extrabold leading-tight">{month.title}</h2>
             <p className="text-sm text-slate-400 mt-2 max-w-2xl leading-relaxed">{month.theme}</p>
           </div>
-          <div className="text-right shrink-0">
-            <div className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Revenue Target</div>
-            <div className="font-display text-xl font-extrabold gold-text whitespace-nowrap">{formatInr(month.revenueTargetInr.from)} – {formatInr(month.revenueTargetInr.to)}</div>
-            {month.mrrTargetInr ? (
-              <div className="text-[11px] text-slate-500 mt-1">MRR target: {formatInr(month.mrrTargetInr)}/mo</div>
-            ) : null}
-          </div>
+          {!redactMoney && (
+            <div className="text-right shrink-0">
+              <div className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Revenue Target</div>
+              <div className="font-display text-xl font-extrabold gold-text whitespace-nowrap">{formatInr(month.revenueTargetInr.from)} – {formatInr(month.revenueTargetInr.to)}</div>
+              {month.mrrTargetInr ? (
+                <div className="text-[11px] text-slate-500 mt-1">MRR target: {formatInr(month.mrrTargetInr)}/mo</div>
+              ) : null}
+            </div>
+          )}
         </div>
 
         <div className="grid sm:grid-cols-3 gap-3 mt-5">
@@ -78,14 +84,14 @@ export default function Months({ data }) {
       </section>
 
       <section className="grid sm:grid-cols-2 gap-4">
-        {month.kpis && month.kpis.length > 0 && (
+        {visibleKpis.length > 0 && (
           <Card>
             <div className="flex items-center gap-2 mb-3">
               <Target className="w-4 h-4 text-emerald-300" />
               <h3 className="text-sm font-bold uppercase tracking-widest text-emerald-300">KPIs to hit</h3>
             </div>
             <div className="space-y-2">
-              {month.kpis.map((k, i) => (
+              {visibleKpis.map((k, i) => (
                 <div key={i} className="flex items-center justify-between p-2.5 bg-white/[0.03] rounded-lg border border-white/[0.06]">
                   <span className="text-sm text-slate-300">{k.label}</span>
                   <span className="font-display text-sm font-extrabold gold-text">

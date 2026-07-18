@@ -1,6 +1,7 @@
 node_modules
 dist
 .password.json
+.scan-secrets.json
 content-source/
 .DS_Store
 *.log
@@ -15,8 +16,11 @@ Blogs keyword magic tool semrush/
 Recent images of mobile design/
 Blog drafts/
 Partners Business/
+Client Documents/
+Skincare Guide/
 
-# NOTE: src/data/__payload.js IS committed on purpose.
-# It is the AES-encrypted content (safe — useless without the password),
-# and Vercel needs it to build. The plaintext (content-source/) and the
-# password (.password.json) are never committed.
+# NOTE: Content now lives server-side in Supabase (content_sections table),
+# gated by Row-Level Security and fetched at runtime after login. The old
+# client-side encrypted bundle (src/data/__payload.js) has been retired, so no
+# plan content ships in the deploy. The plaintext (content-source/) and all
+# secrets (.password.json, .scan-secrets.json, .env) are never committed.

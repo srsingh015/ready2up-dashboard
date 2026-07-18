@@ -1,0 +1,2525 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Owner sections render unchanged under gating (Req 13.2, 13.4) > Layout navigation renders unchanged for the Owner (full nav set + theme) 1`] = `
+<nav
+  class="flex-1 min-h-0 px-2 py-2 overflow-y-auto"
+  style="overscroll-behavior: contain;"
+>
+  <div
+    class="mb-3 rounded-2xl p-2 bg-rose-500/[0.05] border border-rose-500/15"
+  >
+    <div
+      class="flex items-center justify-between px-2 pt-1 pb-1.5"
+    >
+      <div
+        class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-rose-300/90"
+      >
+        <svg
+          class="lucide lucide-heart w-3 h-3 fill-current"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+          />
+        </svg>
+        <span>
+          Together
+        </span>
+      </div>
+      <button
+        aria-label="Unpin Together from top"
+        class="p-1 rounded-md transition-colors text-rose-300/90 hover:bg-white/[0.06]"
+        title="Unpin Together from top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5 fill-current"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="space-y-0.5"
+    >
+      <button
+        class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.06]"
+      >
+        <svg
+          class="lucide lucide-heart-handshake w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+          />
+          <path
+            d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"
+          />
+          <path
+            d="m18 15-2-2"
+          />
+          <path
+            d="m15 18-2-2"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Us 💞
+        </span>
+      </button>
+      <button
+        class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.06]"
+      >
+        <svg
+          class="lucide lucide-heart w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          For Kaira 🌸
+        </span>
+      </button>
+      <button
+        class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.06]"
+      >
+        <svg
+          class="lucide lucide-heart w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          For Me 💕
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    class="mb-3"
+  >
+    <div
+      class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500"
+    >
+      Foundation
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border bg-white text-rose-600 border-white font-bold shadow-[0_3px_14px_-3px_rgba(0,0,0,0.22)]"
+      >
+        <svg
+          class="lucide lucide-layout-dashboard w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            height="9"
+            rx="1"
+            width="7"
+            x="3"
+            y="3"
+          />
+          <rect
+            height="5"
+            rx="1"
+            width="7"
+            x="14"
+            y="3"
+          />
+          <rect
+            height="9"
+            rx="1"
+            width="7"
+            x="14"
+            y="12"
+          />
+          <rect
+            height="5"
+            rx="1"
+            width="7"
+            x="3"
+            y="16"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Overview
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-compass w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"
+          />
+          <circle
+            cx="12"
+            cy="12"
+            r="10"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Goals & Why
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-coins w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            cx="8"
+            cy="8"
+            r="6"
+          />
+          <path
+            d="M18.09 10.37A6 6 0 1 1 10.34 18"
+          />
+          <path
+            d="M7 6h1v4"
+          />
+          <path
+            d="m16.71 13.88.7.71-2.82 2.82"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Income Streams
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div
+    class="mb-3"
+  >
+    <div
+      class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500"
+    >
+      The Plan
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-map w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"
+          />
+          <path
+            d="M15 5.764v15"
+          />
+          <path
+            d="M9 3.236v15"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          24-Month Roadmap
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-calendar-days w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8 2v4"
+          />
+          <path
+            d="M16 2v4"
+          />
+          <rect
+            height="18"
+            rx="2"
+            width="18"
+            x="3"
+            y="4"
+          />
+          <path
+            d="M3 10h18"
+          />
+          <path
+            d="M8 14h.01"
+          />
+          <path
+            d="M12 14h.01"
+          />
+          <path
+            d="M16 14h.01"
+          />
+          <path
+            d="M8 18h.01"
+          />
+          <path
+            d="M12 18h.01"
+          />
+          <path
+            d="M16 18h.01"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Monthly Plans
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-repeat w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m17 2 4 4-4 4"
+          />
+          <path
+            d="M3 11v-1a4 4 0 0 1 4-4h14"
+          />
+          <path
+            d="m7 22-4-4 4-4"
+          />
+          <path
+            d="M21 13v1a4 4 0 0 1-4 4H3"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Daily / Weekly Rhythm
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-timer w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <line
+            x1="10"
+            x2="14"
+            y1="2"
+            y2="2"
+          />
+          <line
+            x1="12"
+            x2="15"
+            y1="14"
+            y2="11"
+          />
+          <circle
+            cx="12"
+            cy="14"
+            r="8"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Focus Mode
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div
+    class="mb-3"
+  >
+    <div
+      class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500"
+    >
+      Execution
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-megaphone w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m3 11 18-5v12L3 14v-3z"
+          />
+          <path
+            d="M11.6 16.8a3 3 0 1 1-5.8-1.6"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Client Channels
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-tag w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"
+          />
+          <circle
+            cx="7.5"
+            cy="7.5"
+            fill="currentColor"
+            r=".5"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Pricing & Packages
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-clipboard-list w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            height="4"
+            rx="1"
+            ry="1"
+            width="8"
+            x="8"
+            y="2"
+          />
+          <path
+            d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+          />
+          <path
+            d="M12 11h4"
+          />
+          <path
+            d="M12 16h4"
+          />
+          <path
+            d="M8 11h.01"
+          />
+          <path
+            d="M8 16h.01"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Client Onboarding
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-message-square-text w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+          />
+          <path
+            d="M13 8H7"
+          />
+          <path
+            d="M17 12H7"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Scripts & Templates
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-graduation-cap w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"
+          />
+          <path
+            d="M22 10v6"
+          />
+          <path
+            d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Institute Outreach
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-layers w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"
+          />
+          <path
+            d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"
+          />
+          <path
+            d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Affiliate & Properties
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-sparkles w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"
+          />
+          <path
+            d="M20 3v4"
+          />
+          <path
+            d="M22 5h-4"
+          />
+          <path
+            d="M4 17v2"
+          />
+          <path
+            d="M5 18H3"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Brand Playbook
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-shield-check w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+          />
+          <path
+            d="m9 12 2 2 4-4"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Operating Principles
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div
+    class="mb-3"
+  >
+    <div
+      class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500"
+    >
+      Tools
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-chart-line w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M3 3v16a2 2 0 0 0 2 2h16"
+          />
+          <path
+            d="m19 9-5 5-4-4-3 3"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Trackers
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div
+    class="mb-3"
+  >
+    <div
+      class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500"
+    >
+      Build & Earn
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-trending-up w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polyline
+            points="22 7 13.5 15.5 8.5 10.5 2 17"
+          />
+          <polyline
+            points="16 7 22 7 22 13"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Passive Income
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-file-text w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+          />
+          <path
+            d="M14 2v4a2 2 0 0 0 2 2h4"
+          />
+          <path
+            d="M10 9H8"
+          />
+          <path
+            d="M16 13H8"
+          />
+          <path
+            d="M16 17H8"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Content Plan
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-earth w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21.54 15H17a2 2 0 0 0-2 2v4.54"
+          />
+          <path
+            d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17"
+          />
+          <path
+            d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"
+          />
+          <circle
+            cx="12"
+            cy="12"
+            r="10"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Dubai Expansion
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-compass w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"
+          />
+          <circle
+            cx="12"
+            cy="12"
+            r="10"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Settle & Wealth Plan
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div
+    class="mb-3"
+  >
+    <div
+      class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500"
+    >
+      Partnerships
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-building2 w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"
+          />
+          <path
+            d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"
+          />
+          <path
+            d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"
+          />
+          <path
+            d="M10 6h4"
+          />
+          <path
+            d="M10 10h4"
+          />
+          <path
+            d="M10 14h4"
+          />
+          <path
+            d="M10 18h4"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Partnership Companies
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+`;
+
+exports[`Owner sections render unchanged under gating (Req 13.2, 13.4) > Principles renders unchanged 1`] = `
+<div
+  class="space-y-8"
+>
+  <div
+    class="mb-8"
+    style="opacity: 0; transform: translateY(10px);"
+  >
+    <div
+      class="text-[10px] font-bold uppercase tracking-[0.22em] text-amber-300/80 mb-3"
+    >
+      The Operating Principles
+    </div>
+    <h1
+      class="font-display font-extrabold leading-[1.05] tracking-tight"
+      style="font-size: clamp(1.75rem, 4.5vw, 2.5rem); background-image: linear-gradient(110deg, var(--page-grad-1, #ec4899) 0%, var(--page-grad-2, #f472b6) 30%, var(--page-grad-3, #fbbf24) 55%, var(--page-grad-2, #f472b6) 80%, var(--page-grad-1, #ec4899) 100%); background-size: 200% 100%; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; animation: blossomShimmer 8s ease-in-out infinite; display: inline-block; padding: 0px 0.05em;"
+    >
+      12 rules — read every Monday morning
+    </h1>
+    <p
+      class="text-base text-slate-400 mt-3 max-w-2xl leading-relaxed"
+    >
+      These are the lessons you have already paid for. Read them. Run by them. The next 24 months become almost mechanical when you do.
+    </p>
+  </div>
+  <div
+    class="grid sm:grid-cols-2 gap-3"
+  >
+    <div
+      class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover "
+    >
+      <div
+        class="flex items-start gap-3"
+      >
+        <div
+          class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-300 font-display font-extrabold flex items-center justify-center shrink-0"
+        >
+          1
+        </div>
+        <div>
+          <h3
+            class="font-bold text-sm sm:text-base mb-1.5"
+          >
+            Cash flow is the only KPI until it is steady.
+          </h3>
+          <p
+            class="text-sm text-slate-400 leading-relaxed"
+          >
+            Until ₹2L+ is reliably hitting the account every month, everything else is a distraction. No new tools, no new course, no new "let me just rebuild the portfolio". Sell first.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover "
+    >
+      <div
+        class="flex items-start gap-3"
+      >
+        <div
+          class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-300 font-display font-extrabold flex items-center justify-center shrink-0"
+        >
+          2
+        </div>
+        <div>
+          <h3
+            class="font-bold text-sm sm:text-base mb-1.5"
+          >
+            Spend zero on bets — invest only from profit.
+          </h3>
+          <p
+            class="text-sm text-slate-400 leading-relaxed"
+          >
+            Every rupee out before income comes in is a wound. Pay for hosting, the domain, one productivity tool. That is it. Ads, software stacks, and team hires come from money the business already made.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover "
+    >
+      <div
+        class="flex items-start gap-3"
+      >
+        <div
+          class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-300 font-display font-extrabold flex items-center justify-center shrink-0"
+        >
+          3
+        </div>
+        <div>
+          <h3
+            class="font-bold text-sm sm:text-base mb-1.5"
+          >
+            One offer. One ICP. One channel — until each is profitable.
+          </h3>
+          <p
+            class="text-sm text-slate-400 leading-relaxed"
+          >
+            If web design on Upwork is not yet making money, do not also start AI automation. Do not also start LinkedIn content. Do not also start cold email. Master one path, then stack.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover "
+    >
+      <div
+        class="flex items-start gap-3"
+      >
+        <div
+          class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-300 font-display font-extrabold flex items-center justify-center shrink-0"
+        >
+          4
+        </div>
+        <div>
+          <h3
+            class="font-bold text-sm sm:text-base mb-1.5"
+          >
+            Recurring income is oxygen.
+          </h3>
+          <p
+            class="text-sm text-slate-400 leading-relaxed"
+          >
+            Every project converts to a care plan. Aim for 25 active retainers by month 24 — that is ₹2L+/month before you sell anything new.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover "
+    >
+      <div
+        class="flex items-start gap-3"
+      >
+        <div
+          class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-300 font-display font-extrabold flex items-center justify-center shrink-0"
+        >
+          5
+        </div>
+        <div>
+          <h3
+            class="font-bold text-sm sm:text-base mb-1.5"
+          >
+            Hire from profit, not hope.
+          </h3>
+          <p
+            class="text-sm text-slate-400 leading-relaxed"
+          >
+            Do not hire to "free yourself up to grow". Hire when income clearly covers the salary plus 30% buffer for 6 months. Get the math wrong and the business eats itself.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover "
+    >
+      <div
+        class="flex items-start gap-3"
+      >
+        <div
+          class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-300 font-display font-extrabold flex items-center justify-center shrink-0"
+        >
+          6
+        </div>
+        <div>
+          <h3
+            class="font-bold text-sm sm:text-base mb-1.5"
+          >
+            6 months of cash runway. Always.
+          </h3>
+          <p
+            class="text-sm text-slate-400 leading-relaxed"
+          >
+            Below 6 months: scale back, sell harder, do not take risks. At 6+: invest, hire, raise prices. This single discipline prevents desperate-founder mistakes.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover "
+    >
+      <div
+        class="flex items-start gap-3"
+      >
+        <div
+          class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-300 font-display font-extrabold flex items-center justify-center shrink-0"
+        >
+          7
+        </div>
+        <div>
+          <h3
+            class="font-bold text-sm sm:text-base mb-1.5"
+          >
+            50% upfront. No exceptions.
+          </h3>
+          <p
+            class="text-sm text-slate-400 leading-relaxed"
+          >
+            Even for friends. Even for "obvious" deals. The deals that ghost are the ones where you bent this rule. Charge half before any code is written.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover "
+    >
+      <div
+        class="flex items-start gap-3"
+      >
+        <div
+          class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-300 font-display font-extrabold flex items-center justify-center shrink-0"
+        >
+          8
+        </div>
+        <div>
+          <h3
+            class="font-bold text-sm sm:text-base mb-1.5"
+          >
+            Scope creep dies on contact.
+          </h3>
+          <p
+            class="text-sm text-slate-400 leading-relaxed"
+          >
+            Every "small extra" is a written change order with its own price. Smile, send the form, move on. Clients respect this. Pushovers attract bullies.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover "
+    >
+      <div
+        class="flex items-start gap-3"
+      >
+        <div
+          class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-300 font-display font-extrabold flex items-center justify-center shrink-0"
+        >
+          9
+        </div>
+        <div>
+          <h3
+            class="font-bold text-sm sm:text-base mb-1.5"
+          >
+            Raise prices every 3 closes.
+          </h3>
+          <p
+            class="text-sm text-slate-400 leading-relaxed"
+          >
+            Confidence is built by closing. Every 3 successful projects at the current price = 15–20% raise on the next quote. The market self-corrects: if you stop closing, you went too far. Drop one tier, rebuild.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover "
+    >
+      <div
+        class="flex items-start gap-3"
+      >
+        <div
+          class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-300 font-display font-extrabold flex items-center justify-center shrink-0"
+        >
+          10
+        </div>
+        <div>
+          <h3
+            class="font-bold text-sm sm:text-base mb-1.5"
+          >
+            No bad-fit clients. Walk away gracefully.
+          </h3>
+          <p
+            class="text-sm text-slate-400 leading-relaxed"
+          >
+            Clients who haggle on the first call, who cannot articulate their goal, who treat you like a vendor — they cost 3x to deliver and never refer. Politely decline. The next lead is on its way.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover "
+    >
+      <div
+        class="flex items-start gap-3"
+      >
+        <div
+          class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-300 font-display font-extrabold flex items-center justify-center shrink-0"
+        >
+          11
+        </div>
+        <div>
+          <h3
+            class="font-bold text-sm sm:text-base mb-1.5"
+          >
+            Ship something every week, no exceptions.
+          </h3>
+          <p
+            class="text-sm text-slate-400 leading-relaxed"
+          >
+            Even if it is a feature, a case study, a video, a blog post — every week ends with something visible shipped. Momentum is the moat.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover "
+    >
+      <div
+        class="flex items-start gap-3"
+      >
+        <div
+          class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-300 font-display font-extrabold flex items-center justify-center shrink-0"
+        >
+          12
+        </div>
+        <div>
+          <h3
+            class="font-bold text-sm sm:text-base mb-1.5"
+          >
+            Health is leverage.
+          </h3>
+          <p
+            class="text-sm text-slate-400 leading-relaxed"
+          >
+            Sleep 7+ hours. Walk daily. Eat real food. A burnt-out founder makes ₹0/month. Treat your body like the most important asset on the balance sheet — it is.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Owner sections render unchanged under gating (Req 13.2, 13.4) > Roadmap renders unchanged (theme + phase structure) 1`] = `
+<div
+  class="space-y-8"
+>
+  <div
+    class="mb-8"
+    style="opacity: 0; transform: translateY(10px);"
+  >
+    <div
+      class="text-[10px] font-bold uppercase tracking-[0.22em] text-amber-300/80 mb-3"
+    >
+      The 24-Month Roadmap
+    </div>
+    <h1
+      class="font-display font-extrabold leading-[1.05] tracking-tight"
+      style="font-size: clamp(1.75rem, 4.5vw, 2.5rem); background-image: linear-gradient(110deg, var(--page-grad-1, #ec4899) 0%, var(--page-grad-2, #f472b6) 30%, var(--page-grad-3, #fbbf24) 55%, var(--page-grad-2, #f472b6) 80%, var(--page-grad-1, #ec4899) 100%); background-size: 200% 100%; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; animation: blossomShimmer 8s ease-in-out infinite; display: inline-block; padding: 0px 0.05em;"
+    >
+      Five phases. Five gates. No skipping.
+    </h1>
+    <p
+      class="text-base text-slate-400 mt-3 max-w-2xl leading-relaxed"
+    >
+      Aug 2026 → mid-2028. Each phase has clear graduation criteria — we do not advance until the gate is met. This is the discipline that keeps the base strong while the engine grows.
+    </p>
+  </div>
+  <div
+    class="relative pl-6 sm:pl-8"
+  >
+    <div
+      class="absolute top-2 bottom-2 left-2 sm:left-3 w-px bg-gradient-to-b from-rose-500 via-amber-500 to-emerald-500"
+    />
+    <div
+      class="space-y-4"
+    >
+      <div
+        class="relative"
+      >
+        <span
+          class="absolute -left-[26px] sm:-left-[34px] top-5 w-3.5 h-3.5 rounded-full bg-rose-500 shadow-[0_0_16px_rgba(255,255,255,0.2)]"
+        />
+        <div
+          class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover !p-0 overflow-hidden"
+        >
+          <button
+            class="w-full flex items-center gap-4 p-5 text-left hover:bg-white/[0.02] transition-colors"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-500 to-rose-700 text-ink-950 font-extrabold flex items-center justify-center shrink-0"
+            >
+              P0
+            </div>
+            <div
+              class="flex-1 min-w-0"
+            >
+              <div
+                class="flex items-center gap-2 flex-wrap"
+              >
+                <h3
+                  class="font-bold text-base sm:text-lg leading-tight"
+                >
+                  Reset & Foundation
+                </h3>
+                <span
+                  class="tag border bg-rose-500/10 text-rose-300 border-rose-500/20"
+                >
+                  Month 1
+                </span>
+                <span
+                  class="text-[11px] font-semibold text-slate-500"
+                >
+                  · 
+                  Aug 2026
+                </span>
+              </div>
+              <div
+                class="text-xs text-slate-400 mt-1 leading-relaxed"
+              >
+                Get the engine ready to fire. No clients yet — 4 weeks to do what most founders skip.
+              </div>
+            </div>
+            <div
+              class="hidden sm:block text-right shrink-0"
+            >
+              <div
+                class="text-[10px] uppercase tracking-widest text-slate-500 font-semibold"
+              >
+                Revenue range
+              </div>
+              <div
+                class="text-sm font-bold gold-text"
+              >
+                ₹0
+                 – 
+                ₹1L
+              </div>
+              <div
+                class="text-[10px] text-slate-500 mt-0.5"
+              >
+                Team: 
+                1 (you)
+              </div>
+            </div>
+            <svg
+              class="lucide lucide-chevron-down w-4 h-4 text-slate-400 shrink-0"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m6 9 6 6 6-6"
+              />
+            </svg>
+          </button>
+          <div
+            class="px-5 pb-5 pt-1 border-t border-white/[0.06]"
+          >
+            <div
+              class="grid sm:grid-cols-2 gap-6 mt-4"
+            >
+              <div>
+                <h4
+                  class="text-[10px] font-bold uppercase tracking-widest text-amber-300 mb-2"
+                >
+                  Key outcomes
+                </h4>
+                <ul
+                  class="space-y-2"
+                >
+                  <li
+                    class="flex gap-2 text-sm text-slate-300 leading-relaxed"
+                  >
+                    <span
+                      class="text-amber-300 mt-0.5"
+                    >
+                      ▸
+                    </span>
+                    <span>
+                      A clean, fast, conversion-focused ready2up.com showcasing real work.
+                    </span>
+                  </li>
+                  <li
+                    class="flex gap-2 text-sm text-slate-300 leading-relaxed"
+                  >
+                    <span
+                      class="text-amber-300 mt-0.5"
+                    >
+                      ▸
+                    </span>
+                    <span>
+                      Profiles on every channel ready to receive leads.
+                    </span>
+                  </li>
+                  <li
+                    class="flex gap-2 text-sm text-slate-300 leading-relaxed"
+                  >
+                    <span
+                      class="text-amber-300 mt-0.5"
+                    >
+                      ▸
+                    </span>
+                    <span>
+                      A defined ICP, offer, and pricing — written, not in your head.
+                    </span>
+                  </li>
+                  <li
+                    class="flex gap-2 text-sm text-slate-300 leading-relaxed"
+                  >
+                    <span
+                      class="text-amber-300 mt-0.5"
+                    >
+                      ▸
+                    </span>
+                    <span>
+                      A daily / weekly rhythm you can run on autopilot.
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h4
+                  class="text-[10px] font-bold uppercase tracking-widest text-emerald-300 mb-2"
+                >
+                  Gate to advance
+                </h4>
+                <ul
+                  class="space-y-2"
+                >
+                  <li
+                    class="flex gap-2 text-sm text-slate-300 leading-relaxed"
+                  >
+                    <span
+                      class="text-emerald-300 mt-0.5"
+                    >
+                      ✓
+                    </span>
+                    <span>
+                      Portfolio site live with 5+ best projects
+                    </span>
+                  </li>
+                  <li
+                    class="flex gap-2 text-sm text-slate-300 leading-relaxed"
+                  >
+                    <span
+                      class="text-emerald-300 mt-0.5"
+                    >
+                      ✓
+                    </span>
+                    <span>
+                      Upwork + LinkedIn + Google Business profiles all live and polished
+                    </span>
+                  </li>
+                  <li
+                    class="flex gap-2 text-sm text-slate-300 leading-relaxed"
+                  >
+                    <span
+                      class="text-emerald-300 mt-0.5"
+                    >
+                      ✓
+                    </span>
+                    <span>
+                      Pricing & packages written down (this dashboard counts)
+                    </span>
+                  </li>
+                  <li
+                    class="flex gap-2 text-sm text-slate-300 leading-relaxed"
+                  >
+                    <span
+                      class="text-emerald-300 mt-0.5"
+                    >
+                      ✓
+                    </span>
+                    <span>
+                      Outreach scripts adapted to your voice
+                    </span>
+                  </li>
+                  <li
+                    class="flex gap-2 text-sm text-slate-300 leading-relaxed"
+                  >
+                    <span
+                      class="text-emerald-300 mt-0.5"
+                    >
+                      ✓
+                    </span>
+                    <span>
+                      CRM / pipeline tracker set up (a Google Sheet is fine)
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <button
+              class="mt-5 inline-flex items-center gap-1 text-xs text-amber-300 hover:text-amber-200"
+            >
+              Open monthly plans for 
+              Month 1
+              <svg
+                class="lucide lucide-arrow-right w-3.5 h-3.5"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5 12h14"
+                />
+                <path
+                  d="m12 5 7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="relative"
+      >
+        <span
+          class="absolute -left-[26px] sm:-left-[34px] top-5 w-3.5 h-3.5 rounded-full bg-violet-500 shadow-[0_0_16px_rgba(255,255,255,0.2)]"
+        />
+        <div
+          class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover !p-0 overflow-hidden"
+        >
+          <button
+            class="w-full flex items-center gap-4 p-5 text-left hover:bg-white/[0.02] transition-colors"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-violet-700 text-ink-950 font-extrabold flex items-center justify-center shrink-0"
+            >
+              P1
+            </div>
+            <div
+              class="flex-1 min-w-0"
+            >
+              <div
+                class="flex items-center gap-2 flex-wrap"
+              >
+                <h3
+                  class="font-bold text-base sm:text-lg leading-tight"
+                >
+                  First Clients & Cash Flow
+                </h3>
+                <span
+                  class="tag border bg-violet-500/10 text-violet-300 border-violet-500/20"
+                >
+                  Months 2–4
+                </span>
+                <span
+                  class="text-[11px] font-semibold text-slate-500"
+                >
+                  · 
+                  Sep – Nov 2026
+                </span>
+              </div>
+              <div
+                class="text-xs text-slate-400 mt-1 leading-relaxed"
+              >
+                Volume of outreach. Speed of reply. Win the first 5 paid projects. Build social proof.
+              </div>
+            </div>
+            <div
+              class="hidden sm:block text-right shrink-0"
+            >
+              <div
+                class="text-[10px] uppercase tracking-widest text-slate-500 font-semibold"
+              >
+                Revenue range
+              </div>
+              <div
+                class="text-sm font-bold gold-text"
+              >
+                ₹50k
+                 – 
+                ₹2.50L
+              </div>
+              <div
+                class="text-[10px] text-slate-500 mt-0.5"
+              >
+                Team: 
+                1 (you)
+              </div>
+            </div>
+            <svg
+              class="lucide lucide-chevron-right w-4 h-4 text-slate-400 shrink-0"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m9 18 6-6-6-6"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div
+        class="relative"
+      >
+        <span
+          class="absolute -left-[26px] sm:-left-[34px] top-5 w-3.5 h-3.5 rounded-full bg-sky-500 shadow-[0_0_16px_rgba(255,255,255,0.2)]"
+        />
+        <div
+          class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover !p-0 overflow-hidden"
+        >
+          <button
+            class="w-full flex items-center gap-4 p-5 text-left hover:bg-white/[0.02] transition-colors"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500 to-sky-700 text-ink-950 font-extrabold flex items-center justify-center shrink-0"
+            >
+              P2
+            </div>
+            <div
+              class="flex-1 min-w-0"
+            >
+              <div
+                class="flex items-center gap-2 flex-wrap"
+              >
+                <h3
+                  class="font-bold text-base sm:text-lg leading-tight"
+                >
+                  Make It Consistent
+                </h3>
+                <span
+                  class="tag border bg-sky-500/10 text-sky-300 border-sky-500/20"
+                >
+                  Months 5–9
+                </span>
+                <span
+                  class="text-[11px] font-semibold text-slate-500"
+                >
+                  · 
+                  Dec 2026 – Apr 2027
+                </span>
+              </div>
+              <div
+                class="text-xs text-slate-400 mt-1 leading-relaxed"
+              >
+                Repeatable systems. Predictable monthly revenue. First hire — the multiplier moment.
+              </div>
+            </div>
+            <div
+              class="hidden sm:block text-right shrink-0"
+            >
+              <div
+                class="text-[10px] uppercase tracking-widest text-slate-500 font-semibold"
+              >
+                Revenue range
+              </div>
+              <div
+                class="text-sm font-bold gold-text"
+              >
+                ₹2L
+                 – 
+                ₹5L
+              </div>
+              <div
+                class="text-[10px] text-slate-500 mt-0.5"
+              >
+                Team: 
+                1 → 2
+              </div>
+            </div>
+            <svg
+              class="lucide lucide-chevron-right w-4 h-4 text-slate-400 shrink-0"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m9 18 6-6-6-6"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div
+        class="relative"
+      >
+        <span
+          class="absolute -left-[26px] sm:-left-[34px] top-5 w-3.5 h-3.5 rounded-full bg-amber-500 shadow-[0_0_16px_rgba(255,255,255,0.2)]"
+        />
+        <div
+          class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover !p-0 overflow-hidden"
+        >
+          <button
+            class="w-full flex items-center gap-4 p-5 text-left hover:bg-white/[0.02] transition-colors"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 text-ink-950 font-extrabold flex items-center justify-center shrink-0"
+            >
+              P3
+            </div>
+            <div
+              class="flex-1 min-w-0"
+            >
+              <div
+                class="flex items-center gap-2 flex-wrap"
+              >
+                <h3
+                  class="font-bold text-base sm:text-lg leading-tight"
+                >
+                  Build the Team
+                </h3>
+                <span
+                  class="tag border bg-amber-500/10 text-amber-300 border-amber-500/20"
+                >
+                  Months 10–15
+                </span>
+                <span
+                  class="text-[11px] font-semibold text-slate-500"
+                >
+                  · 
+                  May – Oct 2027
+                </span>
+              </div>
+              <div
+                class="text-xs text-slate-400 mt-1 leading-relaxed"
+              >
+                Hand off delivery so you become the rainmaker. International clients enter the mix.
+              </div>
+            </div>
+            <div
+              class="hidden sm:block text-right shrink-0"
+            >
+              <div
+                class="text-[10px] uppercase tracking-widest text-slate-500 font-semibold"
+              >
+                Revenue range
+              </div>
+              <div
+                class="text-sm font-bold gold-text"
+              >
+                ₹4L
+                 – 
+                ₹8L
+              </div>
+              <div
+                class="text-[10px] text-slate-500 mt-0.5"
+              >
+                Team: 
+                2 → 4
+              </div>
+            </div>
+            <svg
+              class="lucide lucide-chevron-right w-4 h-4 text-slate-400 shrink-0"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m9 18 6-6-6-6"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div
+        class="relative"
+      >
+        <span
+          class="absolute -left-[26px] sm:-left-[34px] top-5 w-3.5 h-3.5 rounded-full bg-emerald-500 shadow-[0_0_16px_rgba(255,255,255,0.2)]"
+        />
+        <div
+          class="bg-ink-800/60 border border-white/[0.06] rounded-2xl p-5 sm:p-6 card-hover !p-0 overflow-hidden"
+        >
+          <button
+            class="w-full flex items-center gap-4 p-5 text-left hover:bg-white/[0.02] transition-colors"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 text-ink-950 font-extrabold flex items-center justify-center shrink-0"
+            >
+              P4
+            </div>
+            <div
+              class="flex-1 min-w-0"
+            >
+              <div
+                class="flex items-center gap-2 flex-wrap"
+              >
+                <h3
+                  class="font-bold text-base sm:text-lg leading-tight"
+                >
+                  Scale & Diversify
+                </h3>
+                <span
+                  class="tag border bg-emerald-500/10 text-emerald-300 border-emerald-500/20"
+                >
+                  Months 16–24
+                </span>
+                <span
+                  class="text-[11px] font-semibold text-slate-500"
+                >
+                  · 
+                  Nov 2027 – Jul 2028
+                </span>
+              </div>
+              <div
+                class="text-xs text-slate-400 mt-1 leading-relaxed"
+              >
+                Scale what already works. Stack the second income stream cleanly. Set up the runway to ₹5Cr.
+              </div>
+            </div>
+            <div
+              class="hidden sm:block text-right shrink-0"
+            >
+              <div
+                class="text-[10px] uppercase tracking-widest text-slate-500 font-semibold"
+              >
+                Revenue range
+              </div>
+              <div
+                class="text-sm font-bold gold-text"
+              >
+                ₹7L
+                 – 
+                ₹15L
+              </div>
+              <div
+                class="text-[10px] text-slate-500 mt-0.5"
+              >
+                Team: 
+                4 → 6
+              </div>
+            </div>
+            <svg
+              class="lucide lucide-chevron-right w-4 h-4 text-slate-400 shrink-0"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="m9 18 6-6-6-6"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

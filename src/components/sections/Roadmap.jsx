@@ -11,9 +11,10 @@ const COLOR = {
   emerald: { bar: 'from-emerald-500 to-emerald-700', dot: 'bg-emerald-500', wrap: 'border-emerald-500/15', text: 'text-emerald-300' },
 };
 
-export default function Roadmap({ data, onNavigate }) {
+export default function Roadmap({ data, onNavigate, role }) {
   const { roadmap } = data;
   const [openId, setOpenId] = useState('p0');
+  const redactMoney = role && role !== 'owner';
 
   return (
     <div className="space-y-8">
@@ -46,11 +47,13 @@ export default function Roadmap({ data, onNavigate }) {
                       </div>
                       <div className="text-xs text-slate-400 mt-1 leading-relaxed">{p.focus}</div>
                     </div>
-                    <div className="hidden sm:block text-right shrink-0">
-                      <div className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold">Revenue range</div>
-                      <div className="text-sm font-bold gold-text">{formatInr(p.revenueTarget.from)} – {formatInr(p.revenueTarget.to)}</div>
-                      <div className="text-[10px] text-slate-500 mt-0.5">Team: {p.teamSize}</div>
-                    </div>
+                    {!redactMoney && (
+                      <div className="hidden sm:block text-right shrink-0">
+                        <div className="text-[10px] uppercase tracking-widest text-slate-500 font-semibold">Revenue range</div>
+                        <div className="text-sm font-bold gold-text">{formatInr(p.revenueTarget.from)} – {formatInr(p.revenueTarget.to)}</div>
+                        <div className="text-[10px] text-slate-500 mt-0.5">Team: {p.teamSize}</div>
+                      </div>
+                    )}
                     {isOpen ? <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" /> : <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />}
                   </button>
                   {isOpen && (

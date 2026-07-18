@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { viteSingleFile } from 'vite-plugin-singlefile';
@@ -78,5 +79,13 @@ export default defineConfig({
       // Explicitly deny dotfiles and our content-source folder
       deny: ['.env', '.env.*', '.password.json', 'content-source/**', '**/.password.json'],
     },
+  },
+  // Vitest configuration — jsdom environment for React component tests,
+  // with @testing-library/jest-dom matchers loaded via setupFiles.
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: ['./src/test/setup.js'],
+    include: ['src/**/*.{test,spec}.{js,jsx}'],
   },
 });

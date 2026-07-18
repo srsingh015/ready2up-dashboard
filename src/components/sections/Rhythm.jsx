@@ -19,7 +19,21 @@ const COLOR = {
 
 export default function Rhythm({ data }) {
   const { dailyRoutine, weeklyRhythm, monthlyRhythm } = data;
-  const [tab, setTab] = useState('daily');
+
+  // Each tab is backed by a content key that may be absent for a role that is
+  // not permitted that tier — Daily Routine is Personal content, so it is
+  // absent for the Head and Employee roles — or when a permitted tier failed to
+  // decrypt. Offer only the tabs whose backing content is actually present, so
+  // lower roles never see Personal content and this section still renders its
+  // permitted (Work) weekly/monthly rhythm rather than crashing on the missing
+  // key (Req 4.5, 6.2, 8.1). For the Owner all three are present, so behaviour
+  // is unchanged (Req 13.2).
+  const availableTabs = TABS.filter((t) =>
+    (t.id === 'daily' && dailyRoutine) ||
+    (t.id === 'weekly' && weeklyRhythm) ||
+    (t.id === 'monthly' && monthlyRhythm)
+  );
+  const [tab, setTab] = useState(() => availableTabs[0]?.id ?? 'daily');
 
   return (
     <div className="space-y-8">
@@ -31,7 +45,7 @@ export default function Rhythm({ data }) {
       />
 
       <div className="flex gap-2 p-1 bg-ink-800/60 rounded-xl border border-white/[0.06] inline-flex">
-        {TABS.map((t) => {
+        {availableTabs.map((t) => {
           const Ico = t.icon;
           const isActive = tab === t.id;
           return (
@@ -49,9 +63,9 @@ export default function Rhythm({ data }) {
         })}
       </div>
 
-      {tab === 'daily' && <DailyView routine={dailyRoutine} />}
-      {tab === 'weekly' && <WeeklyView weekly={weeklyRhythm} />}
-      {tab === 'monthly' && <MonthlyView monthly={monthlyRhythm} />}
+      {tab === 'daily' && dailyRoutine && <DailyView routine={dailyRoutine} />}
+      {tab === 'weekly' && weeklyRhythm && <WeeklyView weekly={weeklyRhythm} />}
+      {tab === 'monthly' && monthlyRhythm && <MonthlyView monthly={monthlyRhythm} />}
     </div>
   );
 }
