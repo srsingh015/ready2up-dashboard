@@ -1,12 +1,27 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, CartesianGrid } from 'recharts';
-import { Plus, Trash2, TrendingUp, Info } from 'lucide-react';
+import { Plus, Trash2, TrendingUp, Info, CheckCircle2, Circle, ListChecks, NotebookPen } from 'lucide-react';
 import { PageHeader, Card, Pill } from '../ui/Section.jsx';
 import { useLocalStorage } from '../../hooks/useLocalStorage.js';
 import { useCloudState } from '../../lib/cloudSync.js';
 import { formatInr } from '../../utils/format.js';
 
-export default function Trackers({ data }) {
+/**
+ * Role-aware Trackers.
+ *
+ * Owner  → the existing financial Plan-vs-Actual + Pipeline trackers (money).
+ * Others → a money-free "Work Tracker" (task checklist + daily notes). The
+ *          employee branch NEVER reads `data.months` / `data.meta`, so an
+ *          employee `data` object that lacks those keys can never crash it.
+ */
+export default function Trackers({ data, role }) {
+  if (role !== 'owner') {
+    return <EmployeeWorkTracker />;
+  }
+  return <OwnerTrackers data={data} />;
+}
+
+function OwnerTrackers({ data }) {
   const { months, meta } = data;
   const [actuals, setActuals] = useCloudState('actuals', {});
   const [pipeline, setPipeline] = useCloudState('pipeline', []);
@@ -191,6 +206,132 @@ export default function Trackers({ data }) {
             </table>
           </div>
         )}
+      </Card>
+    </div>
+  );
+}
+
+/**
+ * Money-free Work Tracker for employees.
+ *
+ * Persisted per-login via the same cloud-sync hook the owner trackers use
+ * (`useCloudState`), under NEW keys so it never collides with owner financial
+ * state. Contains a task checklist and a free-text "what I did today" notes
+ * field. Contains NO revenue, targets, MRR, pipeline, or any money.
+ */
+function EmployeeWorkTracker() {
+  const [tasks, setTasks] = useCloudState('employee_tasks', []);
+  const [notes, setNotes] = useCloudState('employee_notes', '');
+  const [draft, setDraft] = useState('');
+
+  const doneCount = useMemo(() => tasks.filter((t) => t.done).length, [tasks]);
+
+  function addTask() {
+    const text = draft.trim();
+    if (!text) return;
+    setTasks((list) => [...list, { id: Date.now(), text, done: false }]);
+    setDraft('');
+  }
+  function toggleTask(id) {
+    setTasks((list) => list.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));
+  }
+  function removeTask(id) {
+    setTasks((list) => list.filter((t) => t.id !== id));
+  }
+
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        eyebrow="Work Tracker"
+        title="Your tasks & daily notes"
+        subtitle="Add what you're working on, check things off as you finish, and jot down what you did today. Everything saves automatically to your login."
+        accent="emerald"
+      />
+
+      {/* Task checklist */}
+      <Card>
+        <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+          <div className="flex items-center gap-2">
+            <ListChecks className="w-5 h-5 text-emerald-300" />
+            <h3 className="font-display text-lg font-extrabold">My tasks</h3>
+          </div>
+          <Pill color="emerald">
+            {doneCount}/{tasks.length} done
+          </Pill>
+        </div>
+
+        <div className="flex gap-2 mb-4">
+          <input
+            type="text"
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') addTask();
+            }}
+            placeholder="Add a task and press Enter…"
+            className="flex-1 bg-ink-900 border border-white/[0.08] rounded-lg px-3 py-2 text-sm focus-ring placeholder-slate-600"
+          />
+          <button
+            onClick={addTask}
+            className="inline-flex items-center gap-1.5 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-200 text-xs font-bold px-3 py-2 rounded-lg transition-colors"
+          >
+            <Plus className="w-3.5 h-3.5" /> Add
+          </button>
+        </div>
+
+        {tasks.length === 0 ? (
+          <div className="text-center py-10 border border-dashed border-white/10 rounded-xl">
+            <p className="text-sm text-slate-500">No tasks yet. Add your first one above.</p>
+          </div>
+        ) : (
+          <ul className="space-y-1.5">
+            {tasks.map((t) => (
+              <li
+                key={t.id}
+                className="flex items-center gap-3 px-3 py-2 rounded-xl border border-white/[0.06] hover:bg-white/[0.03] transition-colors"
+              >
+                <button
+                  onClick={() => toggleTask(t.id)}
+                  aria-label={t.done ? 'Mark task as not done' : 'Mark task as done'}
+                  className={`shrink-0 ${t.done ? 'text-emerald-400' : 'text-slate-500 hover:text-slate-300'}`}
+                >
+                  {t.done ? <CheckCircle2 className="w-5 h-5" /> : <Circle className="w-5 h-5" />}
+                </button>
+                <span className={`flex-1 text-sm ${t.done ? 'line-through text-slate-500' : 'text-slate-200'}`}>
+                  {t.text}
+                </span>
+                <button
+                  onClick={() => removeTask(t.id)}
+                  aria-label="Delete task"
+                  className="text-slate-500 hover:text-rose-400 p-1.5 rounded-lg hover:bg-white/5"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
+
+      {/* Daily notes */}
+      <Card>
+        <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+          <div className="flex items-center gap-2">
+            <NotebookPen className="w-5 h-5 text-violet-300" />
+            <h3 className="font-display text-lg font-extrabold">What I did today</h3>
+          </div>
+          <Pill color="violet">Auto-saved to your login</Pill>
+        </div>
+        <p className="text-xs text-slate-400 mb-3">
+          A quick free-text log of what you worked on. Great for standups and handovers.
+        </p>
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          rows={8}
+          placeholder="Today I…"
+          className="w-full bg-ink-900 border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm leading-relaxed focus-ring placeholder-slate-600 resize-y"
+        />
       </Card>
     </div>
   );

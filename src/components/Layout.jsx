@@ -81,7 +81,16 @@ export default function Layout({ data, onLock, theme, toggleTheme, role }) {
   // server-side by RLS, so a section the role may not see never has its data
   // and therefore never has a nav entry. Memoized on `data`.
   const visibleIds = useMemo(() => navIdsFromContent(data), [data]);
-  const visibleSet = useMemo(() => new Set(visibleIds), [visibleIds]);
+  const visibleSet = useMemo(() => {
+    const set = new Set(visibleIds);
+    // The Work Tracker is user-state based (no content_sections row backs it),
+    // so `navIdsFromContent` — which is purely content-driven — never surfaces
+    // it for an employee. The owner already gets 'trackers' via its 'meta'
+    // backing key. Add it explicitly for non-owner roles so employees get the
+    // money-free Work Tracker even though it has no server content row.
+    if (role !== 'owner') set.add('trackers');
+    return set;
+  }, [visibleIds, role]);
 
   // The first visible nav id in NAV order — the initial/landing section and the
   // fallback whenever a non-visible section is somehow requested.

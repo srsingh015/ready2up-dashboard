@@ -145,19 +145,21 @@ describe('Property 7: navigation reflects the content that arrived', () => {
     );
   });
 
-  it('the employee content object yields exactly the 7 employee nav entries', () => {
+  it('the employee content object yields exactly the 5 content-driven employee nav entries', () => {
+    // The employee now receives ONLY these five content keys. `trackers` is NOT
+    // included here because `navIdsFromContent` is content-driven and pure —
+    // the Work Tracker has no content_sections row and is added by Layout for
+    // the employee role, not by this function.
     const employeeContent = {
-      roadmap: {},
-      months: {},
-      weeklyRhythm: {},
-      monthlyRhythm: {},
       channels: {},
       onboarding: {},
       principles: {},
+      scripts: {},
+      instituteOutreach: {},
     };
     const ids = navIdsFromContent(employeeContent);
     expect([...ids].sort()).toEqual(
-      ['roadmap', 'months', 'rhythm', 'focus', 'channels', 'onboarding', 'principles'].sort()
+      ['channels', 'onboarding', 'principles', 'scripts', 'institute-outreach'].sort()
     );
   });
 
@@ -179,13 +181,11 @@ describe('Property 8: authorization derives from role, not identity', () => {
   // Model it as the fixed set of employee keys, built independently of any
   // user id / email.
   const EMPLOYEE_KEYS = [
-    'roadmap',
-    'months',
-    'weeklyRhythm',
-    'monthlyRhythm',
     'channels',
     'onboarding',
     'principles',
+    'scripts',
+    'instituteOutreach',
   ];
 
   const buildEmployeeContent = () => {

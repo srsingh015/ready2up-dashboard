@@ -6,10 +6,10 @@
  *
  *   - OWNER rows    (min_role='owner')    : an exact, unredacted copy of every
  *     content section (built with buildOwnerVariant).
- *   - EMPLOYEE rows (min_role='employee') : exactly the 7 Employee_Content
- *     sections — `roadmap`/`months` money-redacted via redactMoney, plus
- *     unchanged copies of `weeklyRhythm`, `monthlyRhythm`, `channels`,
- *     `onboarding`, `principles`. No `dailyRoutine`, no other owner-only section.
+ *   - EMPLOYEE rows (min_role='employee') : exactly the 5 Employee_Content
+ *     sections — unchanged copies of `channels`, `onboarding`, `principles`,
+ *     `scripts`, and `instituteOutreach`. No `roadmap`/`months`, no
+ *     `dailyRoutine`, no `brandPlaybook`, no other owner-only section.
  *
  * Rows are upserted on conflict (key, min_role) with a SERVICE-ROLE Supabase
  * client that bypasses RLS. This script is for LOCAL / CI use only: the
@@ -38,15 +38,22 @@ const CONFLICT_TARGET = 'key,min_role';
 // Pure build-metadata keys that are NOT content sections; skipped entirely.
 const SKIP_KEYS = new Set(['builtAt', 'version']);
 
-// The 7 Employee_Content sections (Req 6.1). roadmap/months are money-redacted;
-// the rest are unchanged copies. No dailyRoutine, no owner-only sections.
-const EMPLOYEE_REDACTED_KEYS = ['roadmap', 'months'];
+// The Employee_Content sections (Req 6.1). Employees now receive ONLY these
+// five content rows — all unchanged copies. No money-redacted rows remain
+// (roadmap/months are no longer served to employees at all), and no owner-only
+// section (brandPlaybook, vision, meta, pricing, streams, dailyRoutine, etc.)
+// is ever included. Owner rows are unaffected (every key, via buildOwnerVariant).
+//
+// NOTE: `scripts` (proposal templates) may contain pricing — this is accepted
+// per the owner's explicit request to give employees the Scripts section; it is
+// intentionally NOT money-redacted.
+const EMPLOYEE_REDACTED_KEYS = [];
 const EMPLOYEE_COPY_KEYS = [
-  'weeklyRhythm',
-  'monthlyRhythm',
   'channels',
   'onboarding',
   'principles',
+  'scripts',
+  'instituteOutreach',
 ];
 
 /**
@@ -158,6 +165,23 @@ async function main() {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
+  // Clean up STALE employee rows first. Upsert only inserts/updates; it never
+  // deletes, so employee sections we've since removed (e.g. roadmap/months)
+  // would otherwise linger and remain visible. We delete every current
+  // employee-tier row whose key is NOT in the intended employee set, so the
+  // employee content ends up EXACTLY matching the plan. Owner rows are never
+  // touched. (If the intended set is empty, delete all employee rows.)
+  const employeeKeys = employeeRows.map((r) => r.key);
+  let del = supabase.from(TABLE).delete().eq('min_role', 'employee');
+  if (employeeKeys.length > 0) {
+    del = del.not('key', 'in', `(${employeeKeys.map((k) => `"${k}"`).join(',')})`);
+  }
+  const { error: delError } = await del;
+  if (delError) {
+    console.error(`\n❌ Cleanup of stale employee rows failed: ${delError.message}\n`);
+    process.exit(1);
+  }
+
   const allRows = [...ownerRows, ...employeeRows].map((r) => ({
     ...r,
     updated_at: new Date().toISOString(),
@@ -174,7 +198,7 @@ async function main() {
   }
 
   console.log(
-    `\n✅ Seed complete: ${ownerRows.length} owner row(s) + ${employeeRows.length} employee row(s) upserted.\n`
+    `\n✅ Seed complete: ${ownerRows.length} owner row(s) + ${employeeRows.length} employee row(s) upserted (stale employee rows cleaned up).\n`
   );
 }
 

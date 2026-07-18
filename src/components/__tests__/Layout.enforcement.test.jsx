@@ -18,15 +18,13 @@ import { render, screen, cleanup, within, fireEvent } from '@testing-library/rea
 import Layout from '../Layout.jsx';
 import { contents } from '../../../content-source/contents.js';
 
-// The exactly-7 content keys an Employee_Role session receives (Req 6.1).
+// The exactly-5 content keys an Employee_Role session receives (Req 6.1).
 const EMPLOYEE_KEYS = [
-  'roadmap',
-  'months',
-  'weeklyRhythm',
-  'monthlyRhythm',
   'channels',
   'onboarding',
   'principles',
+  'scripts',
+  'instituteOutreach',
 ];
 
 function ownerData() {
@@ -53,17 +51,18 @@ beforeEach(() => localStorage.clear());
 afterEach(() => cleanup());
 
 describe('Selecting a visible section renders it (Req 5.5)', () => {
-  it('renders the Client Channels section when its nav entry is chosen', () => {
+  it('renders the Operating Principles section when its nav entry is chosen', () => {
     renderLayout('employee', employeeData());
     const nav = screen.getByRole('navigation');
 
-    // The employee's landing section is the Roadmap; Channels is not shown yet.
-    expect(screen.queryByText('6 channels — ranked by ROI')).toBeNull();
-
-    fireEvent.click(within(nav).getByText('Client Channels'));
-
+    // The employee's landing section is now Client Channels; Operating
+    // Principles is not shown yet.
     expect(screen.getByText('6 channels — ranked by ROI')).toBeInTheDocument();
-    expect(screen.getByText('Where Clients Come From')).toBeInTheDocument();
+    expect(screen.queryByText('12 rules — read every Monday morning')).toBeNull();
+
+    fireEvent.click(within(nav).getByText('Operating Principles'));
+
+    expect(screen.getByText('12 rules — read every Monday morning')).toBeInTheDocument();
   });
 });
 
@@ -77,7 +76,7 @@ describe('A role switch re-clamps the active section into the visible set (Req 6
 
     // Hand the device to an Employee — the owner-only content is no longer in
     // `data`, so the section and its nav entry are gone and the active section
-    // clamps to the first visible section (the Roadmap).
+    // clamps to the first visible section (Client Channels).
     rerender(
       <Layout data={employeeData()} role="employee" onLock={noop} theme="ink" toggleTheme={noop} />
     );
@@ -85,17 +84,17 @@ describe('A role switch re-clamps the active section into the visible set (Req 6
     expect(screen.queryByText('The Foundation')).toBeNull();
     const navAfter = screen.getByRole('navigation');
     expect(within(navAfter).queryByText('Goals & Why')).toBeNull();
-    expect(screen.getByText('Five phases. Five gates. No skipping.')).toBeInTheDocument();
+    expect(screen.getByText('6 channels — ranked by ROI')).toBeInTheDocument();
   });
 });
 
 describe('A malformed backing key isolates the affected section (Req 4.5, 8.8)', () => {
   it('shows "currently unavailable" for the broken section while others still render', () => {
-    // The `roadmap` key is present (so its nav entry shows and it is the
-    // landing section) but malformed, so the Roadmap section throws — the
+    // The `channels` key is present (so its nav entry shows and it is the
+    // landing section) but malformed, so the Channels section throws — the
     // boundary must isolate it rather than crash the whole dashboard.
     const data = employeeData();
-    data.roadmap = {}; // not an array → Roadmap's `.map` throws
+    data.channels = {}; // not an array → Channels' `.map` throws
 
     renderLayout('employee', data);
 
@@ -104,9 +103,9 @@ describe('A malformed backing key isolates the affected section (Req 4.5, 8.8)',
     // Isolation: navigating to another visible section whose data IS intact
     // renders it normally.
     const nav = screen.getByRole('navigation');
-    fireEvent.click(within(nav).getByText('Client Channels'));
+    fireEvent.click(within(nav).getByText('Operating Principles'));
 
-    expect(screen.getByText('6 channels — ranked by ROI')).toBeInTheDocument();
+    expect(screen.getByText('12 rules — read every Monday morning')).toBeInTheDocument();
     expect(screen.queryByText(/currently unavailable/i)).toBeNull();
   });
 });
