@@ -83,21 +83,31 @@ export default function Layout({ data, onLock, theme, toggleTheme, role }) {
   const visibleIds = useMemo(() => navIdsFromContent(data), [data]);
   const visibleSet = useMemo(() => {
     const set = new Set(visibleIds);
-    // The Work Tracker is user-state based (no content_sections row backs it),
-    // so `navIdsFromContent` — which is purely content-driven — never surfaces
-    // it for an employee. The owner already gets 'trackers' via its 'meta'
-    // backing key. Add it explicitly for non-owner roles so employees get the
-    // money-free Work Tracker even though it has no server content row.
-    if (role !== 'owner') set.add('trackers');
+    // 'trackers' (money-free Work Tracker) and 'focus' (Focus Mode timer) are
+    // UI-only sections with no content_sections row backing them, so the purely
+    // content-driven `navIdsFromContent` never surfaces them for an employee.
+    // The owner already gets both via content ('meta'/'months'). Add them
+    // explicitly for non-owner roles. Focus Mode reads no owner data (its
+    // daily-routine suggestion is optional/null-guarded), so it is safe.
+    if (role !== 'owner') {
+      set.add('trackers');
+      set.add('focus');
+    }
     return set;
   }, [visibleIds, role]);
 
-  // The first visible nav id in NAV order — the initial/landing section and the
-  // fallback whenever a non-visible section is somehow requested.
-  const firstVisibleId = useMemo(
-    () => NAV.find((n) => visibleSet.has(n.id))?.id ?? null,
-    [visibleSet]
-  );
+  // The landing/fallback section. Prefer a real CONTENT-driven section (from
+  // `visibleIds`) so the user lands on actual content — not the UI-only Focus
+  // Mode timer or Work Tracker that we add manually for employees. Falls back
+  // to the full visible set only if no content section is present.
+  const firstVisibleId = useMemo(() => {
+    const contentSet = new Set(visibleIds);
+    return (
+      NAV.find((n) => contentSet.has(n.id))?.id ??
+      NAV.find((n) => visibleSet.has(n.id))?.id ??
+      null
+    );
+  }, [visibleIds, visibleSet]);
 
   const [active, setActive] = useState(firstVisibleId);
   const [mobileOpen, setMobileOpen] = useState(false);

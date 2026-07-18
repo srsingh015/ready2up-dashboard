@@ -60,9 +60,9 @@ function renderLayout(role, data) {
   );
 }
 
-// The exact set of nav labels an Employee_Role should see (6 entries): the five
-// content-driven sections plus the Work Tracker ('Trackers'), which Layout adds
-// for the employee role even though it has no content row.
+// The exact set of nav labels an Employee_Role should see (7 entries): the five
+// content-driven sections plus the Work Tracker ('Trackers') and Focus Mode,
+// which Layout adds for the employee role as UI-only sections (no content row).
 const EMPLOYEE_NAV_LABELS = [
   'Client Channels',
   'Client Onboarding',
@@ -70,11 +70,12 @@ const EMPLOYEE_NAV_LABELS = [
   'Scripts & Templates',
   'Institute Outreach',
   'Trackers',
+  'Focus Mode',
 ];
 
 // Owner-only / personal nav labels that must NEVER appear for an employee.
-// Note: Brand Playbook stays owner-only; Focus Mode is gone for employees
-// (it was backed by 'months', which employees no longer receive).
+// Note: Brand Playbook stays owner-only. Focus Mode IS now shown to employees
+// (a UI-only timer that needs no owner content), so it is not in this list.
 const OWNER_ONLY_NAV_LABELS = [
   'Overview',
   'Goals & Why',
@@ -82,7 +83,6 @@ const OWNER_ONLY_NAV_LABELS = [
   '24-Month Roadmap',
   'Monthly Plans',
   'Daily / Weekly Rhythm',
-  'Focus Mode',
   'Pricing & Packages',
   'Affiliate & Properties',
   'Brand Playbook',
