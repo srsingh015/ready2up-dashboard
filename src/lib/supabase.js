@@ -26,8 +26,14 @@ export const supabase = isCloudEnabled
 // employee) to resolve which account — and therefore which role — is signing in.
 // These are NOT secrets: they are configured via Vite env vars and are safe to
 // expose in the browser. Authorization is enforced server-side by RLS.
-export const OWNER_EMAIL = import.meta.env.VITE_SUPABASE_LOGIN_EMAIL || '';
-export const EMPLOYEE_EMAIL = import.meta.env.VITE_SUPABASE_EMPLOYEE_EMAIL || '';
+// Fallback defaults ensure login works even if an env var is missing in some
+// environment. These account emails are NOT secrets (they already ship in the
+// bundle via VITE_ vars, and the password — validated server-side by Supabase —
+// is what actually protects each account). An env var, when present, overrides.
+export const OWNER_EMAIL =
+  import.meta.env.VITE_SUPABASE_LOGIN_EMAIL || 'dragosaurabh@gmail.com';
+export const EMPLOYEE_EMAIL =
+  import.meta.env.VITE_SUPABASE_EMPLOYEE_EMAIL || 'ready2up.in@gmail.com';
 
 // Fixed evaluation order: owner first, then employee. `.filter(Boolean)` drops
 // any unconfigured (empty-string) email so login only attempts real accounts.
