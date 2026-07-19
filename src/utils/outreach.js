@@ -24,6 +24,14 @@ export const OUTREACH_STATUSES = [
 // The status that counts toward the closed-won conversion figure.
 export const CLOSED_WON = 'Closed won';
 
+// The Ready2UP qualification decision, in display order. This is a triage axis
+// SEPARATE from the outreach pipeline status: after reviewing an institute's
+// current website we mark it 'Accepted' (worth pitching — usually because the
+// site needs a redesign), 'In progress' (actively being worked on), or
+// 'Rejected' (not worth pitching). 'Undecided' is the default until a call is
+// made. A lead's pipeline status is unaffected by its decision, and vice versa.
+export const OUTREACH_DECISIONS = ['Undecided', 'Accepted', 'In progress', 'Rejected'];
+
 // City groups in display order. Any city not among the first three is
 // bucketed into 'Other'.
 export const CITY_ORDER = ['Nashik', 'Pune', 'Mumbai', 'Other'];
@@ -76,6 +84,57 @@ export function resolveStatus(lead, store) {
   if (isValidStatus(persisted)) return persisted;
   if (isValidStatus(lead && lead.status)) return lead.status;
   return 'Not contacted';
+}
+
+// ---------------------------------------------------------------------------
+// Decision resolution (Ready2UP Accept / Reject triage)
+// ---------------------------------------------------------------------------
+
+// Returns true iff `value` is one of the three valid decisions.
+function isValidDecision(value) {
+  return typeof value === 'string' && OUTREACH_DECISIONS.includes(value);
+}
+
+// Returns the resolved decision held on an already-resolved lead, defaulting
+// invalid/absent values to 'Undecided'.
+function decisionOf(lead) {
+  return isValidDecision(lead && lead.decision) ? lead.decision : 'Undecided';
+}
+
+// Resolves the effective decision for a lead given a persisted decision store.
+// Precedence mirrors resolveStatus:
+//   1. valid persisted override in store[lead.id]
+//   2. lead's seed decision (if valid)
+//   3. 'Undecided'
+export function resolveDecision(lead, store) {
+  const persisted = store ? store[lead.id] : undefined;
+  if (isValidDecision(persisted)) return persisted;
+  if (isValidDecision(lead && lead.decision)) return lead.decision;
+  return 'Undecided';
+}
+
+// Filters already-resolved leads by decision. `decisionFilter` accepts 'all' to
+// disable the predicate. The result is always a subset of the input.
+export function applyDecisionFilter(leads, decisionFilter) {
+  if (decisionFilter === 'all') return leads;
+  return leads.filter((lead) => decisionOf(lead) === decisionFilter);
+}
+
+// Computes the decision summary over a set of already-resolved leads, optionally
+// scoped to a single City bucket ('all'/falsy = every lead). Returns a counts
+// map with an entry for all three decisions (default 0) plus the scoped total.
+export function computeDecisionSummary(leads, cityScope) {
+  const counts = {};
+  for (const decision of OUTREACH_DECISIONS) counts[decision] = 0;
+
+  const scoped =
+    !cityScope || cityScope === 'all'
+      ? leads
+      : leads.filter((lead) => cityBucket(lead.city) === cityScope);
+
+  for (const lead of scoped) counts[decisionOf(lead)] += 1;
+
+  return { counts, total: scoped.length };
 }
 
 // ---------------------------------------------------------------------------

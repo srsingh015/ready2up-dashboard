@@ -83,6 +83,7 @@ export function StatCard({ label, value, sub, color = 'amber' }) {
     violet: 'text-violet-300',
     emerald: 'text-emerald-300',
     sky: 'text-sky-300',
+    rose: 'text-rose-300',
     slate: 'text-slate-100',
   };
   return (

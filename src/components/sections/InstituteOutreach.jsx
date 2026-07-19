@@ -2,22 +2,28 @@ import { useMemo, useState, useCallback } from 'react';
 import {
   GraduationCap, Filter, X, Copy, Check, AlertTriangle, ExternalLink,
   MapPin, Building2, Tag as TagIcon, Star, Mail, MessageCircle, Phone, Globe,
+  ThumbsUp, ThumbsDown, Loader,
 } from 'lucide-react';
 import { PageHeader, SectionHeader, Card, Pill, StatCard, Divider } from '../ui/Section.jsx';
 import { useLocalStorage } from '../../hooks/useLocalStorage.js';
 import {
   resolveStatus,
+  resolveDecision,
   groupLeadsByCity,
   applyFilters,
+  applyDecisionFilter,
   computePipeline,
+  computeDecisionSummary,
   matchProof,
   OUTREACH_STATUSES,
+  OUTREACH_DECISIONS,
   CITY_ORDER,
 } from '../../utils/outreach.js';
 
-// The namespaced key the useLocalStorage hook writes to (NS = 'r2up_v1::').
-// We re-read this exact key to verify a write actually landed (Req 5.6).
+// The namespaced keys the useLocalStorage hook writes to (NS = 'r2up_v1::').
+// We re-read these exact keys to verify a write actually landed (Req 5.6).
 const LEAD_STORE_KEY = 'r2up_v1::io_lead_status';
+const DECISION_STORE_KEY = 'r2up_v1::io_lead_decision';
 
 // A small colour cycle so each status pill/stat is visually distinct.
 const STATUS_COLOR = {
@@ -38,18 +44,32 @@ export default function InstituteOutreach({ data }) {
   // Filter state (owned here, passed down). Always mounted regardless of matches.
   const [cityFilter, setCityFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [decisionFilter, setDecisionFilter] = useState('all');
 
-  // Persisted per-lead status overrides: { [leadId]: status }.
+  // Persisted per-lead overrides: { [leadId]: status } and { [leadId]: decision }.
   const [statusStore, setStatusStore] = useLocalStorage('io_lead_status', {});
+  const [decisionStore, setDecisionStore] = useLocalStorage('io_lead_decision', {});
 
-  // Per-lead persist errors that drive the "not saved" indicator (Req 5.6).
+  // Per-lead persist errors that drive the "not saved" indicators (Req 5.6).
   const [persistErrors, setPersistErrors] = useState({});
+  const [decisionErrors, setDecisionErrors] = useState({});
 
   const setPersistError = useCallback((leadId) => {
     setPersistErrors((e) => ({ ...e, [leadId]: true }));
   }, []);
   const clearPersistError = useCallback((leadId) => {
     setPersistErrors((e) => {
+      if (!e[leadId]) return e;
+      const next = { ...e };
+      delete next[leadId];
+      return next;
+    });
+  }, []);
+  const setDecisionError = useCallback((leadId) => {
+    setDecisionErrors((e) => ({ ...e, [leadId]: true }));
+  }, []);
+  const clearDecisionError = useCallback((leadId) => {
+    setDecisionErrors((e) => {
       if (!e[leadId]) return e;
       const next = { ...e };
       delete next[leadId];
@@ -80,15 +100,40 @@ export default function InstituteOutreach({ data }) {
     [statusStore, setStatusStore, clearPersistError, setPersistError]
   );
 
+  // Commit a decision change with the same verified read-back pattern as status.
+  const commitDecision = useCallback(
+    (leadId, newDecision) => {
+      const prevStore = decisionStore;
+      const nextStore = { ...prevStore, [leadId]: newDecision };
+      setDecisionStore(nextStore); // optimistic UI + hook persist
+      try {
+        localStorage.setItem(DECISION_STORE_KEY, JSON.stringify(nextStore));
+        const raw = localStorage.getItem(DECISION_STORE_KEY);
+        const roundTripped = raw ? JSON.parse(raw) : {};
+        if (roundTripped[leadId] !== newDecision) throw new Error('verify failed');
+        clearDecisionError(leadId);
+      } catch {
+        setDecisionStore(prevStore);
+        setDecisionError(leadId);
+      }
+    },
+    [decisionStore, setDecisionStore, clearDecisionError, setDecisionError]
+  );
+
   // Derived data — computed unconditionally so hooks run in a stable order
   // even when the content guard below bails out (Rules of Hooks).
   const leads = Array.isArray(io?.leads) ? io.leads : [];
   const portfolioProof = Array.isArray(io?.portfolioProof) ? io.portfolioProof : [];
 
-  // Resolve each seed lead's effective status (override → seed → default).
+  // Resolve each seed lead's effective status + decision (override → seed → default).
   const resolvedLeads = useMemo(
-    () => leads.map((lead) => ({ ...lead, status: resolveStatus(lead, statusStore) })),
-    [leads, statusStore]
+    () =>
+      leads.map((lead) => ({
+        ...lead,
+        status: resolveStatus(lead, statusStore),
+        decision: resolveDecision(lead, decisionStore),
+      })),
+    [leads, statusStore, decisionStore]
   );
 
   // Pipeline summary, scoped to the active city filter (Req 9.x).
@@ -97,13 +142,26 @@ export default function InstituteOutreach({ data }) {
     [resolvedLeads, cityFilter]
   );
 
-  // City-grouped, filtered, sorted lead list (Req 4.x).
-  const visibleGroups = useMemo(
-    () => groupLeadsByCity(applyFilters(resolvedLeads, cityFilter, statusFilter)),
-    [resolvedLeads, cityFilter, statusFilter]
+  // Ready2UP accept/reject decision summary, scoped to the active city filter.
+  const decisionSummary = useMemo(
+    () => computeDecisionSummary(resolvedLeads, cityFilter),
+    [resolvedLeads, cityFilter]
   );
 
-  const filtersActive = cityFilter !== 'all' || statusFilter !== 'all';
+  // City-grouped, filtered (city + status + decision), sorted lead list (Req 4.x).
+  const visibleGroups = useMemo(
+    () =>
+      groupLeadsByCity(
+        applyDecisionFilter(
+          applyFilters(resolvedLeads, cityFilter, statusFilter),
+          decisionFilter
+        )
+      ),
+    [resolvedLeads, cityFilter, statusFilter, decisionFilter]
+  );
+
+  const filtersActive =
+    cityFilter !== 'all' || statusFilter !== 'all' || decisionFilter !== 'all';
 
   // --- Content guard: nothing renders without the outreach content (Req 1.6, 2.6).
   if (!io) {
@@ -137,7 +195,7 @@ export default function InstituteOutreach({ data }) {
         </Card>
       )}
 
-      <PipelineSummary pipeline={pipeline} />
+      <PipelineSummary pipeline={pipeline} decisionSummary={decisionSummary} />
 
       <Divider />
 
@@ -151,11 +209,14 @@ export default function InstituteOutreach({ data }) {
         <Filters
           cityFilter={cityFilter}
           statusFilter={statusFilter}
+          decisionFilter={decisionFilter}
           onCityChange={setCityFilter}
           onStatusChange={setStatusFilter}
+          onDecisionChange={setDecisionFilter}
           onClear={() => {
             setCityFilter('all');
             setStatusFilter('all');
+            setDecisionFilter('all');
           }}
           filtersActive={filtersActive}
         />
@@ -164,9 +225,10 @@ export default function InstituteOutreach({ data }) {
             groups={visibleGroups}
             totalSeedLeads={leads.length}
             portfolioProof={portfolioProof}
-            statusStore={statusStore}
             persistErrors={persistErrors}
+            decisionErrors={decisionErrors}
             onStatusChange={commitStatus}
+            onDecisionChange={commitDecision}
           />
         </div>
       </section>
@@ -189,8 +251,9 @@ export default function InstituteOutreach({ data }) {
 // ---------------------------------------------------------------------------
 // PipelineSummary — per-status counts (incl. 0), total, conversion % (Req 9.x)
 // ---------------------------------------------------------------------------
-export function PipelineSummary({ pipeline }) {
+export function PipelineSummary({ pipeline, decisionSummary }) {
   const { counts, total, conversionPct } = pipeline;
+  const decisionCounts = decisionSummary?.counts;
   return (
     <section>
       <SectionHeader
@@ -199,10 +262,16 @@ export function PipelineSummary({ pipeline }) {
         subtitle="Live counts by stage — updates the moment you change a lead's status."
         color="emerald"
       />
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
         <StatCard label="Total leads" value={total} color="slate" />
         <StatCard label="Closed-won conversion" value={`${conversionPct}%`} color="emerald" />
-        <div className="col-span-2 md:col-span-1" />
+        {decisionCounts && (
+          <>
+            <StatCard label="Accepted by Ready2UP" value={decisionCounts.Accepted ?? 0} color="emerald" />
+            <StatCard label="In progress" value={decisionCounts['In progress'] ?? 0} color="amber" />
+            <StatCard label="Rejected by Ready2UP" value={decisionCounts.Rejected ?? 0} color="rose" />
+          </>
+        )}
       </div>
       <div className="mt-3 flex flex-wrap gap-2">
         {OUTREACH_STATUSES.map((status) => (
@@ -222,7 +291,7 @@ export function PipelineSummary({ pipeline }) {
 // ---------------------------------------------------------------------------
 // Filters — city + status selectors with a clear control (Req 4.6–4.9)
 // ---------------------------------------------------------------------------
-export function Filters({ cityFilter, statusFilter, onCityChange, onStatusChange, onClear, filtersActive }) {
+export function Filters({ cityFilter, statusFilter, decisionFilter, onCityChange, onStatusChange, onDecisionChange, onClear, filtersActive }) {
   return (
     <Card className="!p-4">
       <div className="flex flex-col md:flex-row md:items-end gap-3">
@@ -258,6 +327,20 @@ export function Filters({ cityFilter, statusFilter, onCityChange, onStatusChange
             ))}
           </select>
         </label>
+        <label className="flex-1 min-w-0">
+          <span className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1">Decision</span>
+          <select
+            aria-label="Filter by decision"
+            value={decisionFilter}
+            onChange={(e) => onDecisionChange(e.target.value)}
+            className="w-full bg-ink-900 border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm focus-ring"
+          >
+            <option value="all">All decisions</option>
+            {OUTREACH_DECISIONS.map((d) => (
+              <option key={d} value={d}>{d === 'Accepted' ? 'Accepted by Ready2UP' : d === 'Rejected' ? 'Rejected by Ready2UP' : d}</option>
+            ))}
+          </select>
+        </label>
         <button
           onClick={onClear}
           disabled={!filtersActive}
@@ -278,7 +361,7 @@ export function Filters({ cityFilter, statusFilter, onCityChange, onStatusChange
 // ---------------------------------------------------------------------------
 // LeadList — one block per non-empty city group; empty states (Req 1.6, 4.x)
 // ---------------------------------------------------------------------------
-export function LeadList({ groups, totalSeedLeads, portfolioProof, statusStore, persistErrors, onStatusChange }) {
+export function LeadList({ groups, totalSeedLeads, portfolioProof, persistErrors, decisionErrors, onStatusChange, onDecisionChange }) {
   // No seed leads at all → seed empty state (Req 1.6).
   if (totalSeedLeads === 0) {
     return (
@@ -316,9 +399,12 @@ export function LeadList({ groups, totalSeedLeads, portfolioProof, statusStore, 
                 key={lead.id}
                 lead={lead}
                 resolvedStatus={lead.status}
+                resolvedDecision={lead.decision}
                 proof={matchProof(lead, portfolioProof)}
                 persistError={!!persistErrors[lead.id]}
+                decisionError={!!decisionErrors[lead.id]}
                 onStatusChange={onStatusChange}
+                onDecisionChange={onDecisionChange}
               />
             ))}
           </div>
@@ -331,15 +417,26 @@ export function LeadList({ groups, totalSeedLeads, portfolioProof, statusStore, 
 // ---------------------------------------------------------------------------
 // LeadCard — all required fields with placeholders; optional contacts (Req 4.4, 4.5, 3.7)
 // ---------------------------------------------------------------------------
-export function LeadCard({ lead, resolvedStatus, proof, persistError, onStatusChange }) {
+export function LeadCard({ lead, resolvedStatus, resolvedDecision, proof, persistError, decisionError, onStatusChange, onDecisionChange }) {
   // Resolve the proof link(s) to show. matchProof returns either a single
   // group { category, urls } or a fallback { fallback: true, groups }.
   const proofUrl = lead.proofUrl
     || (proof && !proof.fallback && proof.urls && proof.urls[0])
     || null;
 
+  // Tint the whole card by the Ready2UP decision: green = Accepted, amber =
+  // In progress, red = Rejected, default = Undecided.
+  const decisionClass =
+    resolvedDecision === 'Accepted'
+      ? '!border-emerald-500/40 bg-gradient-to-br from-emerald-500/[0.07] to-transparent'
+      : resolvedDecision === 'In progress'
+      ? '!border-amber-500/40 bg-gradient-to-br from-amber-500/[0.07] to-transparent'
+      : resolvedDecision === 'Rejected'
+      ? '!border-rose-500/40 bg-gradient-to-br from-rose-500/[0.07] to-transparent'
+      : '';
+
   return (
-    <Card>
+    <Card className={decisionClass}>
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
@@ -347,17 +444,43 @@ export function LeadCard({ lead, resolvedStatus, proof, persistError, onStatusCh
             <span className="inline-flex items-center gap-1 text-[11px] text-slate-500">
               <MapPin className="w-3 h-3" />{lead.location || lead.city}
             </span>
+            {resolvedDecision === 'Accepted' && (
+              <Pill color="emerald">
+                <span className="inline-flex items-center gap-1">
+                  <ThumbsUp className="w-3 h-3" /> Accepted by Ready2UP
+                </span>
+              </Pill>
+            )}
+            {resolvedDecision === 'In progress' && (
+              <Pill color="amber">
+                <span className="inline-flex items-center gap-1">
+                  <Loader className="w-3 h-3" /> In progress
+                </span>
+              </Pill>
+            )}
+            {resolvedDecision === 'Rejected' && (
+              <Pill color="rose">
+                <span className="inline-flex items-center gap-1">
+                  <ThumbsDown className="w-3 h-3" /> Rejected by Ready2UP
+                </span>
+              </Pill>
+            )}
           </div>
           <h4 className="font-bold text-base flex items-center gap-2">
             <Building2 className="w-4 h-4 text-slate-400 shrink-0" />
             <span className="min-w-0">{lead.name}</span>
           </h4>
         </div>
-        <div className="shrink-0">
+        <div className="shrink-0 flex flex-col items-end gap-2">
           <StatusDropdown
             value={resolvedStatus}
             error={persistError}
             onChange={(newStatus) => onStatusChange(lead.id, newStatus)}
+          />
+          <DecisionControl
+            value={resolvedDecision}
+            error={decisionError}
+            onChange={(newDecision) => onDecisionChange(lead.id, newDecision)}
           />
         </div>
       </div>
@@ -457,6 +580,67 @@ export function StatusDropdown({ value, onChange, error }) {
           <option key={s} value={s}>{s}</option>
         ))}
       </select>
+      {error && (
+        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-rose-300">
+          <AlertTriangle className="w-3 h-3" />
+          Not saved
+        </span>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// DecisionControl — Accept / Reject triage toggle (Ready2UP qualification).
+// Clicking an active choice again clears it back to 'Undecided'.
+// ---------------------------------------------------------------------------
+export function DecisionControl({ value, onChange, error }) {
+  const isAccepted = value === 'Accepted';
+  const isInProgress = value === 'In progress';
+  const isRejected = value === 'Rejected';
+  return (
+    <div className="flex flex-col items-end gap-1">
+      <div className="inline-flex rounded-lg overflow-hidden border border-white/[0.08]">
+        <button
+          type="button"
+          aria-label="Accept lead — Ready2UP will pitch this institute"
+          aria-pressed={isAccepted}
+          onClick={() => onChange(isAccepted ? 'Undecided' : 'Accepted')}
+          className={`inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold transition-colors ${
+            isAccepted
+              ? 'bg-emerald-500/25 text-emerald-200'
+              : 'bg-white/[0.03] text-slate-400 hover:bg-emerald-500/10 hover:text-emerald-300'
+          }`}
+        >
+          <ThumbsUp className="w-3.5 h-3.5" /> Accept
+        </button>
+        <button
+          type="button"
+          aria-label="Mark lead in progress — Ready2UP is working on this pitch"
+          aria-pressed={isInProgress}
+          onClick={() => onChange(isInProgress ? 'Undecided' : 'In progress')}
+          className={`inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold border-l border-white/[0.08] transition-colors ${
+            isInProgress
+              ? 'bg-amber-500/25 text-amber-200'
+              : 'bg-white/[0.03] text-slate-400 hover:bg-amber-500/10 hover:text-amber-300'
+          }`}
+        >
+          <Loader className="w-3.5 h-3.5" /> In progress
+        </button>
+        <button
+          type="button"
+          aria-label="Reject lead — Ready2UP will not pitch this institute"
+          aria-pressed={isRejected}
+          onClick={() => onChange(isRejected ? 'Undecided' : 'Rejected')}
+          className={`inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold border-l border-white/[0.08] transition-colors ${
+            isRejected
+              ? 'bg-rose-500/25 text-rose-200'
+              : 'bg-white/[0.03] text-slate-400 hover:bg-rose-500/10 hover:text-rose-300'
+          }`}
+        >
+          <ThumbsDown className="w-3.5 h-3.5" /> Reject
+        </button>
+      </div>
       {error && (
         <span className="inline-flex items-center gap-1 text-[10px] font-bold text-rose-300">
           <AlertTriangle className="w-3 h-3" />
