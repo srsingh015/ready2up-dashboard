@@ -1170,6 +1170,68 @@ exports[`Owner sections render unchanged under gating (Req 13.2, 13.4) > Layout 
         class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
       >
         <svg
+          class="lucide lucide-smartphone w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            height="20"
+            rx="2"
+            ry="2"
+            width="14"
+            x="5"
+            y="2"
+          />
+          <path
+            d="M12 18h.01"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          App Ventures
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
           class="lucide lucide-trending-up w-[18px] h-[18px] shrink-0"
           fill="none"
           height="24"

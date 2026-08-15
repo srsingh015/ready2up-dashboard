@@ -38,6 +38,7 @@ export const NAV_CONTENT = {
   principles: ['principles'],
   trackers: ['meta'],
   passive: ['streams'],
+  'app-ventures': ['appVentures'],
   content: ['brandPlaybook'],
   dubai: ['dubai'],
   settle: ['settle'],

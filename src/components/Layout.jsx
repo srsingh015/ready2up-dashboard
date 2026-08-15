@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import {
   LayoutDashboard, Compass, Coins, Map, CalendarDays, Repeat, Sun,
   Megaphone, Tag as TagIcon, MessageSquareText, ShieldCheck, LineChart,
-  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake, User, TrendingUp, FileText, Globe2, GraduationCap, Radar, PartyPopper
+  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake, User, TrendingUp, FileText, Globe2, GraduationCap, Radar, PartyPopper, Smartphone
 } from 'lucide-react';
 
 import Overview from './sections/Overview.jsx';
@@ -31,6 +31,7 @@ import Us from './sections/Us.jsx';
 import InstituteOutreach from './sections/InstituteOutreach.jsx';
 import ClientEngine from './sections/ClientEngine.jsx';
 import LawnsOutreach from './sections/LawnsOutreach.jsx';
+import AppVentures from './sections/AppVentures.jsx';
 import ThemeToggle from './ui/ThemeToggle.jsx';
 import SectionBoundary from './SectionBoundary.jsx';
 import { useLocalStorage } from '../hooks/useLocalStorage.js';
@@ -52,6 +53,7 @@ const NAV = [
   { id: 'brand', label: 'Brand Playbook', icon: Sparkles, group: 'execution' },
   { id: 'principles', label: 'Operating Principles', icon: ShieldCheck, group: 'execution' },
   { id: 'trackers', label: 'Trackers', icon: LineChart, group: 'tools' },
+  { id: 'app-ventures', label: 'App Ventures', icon: Smartphone, group: 'build' },
   { id: 'passive', label: 'Passive Income', icon: TrendingUp, group: 'build' },
   { id: 'content', label: 'Content Plan', icon: FileText, group: 'build' },
   { id: 'dubai', label: 'Dubai Expansion', icon: Globe2, group: 'build' },
@@ -237,6 +239,7 @@ export default function Layout({ data, onLock, theme, toggleTheme, role }) {
       case 'brand': return <BrandPlaybook {...props} />;
       case 'principles': return <Principles {...props} />;
       case 'trackers': return <Trackers {...props} />;
+      case 'app-ventures': return <AppVentures {...props} />;
       case 'passive': return <PassiveIncome {...props} />;
       case 'content': return <ContentPlan {...props} />;
       case 'dubai': return <Dubai {...props} />;
