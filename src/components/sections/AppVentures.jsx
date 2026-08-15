@@ -1,7 +1,7 @@
 import {
   Smartphone, TrendingUp, ShieldAlert, Rocket, ListChecks, BarChart3,
   Calendar, BookOpen, ExternalLink, Ban, IndianRupee, Target, RefreshCw,
-  Sparkles, ClipboardCheck, Trophy,
+  Sparkles, ClipboardCheck, Trophy, Swords,
 } from 'lucide-react';
 import { PageHeader, SectionHeader, Card, Pill, StatCard, Divider } from '../ui/Section.jsx';
 
@@ -157,6 +157,109 @@ export default function AppVentures({ data }) {
             ))}
           </div>
         </section>
+      )}
+
+      <Divider />
+
+      {/* ---------------- POSITIONING ---------------- */}
+      {av.positioning && (
+        <Card className="!border-emerald-500/40 !bg-emerald-500/[0.06]">
+          <SectionHeader
+            icon={Target}
+            color="emerald"
+            title="Positioning, after seeing the field"
+            subtitle="Researched competitor by competitor. One finding changed the plan."
+          />
+          <p className="font-display text-base font-extrabold text-emerald-200 leading-snug mb-3">
+            {av.positioning.headline}
+          </p>
+          <ul className="space-y-2">
+            {(av.positioning.wedge || []).map((w, i) => (
+              <li key={i} className="flex gap-2.5 text-sm text-slate-300 leading-relaxed">
+                <span className="text-emerald-300 shrink-0">▸</span><span>{w}</span>
+              </li>
+            ))}
+          </ul>
+          {av.positioning.storeLine && (
+            <div className="mt-4 rounded-xl border border-white/[0.10] bg-black/25 px-4 py-3">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-1">
+                Store listing line
+              </span>
+              <span className="text-sm text-slate-200 italic">“{av.positioning.storeLine}”</span>
+            </div>
+          )}
+          {av.positioning.doNotClaim && (
+            <div className="mt-3 flex gap-3 rounded-xl border border-rose-500/30 bg-rose-500/[0.06] px-4 py-3">
+              <Ban className="w-4 h-4 text-rose-300 shrink-0 mt-0.5" />
+              <p className="text-sm text-slate-300 leading-relaxed">{av.positioning.doNotClaim}</p>
+            </div>
+          )}
+        </Card>
+      )}
+
+      {/* ---------------- COMPETITORS ---------------- */}
+      {av.competitors?.tiers?.length > 0 && (
+        <section>
+          <SectionHeader
+            icon={Swords}
+            color="rose"
+            title="Who we are up against"
+            subtitle="Four tiers. Tier 2 is the real fight; Tier 4 is the honest bad news."
+          />
+          <div className="space-y-4">
+            {av.competitors.tiers.map((tier, ti) => {
+              const border =
+                tier.tone === 'danger'
+                  ? '!border-rose-500/35'
+                  : tier.tone === 'warn'
+                  ? '!border-amber-500/30'
+                  : '!border-white/[0.08]';
+              return (
+                <Card key={ti} className={border}>
+                  <h3 className="font-bold text-base mb-1">{tier.tier}</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed mb-4">{tier.verdict}</p>
+                  <div className="space-y-3">
+                    {(tier.apps || []).map((app, ai) => (
+                      <div key={ai} className="rounded-xl border border-white/[0.08] bg-black/20 p-3.5">
+                        <div className="flex items-baseline gap-2 flex-wrap mb-2">
+                          <span className="font-bold text-sm text-slate-100">{app.name}</span>
+                          <Pill color="slate">{app.price}</Pill>
+                        </div>
+                        <Field label="Strength" value={app.strength} />
+                        <div className="mt-2">
+                          <Field label="Weakness" value={app.weakness} tone="rose" />
+                        </div>
+                        <div className="mt-2">
+                          <Field label="What we take from it" value={app.learn} tone="violet" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* ---------------- TEARDOWN PLAN ---------------- */}
+      {Array.isArray(av.teardownPlan) && (
+        <Card className="!border-sky-500/30 !bg-sky-500/[0.05]">
+          <SectionHeader
+            icon={ClipboardCheck}
+            color="sky"
+            title="Do this before writing any code"
+            subtitle="One evening with a real phone. Their bad reviews are our feature list."
+          />
+          <ul className="space-y-2.5">
+            {av.teardownPlan.map((t, i) => (
+              <li key={i} className="flex gap-3 text-sm text-slate-300 leading-relaxed">
+                <span className="text-slate-600 tabular-nums shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                <span>{t}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
       )}
 
       <Divider />
