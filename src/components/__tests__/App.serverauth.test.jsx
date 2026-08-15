@@ -23,6 +23,8 @@ const h = vi.hoisted(() => ({
   fetchContent: vi.fn(),
   setAuthState: vi.fn(),
   startUpdateWatcher: vi.fn(),
+  // UpdateBanner subscribes on mount and expects an unsubscribe function back.
+  onUpdatePending: vi.fn(() => () => {}),
 }));
 
 vi.mock('../../lib/supabase.js', () => ({
@@ -52,6 +54,7 @@ vi.mock('../../lib/cloudSync.js', () => ({
 
 vi.mock('../../lib/version.js', () => ({
   startUpdateWatcher: h.startUpdateWatcher,
+  onUpdatePending: h.onUpdatePending,
 }));
 
 vi.mock('../../hooks/useTheme.js', () => ({

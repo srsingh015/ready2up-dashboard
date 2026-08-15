@@ -4,6 +4,7 @@ import PasswordGate from './components/PasswordGate.jsx';
 import Layout from './components/Layout.jsx';
 import WelcomeIntro from './components/WelcomeIntro.jsx';
 import CherryPetals from './components/ui/CherryPetals.jsx';
+import UpdateBanner from './components/ui/UpdateBanner.jsx';
 import { useTheme } from './hooks/useTheme.js';
 import { supabase, isCloudEnabled } from './lib/supabase.js';
 import { signInResolvingRole } from './lib/auth.js';
@@ -175,6 +176,7 @@ export default function App() {
           theme={theme}
           toggleTheme={toggleTheme}
         />
+        <UpdateBanner />
       </>
     );
   }
@@ -184,6 +186,7 @@ export default function App() {
     <>
       <CherryPetals active={theme === 'blossom'} />
       <Layout data={data} role={role} onLock={logout} theme={theme} toggleTheme={toggleTheme} />
+      <UpdateBanner />
       <AnimatePresence>
         {showWelcome && (
           <WelcomeIntro
