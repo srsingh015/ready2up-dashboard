@@ -19,6 +19,7 @@ import {
   OUTREACH_DECISIONS,
   CITY_ORDER,
 } from '../../utils/outreach.js';
+import { decisionStyle } from '../../utils/decisionStyle.js';
 
 // The namespaced keys the useLocalStorage hook writes to (NS = 'r2up_v1::').
 // We re-read these exact keys to verify a write actually landed (Req 5.6).
@@ -425,18 +426,15 @@ export function LeadCard({ lead, resolvedStatus, resolvedDecision, proof, persis
     || null;
 
   // Tint the whole card by the Ready2UP decision: green = Accepted, amber =
-  // In progress, red = Rejected, default = Undecided.
-  const decisionClass =
-    resolvedDecision === 'Accepted'
-      ? '!border-emerald-500/40 bg-gradient-to-br from-emerald-500/[0.07] to-transparent'
-      : resolvedDecision === 'In progress'
-      ? '!border-amber-500/40 bg-gradient-to-br from-amber-500/[0.07] to-transparent'
-      : resolvedDecision === 'Rejected'
-      ? '!border-rose-500/40 bg-gradient-to-br from-rose-500/[0.07] to-transparent'
-      : '';
+  // In progress, red = Rejected, neutral = Undecided. Shared with the Lawns &
+  // Banquets section so both segments read identically.
+  const { card: decisionClass, bar: decisionBar } = decisionStyle(resolvedDecision);
 
   return (
     <Card className={decisionClass}>
+      {decisionBar && (
+        <span aria-hidden="true" className={`absolute left-0 top-0 bottom-0 w-1 ${decisionBar}`} />
+      )}
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">

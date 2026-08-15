@@ -912,66 +912,6 @@ exports[`Owner sections render unchanged under gating (Req 13.2, 13.4) > Layout 
         class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
       >
         <svg
-          class="lucide lucide-graduation-cap w-[18px] h-[18px] shrink-0"
-          fill="none"
-          height="24"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"
-          />
-          <path
-            d="M22 10v6"
-          />
-          <path
-            d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"
-          />
-        </svg>
-        <span
-          class="truncate"
-        >
-          Institute Outreach
-        </span>
-      </button>
-      <button
-        aria-label="Pin to top"
-        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
-        title="Pin to top"
-      >
-        <svg
-          class="lucide lucide-pin w-3.5 h-3.5"
-          fill="none"
-          height="24"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-          width="24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M12 17v5"
-          />
-          <path
-            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
-          />
-        </svg>
-      </button>
-    </div>
-    <div
-      class="relative group"
-    >
-      <button
-        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
-      >
-        <svg
           class="lucide lucide-layers w-[18px] h-[18px] shrink-0"
           fill="none"
           height="24"
@@ -1523,6 +1463,230 @@ exports[`Owner sections render unchanged under gating (Req 13.2, 13.4) > Layout 
           class="truncate"
         >
           Partnership Companies
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div
+    class="mb-3"
+  >
+    <div
+      class="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500"
+    >
+      Get Clients
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-radar w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M19.07 4.93A10 10 0 0 0 6.99 3.34"
+          />
+          <path
+            d="M4 6h.01"
+          />
+          <path
+            d="M2.29 9.62A10 10 0 1 0 21.31 8.35"
+          />
+          <path
+            d="M16.24 7.76A6 6 0 1 0 8.23 16.67"
+          />
+          <path
+            d="M12 18h.01"
+          />
+          <path
+            d="M17.99 11.66A6 6 0 0 1 15.77 16.67"
+          />
+          <circle
+            cx="12"
+            cy="12"
+            r="2"
+          />
+          <path
+            d="m13.41 10.59 5.66-5.66"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Client Acquisition Engine
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-party-popper w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5.8 11.3 2 22l10.7-3.79"
+          />
+          <path
+            d="M4 3h.01"
+          />
+          <path
+            d="M22 8h.01"
+          />
+          <path
+            d="M15 2h.01"
+          />
+          <path
+            d="M22 20h.01"
+          />
+          <path
+            d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"
+          />
+          <path
+            d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"
+          />
+          <path
+            d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"
+          />
+          <path
+            d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Lawns & Banquets
+        </span>
+      </button>
+      <button
+        aria-label="Pin to top"
+        class="absolute top-1/2 right-1.5 -translate-y-1/2 p-1.5 rounded-md transition-all opacity-0 group-hover:opacity-60 hover:!opacity-100 text-slate-400 hover:bg-white/10 hover:text-slate-100"
+        title="Pin to top"
+      >
+        <svg
+          class="lucide lucide-pin w-3.5 h-3.5"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 17v5"
+          />
+          <path
+            d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="relative group"
+    >
+      <button
+        class="w-full flex items-center gap-3 pl-3 pr-9 py-2 rounded-xl text-sm transition-all border border-transparent text-slate-300 font-medium hover:text-slate-100 hover:bg-white/[0.05]"
+      >
+        <svg
+          class="lucide lucide-graduation-cap w-[18px] h-[18px] shrink-0"
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"
+          />
+          <path
+            d="M22 10v6"
+          />
+          <path
+            d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"
+          />
+        </svg>
+        <span
+          class="truncate"
+        >
+          Institute Outreach
         </span>
       </button>
       <button

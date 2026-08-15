@@ -42,6 +42,11 @@ export const NAV_CONTENT = {
   dubai: ['dubai'],
   settle: ['settle'],
   partnerships: ['partnerships'],
+  // Client Acquisition Engine is a UI-only strategy section: its content lives
+  // in the component, so it is backed by 'meta' purely to reflect "this role
+  // received dashboard content at all" (same approach as trackers).
+  'client-engine': ['meta'],
+  'lawns-outreach': ['lawnsOutreach'],
   us: ['kaira'],
   kaira: ['kaira'],
   me: ['kaira'],

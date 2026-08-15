@@ -47,6 +47,20 @@ export const INSTITUTE_CATEGORIES = [
   'Law college',
 ];
 
+// The closed set of venue categories for the Lawns & Banquets segment, in
+// display order. Kept separate from INSTITUTE_CATEGORIES so the two outreach
+// segments can never contaminate each other's validation.
+export const VENUE_CATEGORIES = [
+  'Lawn & banquet',
+  'Lawn',
+  'Banquet hall',
+  'Mangal karyalaya',
+  'Resort venue',
+];
+
+// Lead priority, in display order. Drives sort order and the priority pill.
+export const VENUE_PRIORITIES = ['High', 'Medium', 'Low'];
+
 // ---------------------------------------------------------------------------
 // Internal helpers
 // ---------------------------------------------------------------------------
@@ -167,6 +181,28 @@ export function validateLead(lead) {
 
   // Category within the closed InstituteCategory set.
   if (!INSTITUTE_CATEGORIES.includes(lead.category)) return false;
+
+  return true;
+}
+
+// Validates a single VENUE lead (Lawns & Banquets segment). Mirrors
+// validateLead but checks `category` against the venue category set and does
+// not require `suggestedProof` to map to a portfolio group — venue proof is a
+// free-text instruction (e.g. "screenshot the wrong page title") because we do
+// not yet have a venue portfolio. Optional fields (website/phone/email/
+// priority) never affect validity.
+export function validateVenueLead(lead) {
+  if (!lead || typeof lead !== 'object') return false;
+
+  if (!isNonEmptyString(lead.id)) return false;
+  if (!isNonEmptyString(lead.weakness)) return false;
+  if (!isNonEmptyString(lead.contactAngle)) return false;
+
+  if (typeof lead.name !== 'string') return false;
+  if (lead.name.length < 1 || lead.name.length > 200) return false;
+
+  if (!CITY_ORDER.includes(lead.city)) return false;
+  if (!VENUE_CATEGORIES.includes(lead.category)) return false;
 
   return true;
 }

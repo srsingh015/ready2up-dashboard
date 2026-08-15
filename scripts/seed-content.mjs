@@ -38,8 +38,8 @@ const CONFLICT_TARGET = 'key,min_role';
 // Pure build-metadata keys that are NOT content sections; skipped entirely.
 const SKIP_KEYS = new Set(['builtAt', 'version']);
 
-// The Employee_Content sections (Req 6.1). Employees now receive ONLY these
-// five content rows — all unchanged copies. No money-redacted rows remain
+// The Employee_Content sections (Req 6.1). Employees receive ONLY these six
+// content rows — all unchanged copies. No money-redacted rows remain
 // (roadmap/months are no longer served to employees at all), and no owner-only
 // section (brandPlaybook, vision, meta, pricing, streams, dailyRoutine, etc.)
 // is ever included. Owner rows are unaffected (every key, via buildOwnerVariant).
@@ -47,6 +47,11 @@ const SKIP_KEYS = new Set(['builtAt', 'version']);
 // NOTE: `scripts` (proposal templates) may contain pricing — this is accepted
 // per the owner's explicit request to give employees the Scripts section; it is
 // intentionally NOT money-redacted.
+//
+// NOTE: `lawnsOutreach` is included per the owner's explicit request so the
+// Head@Ready2UP (employee) login can work the venue pipeline. Like
+// instituteOutreach it carries lead lists and pricing tiers and is served
+// unredacted — both are outreach surfaces the team is expected to act on.
 const EMPLOYEE_REDACTED_KEYS = [];
 const EMPLOYEE_COPY_KEYS = [
   'channels',
@@ -54,6 +59,7 @@ const EMPLOYEE_COPY_KEYS = [
   'principles',
   'scripts',
   'instituteOutreach',
+  'lawnsOutreach',
 ];
 
 /**

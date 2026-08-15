@@ -145,8 +145,8 @@ describe('Property 7: navigation reflects the content that arrived', () => {
     );
   });
 
-  it('the employee content object yields exactly the 5 content-driven employee nav entries', () => {
-    // The employee now receives ONLY these five content keys. `trackers` is NOT
+  it('the employee content object yields exactly the 6 content-driven employee nav entries', () => {
+    // The employee receives ONLY these six content keys. `trackers` is NOT
     // included here because `navIdsFromContent` is content-driven and pure —
     // the Work Tracker has no content_sections row and is added by Layout for
     // the employee role, not by this function.
@@ -156,10 +156,18 @@ describe('Property 7: navigation reflects the content that arrived', () => {
       principles: {},
       scripts: {},
       instituteOutreach: {},
+      lawnsOutreach: {},
     };
     const ids = navIdsFromContent(employeeContent);
     expect([...ids].sort()).toEqual(
-      ['channels', 'onboarding', 'principles', 'scripts', 'institute-outreach'].sort()
+      [
+        'channels',
+        'onboarding',
+        'principles',
+        'scripts',
+        'institute-outreach',
+        'lawns-outreach',
+      ].sort()
     );
   });
 
@@ -186,6 +194,7 @@ describe('Property 8: authorization derives from role, not identity', () => {
     'principles',
     'scripts',
     'instituteOutreach',
+    'lawnsOutreach',
   ];
 
   const buildEmployeeContent = () => {

@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import {
   LayoutDashboard, Compass, Coins, Map, CalendarDays, Repeat, Sun,
   Megaphone, Tag as TagIcon, MessageSquareText, ShieldCheck, LineChart,
-  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake, User, TrendingUp, FileText, Globe2, GraduationCap
+  Lock, Menu, X, ClipboardList, Layers, Building2, Heart, Pin, PinOff, Sparkles, Timer, HeartHandshake, User, TrendingUp, FileText, Globe2, GraduationCap, Radar, PartyPopper
 } from 'lucide-react';
 
 import Overview from './sections/Overview.jsx';
@@ -29,6 +29,8 @@ import ForKaira from './sections/ForKaira.jsx';
 import ForMe from './sections/ForMe.jsx';
 import Us from './sections/Us.jsx';
 import InstituteOutreach from './sections/InstituteOutreach.jsx';
+import ClientEngine from './sections/ClientEngine.jsx';
+import LawnsOutreach from './sections/LawnsOutreach.jsx';
 import ThemeToggle from './ui/ThemeToggle.jsx';
 import SectionBoundary from './SectionBoundary.jsx';
 import { useLocalStorage } from '../hooks/useLocalStorage.js';
@@ -46,7 +48,6 @@ const NAV = [
   { id: 'pricing', label: 'Pricing & Packages', icon: TagIcon, group: 'execution' },
   { id: 'onboarding', label: 'Client Onboarding', icon: ClipboardList, group: 'execution' },
   { id: 'scripts', label: 'Scripts & Templates', icon: MessageSquareText, group: 'execution' },
-  { id: 'institute-outreach', label: 'Institute Outreach', icon: GraduationCap, group: 'execution' },
   { id: 'properties', label: 'Affiliate & Properties', icon: Layers, group: 'execution' },
   { id: 'brand', label: 'Brand Playbook', icon: Sparkles, group: 'execution' },
   { id: 'principles', label: 'Operating Principles', icon: ShieldCheck, group: 'execution' },
@@ -56,6 +57,9 @@ const NAV = [
   { id: 'dubai', label: 'Dubai Expansion', icon: Globe2, group: 'build' },
   { id: 'settle', label: 'Settle & Wealth Plan', icon: Compass, group: 'build' },
   { id: 'partnerships', label: 'Partnership Companies', icon: Building2, group: 'portfolio' },
+  { id: 'client-engine', label: 'Client Acquisition Engine', icon: Radar, group: 'growth' },
+  { id: 'lawns-outreach', label: 'Lawns & Banquets', icon: PartyPopper, group: 'growth' },
+  { id: 'institute-outreach', label: 'Institute Outreach', icon: GraduationCap, group: 'growth' },
   { id: 'us', label: 'Us 💞', icon: HeartHandshake, group: 'kaira' },
   { id: 'kaira', label: 'For Kaira 🌸', icon: Heart, group: 'kaira' },
   { id: 'me', label: 'For Me 💕', icon: Heart, group: 'kaira' },
@@ -68,6 +72,7 @@ const GROUP_LABELS = {
   tools: 'Tools',
   build: 'Build & Earn',
   portfolio: 'Partnerships',
+  growth: 'Get Clients',
   kaira: 'Together',
 };
 
@@ -237,6 +242,8 @@ export default function Layout({ data, onLock, theme, toggleTheme, role }) {
       case 'dubai': return <Dubai {...props} />;
       case 'settle': return <Settle {...props} />;
       case 'partnerships': return <Partnerships {...props} />;
+      case 'client-engine': return <ClientEngine {...props} />;
+      case 'lawns-outreach': return <LawnsOutreach {...props} />;
       case 'kaira': return <ForKaira {...props} />;
       case 'us': return <Us {...props} />;
       case 'me': return <ForMe {...props} />;

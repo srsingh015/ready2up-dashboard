@@ -18,13 +18,14 @@ import { render, screen, cleanup, within, fireEvent } from '@testing-library/rea
 import Layout from '../Layout.jsx';
 import { contents } from '../../../content-source/contents.js';
 
-// The exactly-5 content keys an Employee_Role session receives (Req 6.1).
+// The exactly-6 content keys an Employee_Role session receives (Req 6.1).
 const EMPLOYEE_KEYS = [
   'channels',
   'onboarding',
   'principles',
   'scripts',
   'instituteOutreach',
+  'lawnsOutreach',
 ];
 
 function ownerData() {

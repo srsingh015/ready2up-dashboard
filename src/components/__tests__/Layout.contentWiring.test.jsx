@@ -24,10 +24,10 @@ import Rhythm from '../sections/Rhythm.jsx';
 import Trackers from '../sections/Trackers.jsx';
 import { contents } from '../../../content-source/contents.js';
 
-// The exactly-5 content keys an Employee_Role session receives from the server
-// (Req 6.1): channels, onboarding, principles, scripts, and instituteOutreach.
-// `roadmap`, `months`, `dailyRoutine`, `brandPlaybook`, and every other
-// owner-only section are absent. The Work Tracker ('trackers') is added by
+// The exactly-6 content keys an Employee_Role session receives from the server
+// (Req 6.1): channels, onboarding, principles, scripts, instituteOutreach and
+// lawnsOutreach. `roadmap`, `months`, `dailyRoutine`, `brandPlaybook`, and every
+// other owner-only section are absent. The Work Tracker ('trackers') is added by
 // Layout for the employee role (it has no content row), so it is NOT in this
 // content-key set but DOES appear in the employee's nav.
 const EMPLOYEE_KEYS = [
@@ -36,6 +36,7 @@ const EMPLOYEE_KEYS = [
   'principles',
   'scripts',
   'instituteOutreach',
+  'lawnsOutreach',
 ];
 
 // Owner receives every content key.
@@ -45,7 +46,7 @@ function ownerData() {
   return out;
 }
 
-// Employee receives only the 7 permitted keys.
+// Employee receives only the permitted keys.
 function employeeData() {
   const out = {};
   for (const k of EMPLOYEE_KEYS) out[k] = contents[k];
@@ -60,7 +61,7 @@ function renderLayout(role, data) {
   );
 }
 
-// The exact set of nav labels an Employee_Role should see (7 entries): the five
+// The exact set of nav labels an Employee_Role should see (8 entries): the six
 // content-driven sections plus the Work Tracker ('Trackers') and Focus Mode,
 // which Layout adds for the employee role as UI-only sections (no content row).
 const EMPLOYEE_NAV_LABELS = [
@@ -68,6 +69,7 @@ const EMPLOYEE_NAV_LABELS = [
   'Client Onboarding',
   'Operating Principles',
   'Scripts & Templates',
+  'Lawns & Banquets',
   'Institute Outreach',
   'Trackers',
   'Focus Mode',
